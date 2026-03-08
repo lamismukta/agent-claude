@@ -91,6 +91,17 @@ When `product_requirements.md` already exists and the founder has new feedback:
 2. Apply changes. Mark updated sections with `[UPDATED]` so the diff is visible.
 3. If the feedback changes the architecture (e.g., "actually this needs to be an agent, not a single call"), flag it clearly — `/build` needs to know.
 4. Don't bloat the PRD with revision history. One clean document, with `[UPDATED]` tags on changed sections.
+5. Append to `decision_log.md` — log what changed in the spec and why. Use this format:
+
+```markdown
+## PRD Update — [date]
+
+### Changes
+- [Section]: [what changed and why]
+
+### Hypothesis Impact
+- Now testing: [which hypothesis the updated prototype targets]
+```
 
 ## What Not to Do
 

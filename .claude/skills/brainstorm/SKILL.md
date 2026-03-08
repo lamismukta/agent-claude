@@ -19,7 +19,9 @@ Before your first session, read `references/user-research-canon.md` — it conta
 
 4. **Write `hypotheses.md`.** At the end of the conversation, distil the key assumptions into a hypotheses file. Each hypothesis is something that could kill the idea if wrong. Tag each one with how to test it — a user conversation, or a software prototype. See the Hypotheses section below.
 
-5. **Hand off to `/prd`.** Summarise the key decisions and suggest running `/prd` to write the spec. `/prd` reads `hypotheses.md` to know which assumption the prototype should de-risk first.
+5. **Append to `decision_log.md`.** Log this session's key decisions, hypothesis updates, and what changed. This is the running history — `hypotheses.md` is current state, the decision log is how you got there. See the Decision Log section below.
+
+6. **Hand off to `/prd`.** Summarise the key decisions and suggest running `/prd` to write the spec. `/prd` reads `hypotheses.md` to know which assumption the prototype should de-risk first.
 
 ## Call Notes
 
@@ -146,6 +148,52 @@ When call notes exist or the founder returns with feedback, update `hypotheses.m
 
 `/prd` reads `hypotheses.md` to decide what the prototype should focus on. The riskiest 🛠️ hypothesis becomes the prototype's core job — the success criteria in the PRD should directly test it.
 
+## Decision Log
+
+The running history of the product's evolution. Append a new entry after every brainstorm session — never overwrite previous entries.
+
+### Format
+
+Append to `decision_log.md`. Each entry is a dated session with structured sections:
+
+```markdown
+# Decision Log
+
+## Session 1 — [date]
+
+### Context
+[What triggered this session — first brainstorm, new call notes, founder feedback, etc. 1-2 sentences.]
+
+### Hypotheses Tested
+- H1: [assumption] → ✅ confirmed / ❌ invalidated / ⏳ untested
+  - Evidence: [one line — what call/prototype/conversation showed]
+
+### Key Decisions
+- [Decision made and why. e.g., "Scoped to CLI tool, not web app — founder wants speed over polish."]
+- [Another decision]
+
+### What Changed
+- [What was added, removed, or revised in hypotheses.md or the PRD direction]
+
+### Open Questions
+- [Anything unresolved that needs more data]
+
+---
+
+## Session 2 — [date]
+...
+```
+
+### When to write it
+
+- **First brainstorm:** Create the file. Log initial hypotheses and scoping decisions.
+- **Iteration mode:** Append a new session entry. Log which hypotheses moved, what the new evidence was, and what changed in direction.
+- `/prd` also appends to the log when the spec changes — see `/prd` for details.
+
+### Why this matters
+
+The decision log answers "why did we build it this way?" weeks later. `hypotheses.md` shows where you are. The decision log shows how you got there — which assumptions died, which pivots happened, and what evidence drove each change.
+
 ## Conversation Principles
 
 - **Talk about their life, not your idea.** The moment you pitch, they tell you what you want to hear.
@@ -166,7 +214,8 @@ When `product_requirements.md` or `hypotheses.md` already exists:
 5. Ask: "What resonates? What should we update?"
 6. Focus on what's new — don't re-run the full brainstorm.
 7. Update `hypotheses.md` with new status and any new hypotheses.
-8. Hand off to `/prd` to update the spec.
+8. Append a new session entry to `decision_log.md`.
+9. Hand off to `/prd` to update the spec.
 
 ## What Not to Do
 
