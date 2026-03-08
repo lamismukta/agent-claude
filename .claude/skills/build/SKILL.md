@@ -158,6 +158,8 @@ tools = [
 ]
 ```
 
+**Important:** Server-side web search requires Sonnet 4.6 or Opus 4.6 — Haiku does not support it. If the prototype uses web search, default to Sonnet 4.6 (not Haiku).
+
 ### Agent SDK
 
 When the PRD calls for an agent with file, web, or terminal access:
