@@ -1,7 +1,7 @@
-# Planning docs and project context (not for public repo)
+# Planning docs (private)
 .plan/
-CLAUDE.md
 release_email.md
+.claude/skills/skill-creator/
 
 # Environment
 .env

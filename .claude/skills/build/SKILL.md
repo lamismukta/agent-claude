@@ -23,9 +23,9 @@ Read the product requirements doc and generate a complete, runnable project that
    Start simple. A multi-step workflow doesn't need the Agent SDK. An agent that just calls two APIs doesn't need file system access. Only reach for heavier tools when the task genuinely requires them.
 
 3. **Generate the project.** Create a complete project structure that runs with a single command. Always include:
-   - A clear entry point (`main.py`, `app.py`, or equivalent)
+   - A clear entry point — name it after what it does (e.g., `briefing.py`, `triage.py`, `extract.py`). Use `main.py` only if no descriptive name fits.
    - A `pyproject.toml` (Python) or `package.json` (TypeScript) with all dependencies declared
-   - A `README.md` with a one-liner to run: `uv run main.py` or `npx tsx main.ts`
+   - A `README.md` with a one-liner to run: `uv run <entry_point>.py` or `npx tsx <entry_point>.ts`
    - A `.env.example` with required environment variables (never include real keys)
    - Working code that runs end-to-end
 
@@ -39,10 +39,10 @@ Generate a clean, minimal project. The goal: clone, set API key, run one command
 
 ```
 project-name/
-├── README.md              ← "uv run main.py" is the first line
+├── README.md              ← "uv run <entry_point>.py" is the first line
 ├── pyproject.toml         ← Dependencies + inline script metadata
 ├── .env.example           ← ANTHROPIC_API_KEY=your-key-here
-├── main.py                ← Entry point
+├── <entry_point>.py       ← Named after what it does (e.g., briefing.py, triage.py)
 ├── [modules as needed]    ← Only if genuinely complex enough to split
 └── product_requirements.md ← Copy of the PRD (for reference)
 ```
@@ -69,10 +69,10 @@ The README should start with:
 
 ```bash
 export ANTHROPIC_API_KEY=your-key
-uv run main.py [args]
+uv run <entry_point>.py [args]
 ```
 
-No `uv`? Use `pip install -r requirements.txt && python main.py` instead.
+No `uv`? Use `pip install -r requirements.txt && python <entry_point>.py` instead.
 ```
 
 Also generate a `requirements.txt` as a fallback for founders who don't have `uv`.
