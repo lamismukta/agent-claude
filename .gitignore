@@ -1,5 +1,6 @@
-# Planning docs (not for public repo)
+# Planning docs and project context (not for public repo)
 .plan/
+CLAUDE.md
 
 # Environment
 .env
