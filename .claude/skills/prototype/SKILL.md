@@ -1,48 +1,67 @@
 ---
 name: prototype
-description: "Go from idea to working AI prototype in one conversation. Runs a discovery brainstorm, writes a PRD, then generates working code on Claude's API or Agent SDK. Use when a founder says 'I want to prototype something', 'help me build an AI app', 'let's build this', or anything that combines ideation with building. Also use for iteration — 'users said X, update the prototype' or 'rebuild with these changes'. This is the full flow; use /brainstorm for just the conversation, /prd for just the spec, or /build for just the code."
+description: "Go from idea to working AI prototype in one conversation. This is the main skill — run this. It brainstorms the idea, writes hypotheses, specs the PRD, and generates working code on Claude's API or Agent SDK. Use when a founder says 'I want to prototype something', 'help me build an AI app', 'let's build this', 'I have an idea', or anything that involves going from idea to code. Also handles iteration — 'users said X', 'update the prototype', 'I talked to users'. Sub-skills (/brainstorm, /prd, /build) exist for fine-grained control but most founders should just use /prototype."
 ---
 
 # /prototype — Idea → Working Code
 
-The fast path from idea to working AI prototype. Runs the discovery brainstorm, writes the PRD, then generates a complete runnable project — all in one conversation.
+The main skill. Takes a founder from idea to working AI prototype in one conversation. Runs the full loop: discovery brainstorm → hypotheses → product spec → working code.
+
+Most founders should start here. The sub-skills (`/brainstorm`, `/prd`, `/build`) exist for when you want more control over individual steps.
 
 ## How It Works
 
-### First Run (No Existing PRD)
+### First Run (New Idea)
 
-1. **Run `/brainstorm`.** Have the discovery conversation. Surface the problem, user, capabilities, and scope. This produces `hypotheses.md` — the assumptions to test.
+1. **Brainstorm.** Run the `/brainstorm` flow — have the discovery conversation, surface the problem, user, capabilities, and scope. This produces:
+   - `hypotheses.md` — the assumptions to test, tagged as 🗣️ conversation or 🛠️ prototype
+   - First entry in `decision_log.md` — the reasoning trail
 
-2. **Run `/prd`.** Write the product requirements doc, scoped to test the riskiest hypothesis. Show the founder a summary: "Here's what I'm going to build to test [hypothesis]: [summary]. Ready?" This is the moment to catch misunderstandings — cheaper to fix the spec than rewrite code.
+2. **Spec.** Run the `/prd` flow — write the product requirements doc, scoped to test the riskiest 🛠️ hypothesis. Before building, confirm with the founder: "Here's what I'm going to build to test [hypothesis]: [summary]. Ready?" Cheaper to fix the spec than rewrite code.
 
-3. **Run `/build`.** Read the PRD, pick the right architecture, generate the project. Verify it runs.
+3. **Build.** Run the `/build` flow — read the PRD, pick the right architecture, generate a complete runnable project with `pyproject.toml`, README, and a one-liner to run (`uv run main.py`).
 
-4. **Present the result.** Show the founder what was built, how to run it, and where to modify it.
+4. **Present.** Show the founder:
+   - What was built and what hypothesis it tests
+   - How to run it (the one-liner from the README)
+   - Where to modify it
+   - What to test next — the 🗣️ hypotheses they should take to their next user call
 
-### Iteration (PRD Already Exists)
+### Iteration (Coming Back With Feedback)
 
-When `product_requirements.md` exists in the current directory, you're in iteration mode.
+When `product_requirements.md` or `hypotheses.md` already exist, you're in iteration mode. The founder has talked to users, tested the prototype, or just changed their mind.
 
-1. **Run `/brainstorm`** in iteration mode — read the existing PRD and hypotheses, update hypothesis statuses based on new evidence, ask what's changed.
+1. **Update hypotheses.** Run `/brainstorm` in iteration mode — pull new Granola call notes if configured, read existing hypotheses and PRD, mark what's confirmed or killed, surface new assumptions.
 
-2. **Run `/prd`** to update the spec. If a hypothesis was killed, the prototype's focus may shift. Mark changes with `[UPDATED]` tags.
+2. **Update spec.** Run `/prd` to update the requirements. If a hypothesis was killed, the prototype's focus may shift entirely. Mark changes with `[UPDATED]` tags. Append to `decision_log.md`.
 
-3. **Run `/build`** to update the code. Modify only what changed.
+3. **Update code.** Run `/build` to modify the existing project. Only change what the spec changed — don't regenerate from scratch.
 
-4. **Present what's different.**
+4. **Present what's different.** Show the delta, not the whole thing.
 
-## Composability
+## The Artifact Trail
 
-These skills work together or independently:
+Each run produces or updates these files:
 
-- **Just the conversation:** `/brainstorm` — think through the product without writing anything
-- **Just the spec:** `/prd` — write requirements from context you already have
-- **Just the code:** `/build` — already have a `product_requirements.md`, just want code
-- **Full loop:** `/prototype` — brainstorm → prd → build
-- **Iterate:** `/prototype` again — detects existing PRD, enters iteration mode
+| File | Written by | Purpose |
+|------|-----------|---------|
+| `call_notes/*.md` | Granola MCP or manual | Raw interview transcripts |
+| `hypotheses.md` | Brainstorm | Current assumptions + test status |
+| `decision_log.md` | Brainstorm + PRD | Append-only history of iterations |
+| `product_requirements.md` | PRD | Buildable spec for the prototype |
+| Project files | Build | Working code (`pyproject.toml`, `main.py`, etc.) |
+
+## Sub-Skills (For Fine-Grained Control)
+
+Most founders just run `/prototype`. But if you want individual steps:
+
+- **`/brainstorm`** — Just the discovery conversation. Produces hypotheses without writing a spec or code.
+- **`/prd`** — Just the spec. Use when you already have context and want to write requirements.
+- **`/build`** — Just the code. Use when you already have a `product_requirements.md`.
 
 ## Tips
 
-- If the founder is impatient and wants to skip the brainstorm ("just build me a chatbot"), run `/prd` with a minimal spec from what you know, note the gaps, then `/build`. They can iterate.
-- If the founder has a clear spec already, skip `/brainstorm` and go straight to `/prd` or `/build`.
-- The PRD and `hypotheses.md` are the durable artifacts. Code can be regenerated; the hypotheses and PRD capture product decisions that survive across iterations.
+- **Impatient founder?** If they say "just build me a chatbot", skip the brainstorm — run `/prd` with a minimal spec from what you know, note the gaps, then `/build`. They can iterate.
+- **Clear spec already?** Skip straight to `/prd` or `/build`.
+- **Code is disposable, decisions aren't.** The hypotheses and PRD capture product decisions that survive across iterations. Code can always be regenerated.
+- **The 🗣️ hypotheses are homework.** After building, remind the founder which assumptions need a user conversation to test — the prototype can't validate everything.

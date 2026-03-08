@@ -22,10 +22,10 @@ Read the product requirements doc and generate a complete, runnable project that
 
    Start simple. A multi-step workflow doesn't need the Agent SDK. An agent that just calls two APIs doesn't need file system access. Only reach for heavier tools when the task genuinely requires them.
 
-3. **Generate the project.** Create a complete project structure with:
+3. **Generate the project.** Create a complete project structure that runs with a single command. Always include:
    - A clear entry point (`main.py`, `app.py`, or equivalent)
-   - A `README.md` with setup and run instructions
-   - A `requirements.txt` or `package.json`
+   - A `pyproject.toml` (Python) or `package.json` (TypeScript) with all dependencies declared
+   - A `README.md` with a one-liner to run: `uv run main.py` or `npx tsx main.ts`
    - A `.env.example` with required environment variables (never include real keys)
    - Working code that runs end-to-end
 
@@ -33,17 +33,62 @@ Read the product requirements doc and generate a complete, runnable project that
 
 ## Project Structure
 
-Generate a clean, minimal project. Don't over-engineer — a prototype should be easy to understand and modify.
+Generate a clean, minimal project. The goal: clone, set API key, run one command.
+
+### Python (default)
 
 ```
 project-name/
-├── README.md              ← Setup + run instructions
-├── requirements.txt       ← Dependencies (or package.json for TS)
-├── .env.example           ← Required env vars
+├── README.md              ← "uv run main.py" is the first line
+├── pyproject.toml         ← Dependencies + inline script metadata
+├── .env.example           ← ANTHROPIC_API_KEY=your-key-here
 ├── main.py                ← Entry point
-├── [modules as needed]    ← Only if the code is genuinely complex enough to split
+├── [modules as needed]    ← Only if genuinely complex enough to split
 └── product_requirements.md ← Copy of the PRD (for reference)
 ```
+
+Always generate a `pyproject.toml` — it lets `uv run` install dependencies automatically:
+
+```toml
+[project]
+name = "project-name"
+version = "0.1.0"
+description = "One-line description from the PRD"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic",
+]
+
+[project.scripts]
+project-name = "main:main"
+```
+
+The README should start with:
+```markdown
+## Quick Start
+
+```bash
+export ANTHROPIC_API_KEY=your-key
+uv run main.py [args]
+```
+
+No `uv`? Use `pip install -r requirements.txt && python main.py` instead.
+```
+
+Also generate a `requirements.txt` as a fallback for founders who don't have `uv`.
+
+### TypeScript
+
+```
+project-name/
+├── README.md
+├── package.json           ← Dependencies
+├── .env.example
+├── main.ts                ← Entry point
+└── product_requirements.md
+```
+
+README should show: `npx tsx main.ts [args]`
 
 ## Code Guidelines
 
