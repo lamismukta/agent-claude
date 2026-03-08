@@ -23,8 +23,20 @@ Get a founder from clone to ready in under 2 minutes. Check prerequisites, creat
 
 3. **Granola setup (optional).**
    Ask: "Do you record user calls with Granola? If so, I can wire it up to pull transcripts automatically."
-   - If yes: copy `.claude/mcp_servers.json.example` to `.claude/mcp_servers.json`, remove the `_comment` line, and tell them to restart Claude Code.
+   - If yes: write `.claude/mcp_servers.json` directly with the Granola config:
+     ```json
+     {
+       "mcpServers": {
+         "granola": {
+           "command": "npx",
+           "args": ["-y", "granola-mcp"]
+         }
+       }
+     }
+     ```
+     Then tell them: "Granola is configured. Restart Claude Code (Ctrl+C, then `claude`) to pick it up. After that, `/brainstorm` will automatically pull your latest call transcripts."
    - If no: skip. They can paste notes into `call_notes/` manually, or just talk through the brainstorm without notes.
+   - If `.claude/mcp_servers.json` already exists (e.g., they have other MCP servers), read it and add the `granola` entry to the existing `mcpServers` object rather than overwriting.
 
 4. **Quick context.**
    Ask one question: "What are you building, in one sentence?" Don't run the full brainstorm — just capture enough to make the next step feel warm. Save their answer as a note for context.

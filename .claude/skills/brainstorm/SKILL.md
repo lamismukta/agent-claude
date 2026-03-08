@@ -54,13 +54,20 @@ Highlight patterns. If three people mentioned the same pain, that's a signal. If
 
 ### Granola Integration
 
-If [Granola](https://granola.ai) is configured as an MCP server, you can pull meeting notes directly instead of the founder copy-pasting. To enable:
+If [Granola](https://granola.ai) is configured as an MCP server, you can pull meeting notes directly instead of the founder copy-pasting. Run `/onboard` to set this up automatically, or add Granola to `.claude/mcp_servers.json` manually:
 
-1. Rename `.claude/mcp_servers.json.example` to `.claude/mcp_servers.json`
-2. Remove the `_comment` line
-3. Restart Claude Code
+```json
+{
+  "mcpServers": {
+    "granola": {
+      "command": "npx",
+      "args": ["-y", "granola-mcp"]
+    }
+  }
+}
+```
 
-Then use `list_meetings` and `get_meeting_transcript` to fetch recent calls and save them to `call_notes/` with the right frontmatter.
+When configured, use `list_meetings` and `get_meeting_transcript` to fetch recent calls and save them to `call_notes/` with the right frontmatter.
 
 ### No Notes? No Problem.
 
