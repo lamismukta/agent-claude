@@ -1,6 +1,7 @@
 # Planning docs and project context (not for public repo)
 .plan/
 CLAUDE.md
+release_email.md
 
 # Environment
 .env

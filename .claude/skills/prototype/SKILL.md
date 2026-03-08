@@ -47,17 +47,30 @@ Each run produces or updates these files:
 |------|-----------|---------|
 | `call_notes/*.md` | Granola MCP or manual | Raw interview transcripts |
 | `hypotheses.md` | Brainstorm | Current assumptions + test status |
-| `decision_log.md` | Brainstorm + PRD | Append-only history of iterations |
+| `decision_log.md` | Brainstorm + PRD + Feedback | Append-only history of iterations |
 | `product_requirements.md` | PRD | Buildable spec for the prototype |
 | Project files | Build | Working code (`pyproject.toml`, `main.py`, etc.) |
 
+## Quick Feedback Loop
+
+After the first build, most iteration happens through `/feedback` — not `/prototype` again:
+
+```
+/prototype  → first build (brainstorm → spec → code)
+/feedback   → quick iterations (feedback → update spec → update code)
+/prototype  → major rethink (full brainstorm again)
+```
+
+Use `/feedback` when the direction is right but something needs tweaking. Use `/prototype` again when the direction itself needs rethinking.
+
 ## Sub-Skills (For Fine-Grained Control)
 
-Most founders just run `/prototype`. But if you want individual steps:
+Most founders use `/prototype` + `/feedback`. But individual steps are available:
 
 - **`/brainstorm`** — Just the discovery conversation. Produces hypotheses without writing a spec or code.
 - **`/prd`** — Just the spec. Use when you already have context and want to write requirements.
 - **`/build`** — Just the code. Use when you already have a `product_requirements.md`.
+- **`/feedback`** — Quick iteration. Takes feedback, updates hypotheses + spec + code without a full brainstorm.
 
 ## Tips
 
