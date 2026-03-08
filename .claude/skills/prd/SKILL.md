@@ -39,6 +39,12 @@ Write `product_requirements.md` using this structure:
 ## Problem
 [1-2 sentences. What problem, for whom. Ground it in real behaviour — what do they do today and why is it broken?]
 
+## Why LLM?
+[Why does this need AI — not just a script, a database query, or a spreadsheet? Be specific about what the LLM adds.]
+- **LLM is good at:** [e.g., "interpreting unstructured text", "generating natural language summaries", "making judgment calls on ambiguous input"]
+- **LLM is NOT needed for:** [e.g., "storing data", "sending emails", "CRUD operations" — use tools for these]
+- **What was impossible before:** [the capability that only exists because of LLMs — this is the core value]
+
 ## User
 - **Who:** [specific persona — role, technical ability, context]
 - **Trigger:** [how they start using it — CLI command, web form, API call, Slack message, cron job]

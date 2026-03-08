@@ -22,6 +22,8 @@ Read the product requirements doc and generate a complete, runnable project that
 
    Start simple. A multi-step workflow doesn't need the Agent SDK. An agent that just calls two APIs doesn't need file system access. Only reach for heavier tools when the task genuinely requires them.
 
+   **Confirm before generating.** Tell the founder: "Based on the PRD, I'm going to build this as [architecture] using [model]. Here's why: [one sentence]. Sound right?" Wait for confirmation. This is fast to say and prevents wasted builds.
+
 3. **Generate the project.** Create a complete project structure that runs with a single command. Always include:
    - A clear entry point — name it after what it does (e.g., `briefing.py`, `triage.py`, `extract.py`). Use `main.py` only if no descriptive name fits.
    - A `pyproject.toml` (Python) or `package.json` (TypeScript) with all dependencies declared
@@ -30,6 +32,32 @@ Read the product requirements doc and generate a complete, runnable project that
    - Working code that runs end-to-end
 
 4. **Verify it works.** After generating, try to run or at least lint the code. Fix any import errors, missing dependencies, or obvious bugs before presenting it to the user.
+
+5. **Hand off with clear instructions.** After the code is generated, present the founder with everything they need:
+
+   ```
+   ## Your prototype is ready.
+
+   ### Run it
+   [exact command — copy-pasteable, e.g.:]
+   export ANTHROPIC_API_KEY=your-key
+   uv run briefing.py "Sarah Chen" "Sequoia Capital"
+
+   [fallback for non-uv users:]
+   pip install -r requirements.txt
+   python briefing.py "Sarah Chen" "Sequoia Capital"
+
+   ### What it does
+   [1-2 sentences — input, output, what happens in between]
+
+   ### What to look for
+   [2-3 specific things to evaluate, tied to the hypothesis under test]
+
+   ### Files generated
+   [List every file with a one-line description]
+   ```
+
+   Don't assume they'll read the generated README. Give them the run command right here in the conversation. The prototype is useless if they can't run it in 30 seconds.
 
 ## Project Structure
 

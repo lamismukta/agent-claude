@@ -9,6 +9,8 @@ The main skill. Takes a founder from idea to working AI prototype in one convers
 
 Most founders should start here. The sub-skills (`/brainstorm`, `/prd`, `/build`) exist for when you want more control over individual steps.
 
+**The founder drives.** You are the co-pilot. At every stage, present what you've got and wait for confirmation before moving on. Don't run the whole pipeline silently — the checkpoints are where the best product decisions happen.
+
 ## How It Works
 
 ### First Run (New Idea)
@@ -17,15 +19,44 @@ Most founders should start here. The sub-skills (`/brainstorm`, `/prd`, `/build`
    - `hypotheses.md` — the assumptions to test, tagged as 🗣️ conversation or 🛠️ prototype
    - First entry in `decision_log.md` — the reasoning trail
 
-2. **Spec.** Run the `/prd` flow — write the product requirements doc, scoped to test the riskiest 🛠️ hypothesis. Before building, confirm with the founder: "Here's what I'm going to build to test [hypothesis]: [summary]. Ready?" Cheaper to fix the spec than rewrite code.
+   **Checkpoint:** Present the hypotheses. "Here are the 5 assumptions I think could kill this idea. The riskiest one we can test with software is [H2]. Does this feel right, or am I missing something?"
 
-3. **Build.** Run the `/build` flow — read the PRD, pick the right architecture, generate a complete runnable project with `pyproject.toml`, README, and a one-liner to run (`uv run main.py`).
+2. **Spec.** Run the `/prd` flow — write the product requirements doc, scoped to test the riskiest 🛠️ hypothesis.
 
-4. **Present.** Show the founder:
-   - What was built and what hypothesis it tests
-   - How to run it (the one-liner from the README)
-   - Where to modify it
-   - What to test next — the 🗣️ hypotheses they should take to their next user call
+   **Checkpoint:** Present the PRD summary before building. "Here's what I'm going to build: [one-paragraph summary]. It tests [hypothesis] by [how]. The architecture is [single call / workflow / agent] using [model]. Ready to build, or should we change anything?" Cheaper to fix the spec than rewrite code.
+
+3. **Build.** Run the `/build` flow — read the PRD, pick the right architecture, generate a complete runnable project.
+
+4. **Hand off.** Give the founder everything they need to run and test it:
+
+   ```
+   ## Your prototype is ready.
+
+   ### Run it
+   [exact command, e.g.: export ANTHROPIC_API_KEY=your-key && uv run briefing.py "Sarah Chen" "Sequoia Capital"]
+
+   No uv? [fallback command with pip]
+
+   ### What it does
+   [1-2 sentences — what input it takes, what output it produces]
+
+   ### What it tests
+   [Which hypothesis this prototype is built to confirm or kill]
+
+   ### What to look for
+   - [Specific thing to check, e.g., "Are the talking points specific to the person, or generic?"]
+   - [Another thing, e.g., "Does it find recent news, or hallucinate?"]
+
+   ### What to test next (your homework)
+   These hypotheses need a user conversation, not code:
+   - 🗣️ H1: [assumption] — ask [who] about [what]
+   - 🗣️ H3: [assumption] — show [who] the output and ask [what]
+
+   ### Files generated
+   [List of files with one-line descriptions]
+   ```
+
+   This is the most important step. A prototype that the founder can't run or doesn't know how to evaluate is worthless.
 
 ### Iteration (Coming Back With Feedback)
 
@@ -35,9 +66,11 @@ When `product_requirements.md` or `hypotheses.md` already exist, you're in itera
 
 2. **Update spec.** Run `/prd` to update the requirements. If a hypothesis was killed, the prototype's focus may shift entirely. Mark changes with `[UPDATED]` tags. Append to `decision_log.md`.
 
+   **Checkpoint:** "Here's what changed in the spec: [summary]. The prototype now tests [new hypothesis] instead of [old one]. Should I rebuild?"
+
 3. **Update code.** Run `/build` to modify the existing project. Only change what the spec changed — don't regenerate from scratch.
 
-4. **Present what's different.** Show the delta, not the whole thing.
+4. **Hand off again.** Same format as first run — exact run command, what changed, what to test.
 
 ## The Artifact Trail
 
@@ -49,7 +82,7 @@ Each run produces or updates these files:
 | `hypotheses.md` | Brainstorm | Current assumptions + test status |
 | `decision_log.md` | Brainstorm + PRD + Feedback | Append-only history of iterations |
 | `product_requirements.md` | PRD | Buildable spec for the prototype |
-| Project files | Build | Working code (`pyproject.toml`, `main.py`, etc.) |
+| Project files | Build | Working code (`pyproject.toml`, entry point, etc.) |
 
 ## Quick Feedback Loop
 

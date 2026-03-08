@@ -13,9 +13,12 @@ Before your first session, read `references/user-research-canon.md` — it conta
 
 1. **Pull and check call notes.** If Granola MCP is configured, check for new meetings since the last saved note and pull any new transcripts into `call_notes/` with the right frontmatter. Then read all notes in `call_notes/` — they contain real user feedback that should drive the conversation. See the Call Notes section below.
 
-2. **Check for existing PRD.** Look for `product_requirements.md`. If one exists, you're in iteration mode — read it, incorporate call note insights, and ask what's changed.
+2. **Check for existing context.** Look for:
+   - `product_requirements.md` — if it exists, you're in iteration mode. Read it, incorporate call note insights, and ask what's changed.
+   - `existing_docs/` — if `/onboard` imported product docs, pitch decks, or research, read them. Summarise what you learned and use it to skip questions the founder has already answered. Don't re-ask what's already documented.
+   - Existing code in the working directory — if there's a `pyproject.toml`, `package.json`, or source files, the founder already has something built. Read the entry point to understand what exists.
 
-3. **Run the discovery conversation.** Ask questions one or two at a time. Follow interesting threads. The goal is to surface decisions the founder hasn't made yet.
+3. **Run the discovery conversation.** Ask questions one or two at a time. Follow interesting threads. The goal is to surface decisions the founder hasn't made yet. If you have existing context from step 2, start with: "I've read your [docs/code/notes]. Here's what I understand: [summary]. What's changed since then, and what are you trying to figure out?"
 
 4. **Write `hypotheses.md`.** At the end of the conversation, distil the key assumptions into a hypotheses file. Each hypothesis is something that could kill the idea if wrong. Tag each one with how to test it — a user conversation, or a software prototype. See the Hypotheses section below.
 
