@@ -11,7 +11,7 @@ Before your first session, read `references/user-research-canon.md` — it conta
 
 ## How It Works
 
-1. **Check for call notes.** Look for `call_notes/` in the current directory. If notes exist, read them first — they contain real user feedback that should drive the conversation. See the Call Notes section below.
+1. **Pull and check call notes.** If Granola MCP is configured, check for new meetings since the last saved note and pull any new transcripts into `call_notes/` with the right frontmatter. Then read all notes in `call_notes/` — they contain real user feedback that should drive the conversation. See the Call Notes section below.
 
 2. **Check for existing PRD.** Look for `product_requirements.md`. If one exists, you're in iteration mode — read it, incorporate call note insights, and ask what's changed.
 
