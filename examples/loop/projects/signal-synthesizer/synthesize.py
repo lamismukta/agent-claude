@@ -128,8 +128,6 @@ SYNTHESIS_SCHEMA = {
         },
         "score": {
             "type": "integer",
-            "minimum": 1,
-            "maximum": 10,
             "description": "How well the PRD is focused on real signal (1 = mostly noise, 10 = every item is strongly evidenced)",
         },
         "summary": {"type": "string", "description": "3-4 sentences: biggest strength, biggest gap, top recommendation"},
