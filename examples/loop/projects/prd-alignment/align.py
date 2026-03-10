@@ -18,63 +18,86 @@ from pathlib import Path
 import anthropic
 
 client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-4-6"  # upgrade to claude-opus-4-6 if evaluation accuracy is insufficient
 
+EXTRACT_SCHEMA = {
+    "name": "feedback_extraction",
+    "type": "object",
+    "properties": {
+        "feedback_items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "need": {"type": "string", "description": "The underlying need in one plain sentence"},
+                    "quote": {"type": "string", "description": "Closest verbatim quote or paraphrase"},
+                    "mentioned_by": {"type": "string", "description": "Number of users who raised this, or 'unclear'"},
+                },
+                "required": ["id", "need", "quote", "mentioned_by"],
+            },
+        }
+    },
+    "required": ["feedback_items"],
+}
+
+EVALUATE_SCHEMA = {
+    "name": "alignment_evaluation",
+    "type": "object",
+    "properties": {
+        "coverage": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "need": {"type": "string"},
+                    "addressed": {"type": "boolean"},
+                    "prd_section": {"type": ["string", "null"]},
+                    "note": {"type": "string", "description": "Nuance — partially addressed, addressed differently, etc."},
+                },
+                "required": ["id", "need", "addressed", "prd_section", "note"],
+            },
+        },
+        "gaps": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "User needs not addressed in the PRD, stated as 'Users mentioned X (N users) but the PRD does not address it'",
+        },
+        "unsupported_requirements": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "PRD requirements with no grounding in user feedback",
+        },
+        "score": {"type": "integer", "minimum": 1, "maximum": 10},
+        "summary": {"type": "string", "description": "2-3 sentences: overall quality, most important gap, recommendation"},
+    },
+    "required": ["coverage", "gaps", "unsupported_requirements", "score", "summary"],
+}
 
 EXTRACT_PROMPT = """You are a product analyst. Read these user call notes and extract every distinct user need, pain point, or request.
 
 Call notes:
 {call_notes}
 
-Extract each distinct piece of feedback as a structured item. Capture the underlying need (not just the surface request), the closest supporting quote, and how many users mentioned it if that's clear from the notes.
-
-Respond in JSON only:
-{{
-  "feedback_items": [
-    {{
-      "id": "F1",
-      "need": "<the underlying need in one plain sentence>",
-      "quote": "<closest verbatim quote or paraphrase from the notes>",
-      "mentioned_by": "<number of users who raised this, or 'unclear'>"
-    }}
-  ]
-}}"""
-
+Extract each distinct piece of feedback as a structured item. Capture the underlying need (not just the surface request), the closest supporting quote, and how many users mentioned it if that's clear from the notes."""
 
 EVALUATE_PROMPT = """You are a product analyst checking whether a PRD is grounded in user research.
 
-User feedback items extracted from call notes:
+User feedback items extracted from call notes (including how many users raised each need):
 {feedback_items}
 
 PRD to evaluate:
 {prd}
 
-For each feedback item, check whether the PRD addresses it. Then check for PRD requirements that have no grounding in any of the feedback items.
-
-Respond in JSON only:
-{{
-  "coverage": [
-    {{
-      "id": "F1",
-      "need": "<the need>",
-      "addressed": true or false,
-      "prd_section": "<which PRD section addresses it, or null if not addressed>",
-      "note": "<any nuance — partially addressed, addressed differently than asked, etc.>"
-    }}
-  ],
-  "gaps": [
-    "<specific gap stated as: 'Users mentioned X (N users) but the PRD does not address it'>"
-  ],
-  "unsupported_requirements": [
-    "<PRD requirement or section that has no grounding in any user feedback>"
-  ],
-  "score": <integer 1-10>,
-  "summary": "<2-3 sentences: overall alignment quality, most important gap, recommendation>"
-}}"""
+For each feedback item, check whether the PRD addresses it. Then check for PRD requirements that have no grounding in any of the feedback items. Weight gaps by how many users mentioned them — a need raised by 3/3 users that's missing is more serious than one raised by 1 user."""
 
 
 def read_file(path: str) -> str:
-    return Path(path).read_text()
+    p = Path(path)
+    if not p.exists():
+        raise FileNotFoundError(f"File not found: {path}")
+    return p.read_text()
 
 
 def extract_feedback(call_notes: str) -> list[dict]:
@@ -82,16 +105,16 @@ def extract_feedback(call_notes: str) -> list[dict]:
         model=MODEL,
         max_tokens=2048,
         messages=[{"role": "user", "content": EXTRACT_PROMPT.format(call_notes=call_notes)}],
+        output_config={"format": {"type": "json_schema", "json_schema": EXTRACT_SCHEMA}},
     )
-    text = response.content[0].text
-    data = json.loads(text[text.find("{") : text.rfind("}") + 1])
-    return data["feedback_items"]
+    return json.loads(response.content[0].text)["feedback_items"]
 
 
 def evaluate_alignment(feedback_items: list[dict], prd: str) -> dict:
     response = client.messages.create(
         model=MODEL,
-        max_tokens=3000,
+        max_tokens=4000,
+        thinking={"type": "adaptive"},  # cross-document reasoning benefits from extended thinking
         messages=[
             {
                 "role": "user",
@@ -101,18 +124,22 @@ def evaluate_alignment(feedback_items: list[dict], prd: str) -> dict:
                 ),
             }
         ],
+        output_config={"format": {"type": "json_schema", "json_schema": EVALUATE_SCHEMA}},
     )
-    text = response.content[0].text
-    return json.loads(text[text.find("{") : text.rfind("}") + 1])
+    # structured output is always the last content block
+    for block in reversed(response.content):
+        if block.type == "text":
+            return json.loads(block.text)
+    raise ValueError("No text block in response")
 
 
-def format_report(feedback_items: list[dict], evaluation: dict) -> str:
+def format_report(evaluation: dict) -> str:
     score = evaluation["score"]
     score_bar = "█" * score + "░" * (10 - score)
 
     lines = [
         "# PRD Alignment Report\n",
-        f"**Score: {score}/10** [{score_bar}]\n",
+        f"**Score: {score}/10** {score_bar}\n",
         f"{evaluation['summary']}\n",
         "---\n",
         "## Feedback Coverage\n",
@@ -154,9 +181,13 @@ def main():
     )
     args = parser.parse_args()
 
-    print("Reading files...")
-    call_notes = read_file(args.feedback)
-    prd = read_file(args.prd)
+    try:
+        print("Reading files...")
+        call_notes = read_file(args.feedback)
+        prd = read_file(args.prd)
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        raise SystemExit(1)
 
     print("Extracting feedback items from call notes...")
     feedback_items = extract_feedback(call_notes)
@@ -165,7 +196,7 @@ def main():
     print("Evaluating PRD alignment...\n")
     evaluation = evaluate_alignment(feedback_items, prd)
 
-    report = format_report(feedback_items, evaluation)
+    report = format_report(evaluation)
     print(report)
 
     output_path = Path("alignment_report.md")
