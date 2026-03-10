@@ -1,0 +1,8 @@
+[project]
+name = "prd-alignment"
+version = "0.1.0"
+description = "PRD alignment evaluator — checks whether a PRD is grounded in user feedback"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.40.0",
+]
