@@ -377,7 +377,11 @@ async for message in query(
 
 Run the prototype after generating. This is not optional. Never hand off code you haven't run.
 
-Create synthetic test data first — don't wait for the founder. Generate realistic sample inputs and run against those.
+**Ask for real data before running.** Real data catches problems synthetic data won't, and gives the founder a result they can actually evaluate.
+
+> "Before I run this — do you have any real data we can test against? Even a small sample: a few call notes, a CSV export, a real PRD. If not, I'll generate synthetic data and you can swap in real data after."
+
+If they share real data, use it. If not, generate realistic synthetic data that mirrors the structure the prototype expects — don't use placeholder lorem ipsum.
 
 ```bash
 uv run <entry_point>.py [test args]
