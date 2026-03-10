@@ -1,79 +1,23 @@
 # agent-claude
 
-Claude Code skills that take you from idea to working AI prototype in one conversation.
+Claude Code skills for going from idea to working AI prototype. Runs a discovery conversation, writes hypotheses, specs a PRD, and generates a complete runnable project. Iterates with you.
 
-You describe the problem. Claude runs a discovery conversation, writes hypotheses, specs a PRD scoped to test the riskiest assumption, and generates a complete runnable project on Claude's API. The whole loop — brainstorm to working code — happens in a single session. When you talk to users and come back with feedback, it updates the hypotheses, the spec, and the code together.
+## Model
 
-## Demo: meeting prep tool in one session
+Designed for **Claude Sonnet 4.6** — the skills, prompts, and `/build` output are all tuned for it. Sonnet is the right default: fast enough to iterate in a conversation, capable enough to handle discovery, spec writing, and code generation in one session. Upgrade individual prototypes to Opus 4.6 if reasoning quality on a specific task isn't good enough.
 
-Here's what a full `/prototype` run looks like. The founder says: "I spend 30 minutes before every investor call googling the person. Can AI do that for me?"
+Web search in generated prototypes requires Sonnet 4.6 or Opus 4.6 — Haiku doesn't support it.
 
-Claude runs the brainstorm, surfaces 5 hypotheses, writes a PRD scoped to test the riskiest one ("can web search surface useful intel?"), and generates a working CLI tool:
+## Prerequisites
 
-```bash
-export ANTHROPIC_API_KEY=your-key
-uv run briefing.py "Sarah Chen" "Sequoia Capital"
-```
-
-30 seconds later:
-
-```
-# Briefing: Sarah Chen — Sequoia Capital
-
-## Person Overview
-Role, background, investment focus, notable public takes.
-
-## Fund/Company Overview
-Stage focus, recent deals, fund size.
-
-## Recent News
-3-5 bullet points from the last 6 months.
-
-## Talking Points
-3 specific conversation starters grounded in the research.
-```
-
-The full example — hypotheses, decision log, PRD, and working code — is in [`examples/meeting-prep/`](examples/meeting-prep/).
-
-## How it works
-
-### The artifact trail
-
-Every `/prototype` run produces files that persist across iterations:
-
-| Artifact | What it captures |
-|----------|-----------------|
-| `hypotheses.md` | Assumptions to test, tagged 🗣️ (ask users) or 🛠️ (build software) |
-| `decision_log.md` | Append-only history — why you built it this way |
-| `product_requirements.md` | Buildable spec, scoped to test the riskiest hypothesis |
-| Project files | Working code — `pyproject.toml`, entry point, README |
-
-Code is disposable. The hypotheses and decisions survive across iterations.
-
-### The iteration loop
-
-```
-/prototype  → first build (brainstorm → spec → code)
-/feedback   → quick iterations (update spec → update code)
-/prototype  → major rethink (full brainstorm again)
-```
-
-`/feedback` is for when the direction is right but something needs tweaking — "users said the output format is wrong" or "it crashes on edge cases." `/prototype` is for when the direction itself needs rethinking.
-
-### What Claude decides
-
-Based on the PRD, `/build` picks the simplest architecture that works:
-
-| What the PRD describes | What gets built |
-|------------------------|----------------|
-| Single task (classify, summarise, extract) | Claude API — one call |
-| Multi-step pipeline with fixed logic | Claude API + tool use |
-| Open-ended agent that makes decisions | Claude API + agentic loop |
-| Agent that needs file/web/terminal access | Agent SDK |
-
-It defaults to Sonnet 4.6 for prototypes (fast, cheap), generates a `pyproject.toml` so `uv run main.py` just works, and includes a `requirements.txt` fallback for pip users.
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed (`npm install -g @anthropic-ai/claude-code`)
+- `ANTHROPIC_API_KEY` set in your environment ([get one here](https://console.anthropic.com))
+- Python 3.11+
+- [`uv`](https://docs.astral.sh/uv/) recommended — `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
 ## Setup
+
+**1. Clone the repo**
 
 ```bash
 git clone https://github.com/lamismukta/agent-claude.git
@@ -81,64 +25,55 @@ cd agent-claude
 claude
 ```
 
-Then:
+**2. Run `/onboard`**
 
-```
-/onboard
-```
-
-This checks your prerequisites (API key, Python, uv), imports any existing context you have (product docs, user research, call recordings, existing code), and optionally wires up [Granola](https://granola.ai) for pulling user call transcripts directly.
-
-### Prerequisites
-
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed
-- `ANTHROPIC_API_KEY` set in your environment ([get one here](https://console.anthropic.com))
-- Python 3.11+
-- [`uv`](https://docs.astral.sh/uv/) recommended — `pip install uv`
+Checks prerequisites, optionally connects [Granola](https://granola.ai) or [Notion](https://notion.so) for call notes, and imports any existing docs or code you have.
 
 ## Skills
 
 | Skill | What it does |
 |-------|-------------|
-| `/prototype` | **Start here.** Full loop: brainstorm → spec → working code |
-| `/feedback` | Quick iteration after testing — updates hypotheses, spec, and code |
-| `/brainstorm` | Just the discovery conversation — produces hypotheses without building |
-| `/prd` | Just the spec — use when you already know what to build |
-| `/build` | Just the code — use when you already have a `product_requirements.md` |
-| `/onboard` | First-time setup — checks env, imports existing docs/code, optional Granola config |
+| `/sprint` | Full loop: brainstorm → spec → working code. Start here. |
+| `/brainstorm` | Discovery conversation — produces `hypotheses.md` |
+| `/prd` | Write the spec from an existing brainstorm |
+| `/build` | Generate code from an existing `product_requirements.md` |
+| `/feedback` | Iterate after testing — updates hypotheses, spec, and code together |
+| `/onboard` | First-time setup |
 
-Most people use `/prototype` to start and `/feedback` to iterate. The sub-skills exist for when you want more control.
+## How it works
 
-## What this adds over "just ask Claude to build it"
+`/sprint` produces these files in your working directory:
 
-Two things.
-
-**Product thinking first.** `/brainstorm` makes you articulate the problem, user, and riskiest assumption before writing code. The hypotheses file forces you to name what could kill the idea. The PRD becomes the persistent artifact across iterations — not throwaway chat context.
-
-**Structured iteration.** When you come back with "users said X", the update flows through hypotheses → spec → code. The decision log tracks why you built it this way. Three iterations in, you can trace every change back to evidence.
-
-Everything else — which model, streaming vs sync, tool use patterns, structured outputs — Claude Code handles that with the right docs in context. The skills don't over-specify what the API already does well.
-
-## What it builds on
-
-- [Claude API](https://platform.claude.com/docs/en/home) — Messages API, server-side web search, code execution, structured outputs
-- [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python) — for prototypes that need file, web, or terminal access
-- [`/claude-api` skill](https://www.anthropic.com/engineering/claude-code-best-practices) — Anthropic's official skill for correct API patterns. Recommend installing alongside.
-
-## Project structure
+| File | What it captures |
+|------|-----------------|
+| `hypotheses.md` | Assumptions to test, tagged 🗣️ (talk to users) or 🛠️ (build to test) |
+| `decision_log.md` | Append-only record of what changed and why |
+| `product_requirements.md` | Spec scoped to test the riskiest hypothesis |
+| Project files | `pyproject.toml`, entry point, README |
 
 ```
-agent-claude/
-├── CLAUDE.md                       ← Project context for Claude Code
-├── .claude/skills/                 ← Auto-discovered by Claude Code on clone
-│   ├── prototype/SKILL.md          ← /prototype — the main skill
-│   ├── feedback/SKILL.md           ← /feedback — quick iteration
-│   ├── brainstorm/SKILL.md         ← /brainstorm — discovery conversation
-│   ├── prd/SKILL.md                ← /prd — writes the spec
-│   ├── build/SKILL.md              ← /build — generates code
-│   └── onboard/SKILL.md            ← /onboard — first-time setup
-├── examples/meeting-prep/          ← Complete walkthrough
-└── call_notes/                     ← User interview notes
+/sprint  → first build (brainstorm → spec → code)
+/feedback   → iterate (update spec → update code)
+/sprint  → major rethink (full brainstorm again)
 ```
 
-Skills live in `.claude/skills/` — Claude Code auto-discovers them when you open a session. Clone the repo, run `claude`, and the skills are available immediately.
+`/build` generates working code using the Claude API, Agent SDK, or both — picking the simplest approach that fits the spec. Outputs a project you can run with a single command. If you have the [`/claude-api` skill](https://www.anthropic.com/engineering/claude-code-best-practices) installed, `/build` will use it to ensure correct API patterns, model selection, and tool use — it's Anthropic's official skill for building on the Claude API.
+
+## Extending this
+
+Run `/add-capability` to add new skills to your setup. Common starting points:
+
+- Connect email and calendar (Gmail, Google Calendar via MCP)
+- Add a competitor research skill
+- Write a weekly progress and learnings roundup
+- Research investors
+- Customer outreach drafts
+
+Or use `/skill-creator` to build any custom skill from scratch.
+
+## Resources
+
+- [Claude API docs](https://platform.claude.com/docs/en/home)
+- [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python)
+- [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code)
+- [`/claude-api` skill](https://www.anthropic.com/engineering/claude-code-best-practices) — Anthropic's official skill for correct API patterns

@@ -1,6 +1,6 @@
 ---
 name: build
-description: "Generate a working AI prototype from a product requirements doc (PRD). Reads product_requirements.md and produces a complete, runnable project using Claude API or Agent SDK. Use when a user has a PRD or spec and wants working code, when /brainstorm has just completed, or when someone says 'build it', 'generate the code', or 'make it work'. Also use after /prototype runs the brainstorm phase. Works alongside the /claude-api skill for correct API patterns."
+description: "Generate a working AI prototype from a product requirements doc (PRD). Reads product_requirements.md and produces a complete, runnable project using Claude API or Agent SDK. Use when a user has a PRD or spec and wants working code, when /brainstorm has just completed, or when someone says 'build it', 'generate the code', or 'make it work'. Also use after /sprint runs the brainstorm phase. Works alongside the /claude-api skill for correct API patterns."
 ---
 
 # /build — PRD → Working Prototype
@@ -11,16 +11,7 @@ Read the product requirements doc and generate a complete, runnable project that
 
 1. **Find the PRD.** Look for `product_requirements.md` in the current directory. If it doesn't exist, tell the user to run `/brainstorm` first, or ask them to describe what they want (and write a minimal PRD before building).
 
-2. **Pick the right surface.** Based on what the PRD describes, choose the simplest architecture that works:
-
-   | What the PRD describes | Build with |
-   |------------------------|-----------|
-   | Single task (classify, summarise, extract) | Claude API — one call |
-   | Multi-step pipeline with fixed logic | Claude API + tool use |
-   | Open-ended agent that makes decisions | Claude API + tool use (agentic loop) |
-   | Agent that needs file/web/terminal access | Agent SDK |
-
-   Start simple. A multi-step workflow doesn't need the Agent SDK. An agent that just calls two APIs doesn't need file system access. Only reach for heavier tools when the task genuinely requires them.
+2. **Pick the right surface.** Choose the simplest architecture that fits the PRD. Start with a single Claude API call and only add complexity when the task genuinely requires it — tool use when the model needs to take actions, an agentic loop when it needs to make decisions across multiple steps, the Agent SDK only when it needs file, web, or terminal access. If you're unsure, go simpler: a single well-prompted API call solves more than most founders expect.
 
    **Confirm before generating.** Tell the founder: "Based on the PRD, I'm going to build this as [architecture] using [model]. Here's why: [one sentence]. Sound right?" Wait for confirmation. This is fast to say and prevents wasted builds.
 
@@ -31,7 +22,18 @@ Read the product requirements doc and generate a complete, runnable project that
    - A `.env.example` with required environment variables (never include real keys)
    - Working code that runs end-to-end
 
-4. **Verify it works.** After generating, try to run or at least lint the code. Fix any import errors, missing dependencies, or obvious bugs before presenting it to the user.
+4. **Verify it works.** After generating, run the prototype yourself — don't wait to be asked. Fix any errors before presenting. Do this proactively:
+
+   - If `uv` is available: `uv run <entry_point>.py` (uv installs deps automatically)
+   - If `uv` is not available or pip fails (e.g., "externally managed environment" error): create a venv directly:
+     ```bash
+     python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+     .venv/bin/python <entry_point>.py [test args]
+     ```
+   - Fix any import errors, missing dependencies, or syntax issues before presenting.
+   - For commands that require an API key: check if `ANTHROPIC_API_KEY` is already in the environment. If set, run the full test. If not, run whatever you can without it (e.g., `check` and `help` commands), then report clearly what was tested and what still needs a real key to verify.
+
+   **Never ask the founder to paste their API key into the chat.** If testing requires a live key and it's not in the environment, tell them: "Set your API key with `export ANTHROPIC_API_KEY=sk-ant-...` in your terminal, then run [command] to test the core functionality." Do not solicit the key in conversation — it ends up in chat history.
 
 5. **Hand off with clear instructions.** After the code is generated, present the founder with everything they need:
 

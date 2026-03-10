@@ -1,13 +1,13 @@
 ---
 name: feedback
-description: "Process feedback on a prototype and update the project. Use when a founder says 'users said X', 'this didn't work', 'I tested it and...', 'change this', 'the output was wrong', or gives any feedback on a built prototype. Skips the full brainstorm — goes straight from feedback to updated hypotheses, PRD, and code. For quick iterations, not deep rethinks. Use /prototype if the direction is changing fundamentally."
+description: "Process feedback on a prototype and update the project. Use when a founder says 'users said X', 'this didn't work', 'I tested it and...', 'change this', 'the output was wrong', or gives any feedback on a built prototype. Skips the full brainstorm — goes straight from feedback to updated hypotheses, PRD, and code. For quick iterations, not deep rethinks. Use /sprint if the direction is changing fundamentally."
 ---
 
 # /feedback — Quick Iteration Loop
 
 The fast path for incorporating feedback without a full brainstorm. The founder tested the prototype or talked to users — now they want changes. Update the hypotheses, update the spec, update the code.
 
-Use this for incremental feedback. If the whole direction is changing, use `/prototype` instead — it runs the full brainstorm.
+Use this for incremental feedback. If the whole direction is changing, use `/sprint` instead — it runs the full brainstorm.
 
 ## How It Works
 
@@ -17,7 +17,7 @@ Use this for incremental feedback. If the whole direction is changing, use `/pro
    - **Hypothesis result** — "users actually don't care about X" or "the AI output was wrong" → update hypothesis status
    - **Feature tweak** — "add a section for Y" or "change the output format" → update PRD
    - **Bug or quality issue** — "it crashes when..." or "the talking points are generic" → fix code directly
-   - **Direction shift** — "actually we should build something different" → suggest `/prototype` instead
+   - **Direction shift** — "actually we should build something different" → suggest `/sprint` instead
 
 3. **Update artifacts.** Based on the feedback type:
 
@@ -60,16 +60,16 @@ Use this for incremental feedback. If the whole direction is changing, use `/pro
    - What changed in the code
    - What to test next
 
-## When to Use /feedback vs /prototype
+## When to Use /feedback vs /sprint
 
 | Situation | Use |
 |-----------|-----|
 | "The output quality is bad" | `/feedback` — fix the code |
 | "Users said they want X instead" | `/feedback` — update spec + code |
-| "Actually I want to build something completely different" | `/prototype` — full brainstorm |
-| "I talked to 5 users and everything we assumed is wrong" | `/prototype` — rethink from scratch |
+| "Actually I want to build something completely different" | `/sprint` — full brainstorm |
+| "I talked to 5 users and everything we assumed is wrong" | `/sprint` — rethink from scratch |
 | "Add a flag to change the output format" | `/feedback` — tweak code directly |
-| "I haven't built anything yet" | `/prototype` — start from the beginning |
+| "I haven't built anything yet" | `/sprint` — start from the beginning |
 
 ## What Not to Do
 

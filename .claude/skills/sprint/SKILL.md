@@ -1,9 +1,9 @@
 ---
-name: prototype
-description: "Go from idea to working AI prototype in one conversation. This is the main skill — run this. It brainstorms the idea, writes hypotheses, specs the PRD, and generates working code on Claude's API or Agent SDK. Use when a founder says 'I want to prototype something', 'help me build an AI app', 'let's build this', 'I have an idea', or anything that involves going from idea to code. Also handles iteration — 'users said X', 'update the prototype', 'I talked to users'. Sub-skills (/brainstorm, /prd, /build) exist for fine-grained control but most founders should just use /prototype."
+name: sprint
+description: "Go from idea to working AI prototype in one conversation. This is the main skill — run this. It brainstorms the idea, writes hypotheses, specs the PRD, and generates working code on Claude's API or Agent SDK. Use when a founder says 'I want to run a sprint', 'help me build an AI app', 'let's build this', 'I have an idea', or anything that involves going from idea to code. Also handles iteration — 'users said X', 'update the sprint', 'I talked to users'. Sub-skills (/brainstorm, /prd, /build) exist for fine-grained control but most founders should just use /sprint."
 ---
 
-# /prototype — Idea → Working Code
+# /sprint — Idea → Working Code
 
 The main skill. Takes a founder from idea to working AI prototype in one conversation. Runs the full loop: discovery brainstorm → hypotheses → product spec → working code.
 
@@ -15,7 +15,7 @@ Most founders should start here. The sub-skills (`/brainstorm`, `/prd`, `/build`
 
 ### First Run (New Idea)
 
-1. **Brainstorm.** Run the `/brainstorm` flow — have the discovery conversation, surface the problem, user, capabilities, and scope. This produces:
+1. **Brainstorm.** Run the `/brainstorm` flow — have the discovery conversation, surface the problem, user, capabilities, and scope. Ask **one question at a time**. Check for any context already captured by `/onboard` (existing docs, notes, or anything the founder mentioned during setup) and build on it — don't re-ask what's already known. This produces:
    - `hypotheses.md` — the assumptions to test, tagged as 🗣️ conversation or 🛠️ prototype
    - First entry in `decision_log.md` — the reasoning trail
 
@@ -86,19 +86,19 @@ Each run produces or updates these files:
 
 ## Quick Feedback Loop
 
-After the first build, most iteration happens through `/feedback` — not `/prototype` again:
+After the first build, most iteration happens through `/feedback` — not `/sprint` again:
 
 ```
-/prototype  → first build (brainstorm → spec → code)
+/sprint  → first build (brainstorm → spec → code)
 /feedback   → quick iterations (feedback → update spec → update code)
-/prototype  → major rethink (full brainstorm again)
+/sprint  → major rethink (full brainstorm again)
 ```
 
-Use `/feedback` when the direction is right but something needs tweaking. Use `/prototype` again when the direction itself needs rethinking.
+Use `/feedback` when the direction is right but something needs tweaking. Use `/sprint` again when the direction itself needs rethinking.
 
 ## Sub-Skills (For Fine-Grained Control)
 
-Most founders use `/prototype` + `/feedback`. But individual steps are available:
+Most founders use `/sprint` + `/feedback`. But individual steps are available:
 
 - **`/brainstorm`** — Just the discovery conversation. Produces hypotheses without writing a spec or code.
 - **`/prd`** — Just the spec. Use when you already have context and want to write requirements.

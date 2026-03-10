@@ -1,112 +1,193 @@
 ---
 name: onboard
-description: "Set up a new project for prototyping with Claude. Use when someone clones the repo, says 'get started', 'set up', 'onboard', or is clearly new and hasn't run any skills yet. Checks prerequisites, creates the directory structure, imports any existing context the founder already has, and gets them ready to run /brainstorm or /prototype."
+description: "Set up a new project for prototyping with Claude. Use when someone clones the repo, says 'get started', 'set up', 'onboard', or is clearly new and hasn't run any skills yet. Reads their YC application, asks where they are now, understands their codebase, sets up integrations, and gets them ready to run /sprint."
 ---
 
 # /onboard — Get Set Up
 
-Get a founder from clone to ready in under 2 minutes. Check prerequisites, create the project structure, import any existing context they already have, and point them at the right next step.
+Onboard a YC founder in under 5 minutes. Read their YC application, understand where they are now, get their codebase, set up integrations, and point them at the right next step.
 
-Most YC founders aren't starting from zero — they have call recordings, product docs, pitch decks, maybe working code. Onboard is where all of that gets pulled into the project so `/brainstorm` and `/prototype` can build on it.
+This is not a cold-start flow. Every YC founder has a YC application — that document contains everything needed to understand the company. Start there.
+
+---
 
 ## How It Works
 
-1. **Check prerequisites.**
-   - Verify `ANTHROPIC_API_KEY` is set. If not, walk them through getting one from [console.anthropic.com](https://console.anthropic.com).
-   - Check Python is available (`python3 --version`). The prototypes `/build` generates are Python by default.
-   - Check `uv` is available (`uv --version`). Recommend it for running prototypes without dependency headaches — `pip install uv` or `curl -LsSf https://astral.sh/uv/install.sh | sh`. Not required, but makes `/build` output easier to run.
+Ask questions **one at a time**. Wait for each answer before moving on.
 
-2. **Create the project structure.**
-   Create a working directory for the founder's project (or use the current directory if they already have one). Set up:
-   ```
-   call_notes/        ← User interview notes (manual or Granola)
-   existing_docs/     ← Imported product docs, pitch decks, research (only created if they have docs to import)
-   ```
-   Don't create `hypotheses.md` or `product_requirements.md` — those are outputs of `/brainstorm` and `/prd`.
+### 1. Warm welcome
 
-3. **Granola setup (optional).**
-   Ask: "Do you record user calls with Granola? If so, I can wire it up to pull transcripts automatically."
-   - If yes: write `.claude/mcp_servers.json` directly with the Granola config:
-     ```json
-     {
-       "mcpServers": {
-         "granola": {
-           "command": "npx",
-           "args": ["-y", "granola-mcp"]
-         }
-       }
-     }
-     ```
-     Then tell them: "Granola is configured. Restart Claude Code (Ctrl+C, then `claude`) to pick it up. After that, `/brainstorm` will automatically pull your latest call transcripts."
-   - If yes + they want historical calls: use `list_meetings` to show their recent calls and let them pick which ones to import. Save them to `call_notes/` with frontmatter. This seeds the brainstorm with real user data from day one.
-   - If no: skip. They can paste notes into `call_notes/` manually, or just talk through the brainstorm without notes.
-   - If `.claude/mcp_servers.json` already exists (e.g., they have other MCP servers), read it and add the `granola` entry to the existing `mcpServers` object rather than overwriting.
+Greet the founder and tell them what's about to happen:
 
-4. **Import existing context.**
-   Ask: "Do you have any existing material I should know about? Things like:"
-   - Product docs, PRDs, or pitch decks
-   - User research notes or interview transcripts
-   - Existing code or a working prototype
-   - Notion exports, Google Docs, or markdown files
+> "Welcome — I'm going to help you move faster with AI. Let's get set up.
+>
+> First thing I need: your YC application. It has the context I need to understand what you're building. Paste it here or drop the file path."
 
-   **How to handle each type:**
+Don't ask any other questions yet. Wait for the YC application.
 
-   | What they have | What to do |
-   |---------------|------------|
-   | **Product docs / PRD / pitch deck** | Save to `existing_docs/`. Read and summarise the key points — problem, user, current scope. Note gaps that `/brainstorm` should fill. |
-   | **User research / interview notes** | Save to `call_notes/` with frontmatter (who, date, context). These feed directly into `/brainstorm`. |
-   | **Existing code** | Ask where it lives. Read the codebase — entry point, dependencies, what it does. Summarise for context. Don't move or copy the code; just note the path. `/build` can work from it later. |
-   | **Notion / Google Docs** | Ask them to paste the content or export as markdown. Save to `existing_docs/`. |
-   | **Nothing yet** | That's fine — skip this step entirely. |
+If they don't have it handy, or want to try with a sample, point them to:
+> "No worries — there's a sample in `examples/yc-application.md` you can use to try the flow."
 
-   If they import docs, summarise what you learned: "From your docs, I can see you're building X for Y. Your main open question seems to be Z. Does that sound right?" This bridges into `/brainstorm` with context already loaded.
+---
 
-5. **Quick context.**
-   Ask one question: "What are you building, in one sentence?" Don't run the full brainstorm — just capture enough to make the next step feel warm. Save their answer as a note for context.
+### 2. Read the YC application
 
-   If they already imported docs in step 4, skip this — you already have context.
+Read it carefully. Extract:
+- **Problem** — what pain are they solving, for whom
+- **Solution** — what they've built or are building
+- **Traction** — what they've validated, who's using it, revenue
+- **Team** — backgrounds, why this team for this problem
+- **What they've already built** — working code, prototype, manual process
+- **Open bets** — what assumptions they haven't validated yet
 
-6. **Point to the next step.**
-   Tailor the recommendation based on what they imported:
+Then synthesise back in 3–4 sentences:
+> "Here's what I'm taking from your application: [problem in one line]. You're building [solution] for [user]. You've got [traction/what exists]. The big open question seems to be [what they haven't figured out yet]. Does that capture it?"
 
-   **If they have existing code:**
-   ```
-   You're set up. You have existing code at [path] — I've read through it.
+Wait for confirmation or correction before moving on.
 
-   /prototype  — Rethink from scratch (brainstorm → new spec → new code)
-   /prd        — Write a spec from your existing code (document what you have)
-   /feedback   — Iterate on what you've got (update spec + code together)
-   /brainstorm — Step back and test your assumptions before building more
+---
 
-   If your code works but needs direction: /brainstorm
-   If your code works and you want to iterate: /feedback
-   ```
+### 3. Three questions (one at a time)
 
-   **If they have docs but no code:**
-   ```
-   You're set up. I've read your docs — here's what I understand: [1-line summary].
+These questions update the YC app context with what's happened since it was written.
 
-   /prototype   — Go from your existing context to working code
-   /brainstorm  — Pressure-test your assumptions first (recommended)
+**Q1:** "Where are you now — what have you shipped and who's using it?"
 
-   Start with: /brainstorm
-   ```
+Wait for answer. Probe if vague: "Walk me through what exists today."
 
-   **If they're starting fresh:**
-   ```
-   You're set up. Here's what you can do:
+**Q2:** "What's changed since you wrote the application? Any pivots, surprises, things you thought were true that turned out not to be?"
 
-   /prototype   — Go straight from idea to working code
-   /brainstorm  — Think through your idea first (recommended)
+Wait for answer.
 
-   Start with: /brainstorm
-   ```
+**Q3:** "What's your biggest concern right now — the thing you most need to figure out?"
+
+Wait for answer. This is the most important question. The answer usually points directly at what to build or validate next.
+
+---
+
+### 4. Existing codebase
+
+Ask: "Do you have a codebase? Share a GitHub URL or local path."
+
+**If GitHub URL:**
+- Try to clone it: `gh repo clone <url>` (if `gh` CLI is available)
+- Or read the key files via WebFetch on the raw GitHub URLs: README, main entry point, package.json/pyproject.toml
+- Summarise: what's built, what architecture, what's missing or incomplete
+
+**If local path:**
+- Read the directory structure, entry point, dependencies
+- Summarise: what it does, what's working, what's rough
+
+**If no codebase yet:**
+- Note it. `/sprint` will build from scratch.
+
+Go deeper than a surface summary. If there's a codebase, read the main entry point. Note: "You have [X] built. It looks like [Y] is the next thing to build. Does that feel right?"
+
+---
+
+### 5. Integrations (optional)
+
+Ask: "Do you use Granola to record user calls?"
+
+**If yes:**
+Write `.claude/mcp_servers.json`:
+```json
+{
+  "mcpServers": {
+    "granola": {
+      "command": "npx",
+      "args": ["-y", "granola-mcp"]
+    }
+  }
+}
+```
+Confirm it's written. Do NOT tell them to restart yet — defer to the end.
+
+If they also use Notion for user research, add:
+```json
+{
+  "mcpServers": {
+    "granola": { "command": "npx", "args": ["-y", "granola-mcp"] },
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ntn_YOUR_TOKEN\", \"Notion-Version\": \"2022-06-28\"}"
+      }
+    }
+  }
+}
+```
+
+If `.claude/mcp_servers.json` already exists, read it and add to the existing `mcpServers` object — don't overwrite.
+
+**If no:** Skip. Move on.
+
+---
+
+### 6. Prerequisites (silent check)
+
+Run silently, report results concisely:
+
+- `echo ${ANTHROPIC_API_KEY:+set}` — check if API key is set
+- `python3 --version` — check Python
+- `uv --version` — check uv
+
+**If API key not set:**
+> "You'll need an ANTHROPIC_API_KEY to run prototypes. Get one at console.anthropic.com → API Keys. Once you have it, share it here and I'll add it to your `~/.zshrc` so it persists."
+If they share it: run `echo 'export ANTHROPIC_API_KEY=<key>' >> ~/.zshrc && source ~/.zshrc`. Confirm it's set. Don't echo the key back.
+
+**If uv not installed:**
+Install it directly: `curl -LsSf https://astral.sh/uv/install.sh | sh`. Tell them what you're doing. Don't ask.
+
+**If Python missing:** Tell them to install Python 3.11+ from python.org.
+
+---
+
+### 7. Create project structure
+
+```
+call_notes/        ← User interview notes
+existing_docs/     ← YC app + any other docs (save the YC app here)
+```
+
+Save the YC application to `existing_docs/yc-application.md` so it's available for future sessions.
+
+Don't create `hypotheses.md` or `product_requirements.md` — those are outputs of `/sprint`.
+
+---
+
+### 8. Point to the next step
+
+Tailor based on what you learned:
+
+**If they have a codebase and a clear concern:**
+> "You're set up. I've read through your code and your YC app.
+>
+> You have [X] built. Your biggest concern is [Y].
+>
+> Run `/sprint` — I'll work from what you have, not from scratch."
+
+**If they have a codebase but unclear direction:**
+> "You're set up. You have [X] built.
+>
+> Run `/brainstorm` first — let's figure out what to build next before touching the code."
+
+**If no codebase:**
+> "You're set up. No code yet — that's fine.
+>
+> Run `/sprint` — we'll go from your YC application to working code."
+
+**If integrations were configured:** Add at the very end:
+> "One last thing: restart Claude Code to pick up the [Granola/Notion] integration. Press Ctrl+C, then run `claude` again. After that, `/sprint` will pull your call transcripts automatically."
+
+---
 
 ## What Not to Do
 
-- Don't run the brainstorm. Just set up, import, and hand off.
-- Don't install heavy dependencies. The prototype is local Python — `uv` is the only nice-to-have.
-- Don't require Granola. It's an enhancement, not a prerequisite.
-- Don't require existing docs. Many founders are genuinely starting from scratch — that's fine.
-- Don't rewrite or restructure their existing docs. Save them as-is — `/brainstorm` will read them.
-- Don't over-explain. The founder is technical — check the boxes and get out of the way.
+- Don't start with prerequisites. Start with the YC application.
+- Don't ask "what are you building." You'll know after reading their YC app.
+- Don't run the brainstorm or write hypotheses. That's `/sprint`.
+- Don't ask the founder to restart Claude Code mid-conversation. Always defer to the end.
+- Don't over-explain. They're busy. Check the boxes and get out of the way.
+- Never ask for API keys in chat for testing purposes. Always use environment variables.

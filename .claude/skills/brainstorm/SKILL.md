@@ -11,14 +11,24 @@ Before your first session, read `references/user-research-canon.md` — it conta
 
 ## How It Works
 
-1. **Pull and check call notes.** If Granola MCP is configured, check for new meetings since the last saved note and pull any new transcripts into `call_notes/` with the right frontmatter. Then read all notes in `call_notes/` — they contain real user feedback that should drive the conversation. See the Call Notes section below.
+This is not a cold-start discovery flow. By the time `/brainstorm` runs, you should already have the founder's YC application in `existing_docs/yc-application.md` and answers to the three onboarding questions (where are you now / what's changed / biggest concern). Start from that context — don't re-run discovery from scratch.
 
-2. **Check for existing context.** Look for:
-   - `product_requirements.md` — if it exists, you're in iteration mode. Read it, incorporate call note insights, and ask what's changed.
-   - `existing_docs/` — if `/onboard` imported product docs, pitch decks, or research, read them. Summarise what you learned and use it to skip questions the founder has already answered. Don't re-ask what's already documented.
-   - Existing code in the working directory — if there's a `pyproject.toml`, `package.json`, or source files, the founder already has something built. Read the entry point to understand what exists.
+1. **Read everything first.** Before saying anything, read:
+   - `existing_docs/yc-application.md` — the foundation. Problem, user, solution, traction, team.
+   - `existing_docs/` — any other docs imported during onboarding
+   - `call_notes/` — all user interviews and call transcripts. Extract key insights.
+   - `hypotheses.md` — if it exists, you're in iteration mode. Read current status.
+   - `product_requirements.md` — if it exists, understand what's been specced and built.
+   - Any source files in the working directory — if there's a `pyproject.toml`, `package.json`, or entry point, read it. Understand what's built.
+   - If Granola MCP is configured, check for new meetings since the last saved note and pull transcripts into `call_notes/`.
 
-3. **Run the discovery conversation.** Ask questions one or two at a time. Follow interesting threads. The goal is to surface decisions the founder hasn't made yet. If you have existing context from step 2, start with: "I've read your [docs/code/notes]. Here's what I understand: [summary]. What's changed since then, and what are you trying to figure out?"
+2. **Synthesise before asking anything.** Open with what you know, not a question:
+
+   > "I've read your YC app and call notes. Here's what I think you're betting on: [problem + core hypothesis in 2-3 sentences]. Here's what I'd push back on: [1-2 things that seem underspecified, risky, or contradicted by the call notes]. What resonates? What's wrong?"
+
+   This is a critique, not a summary. The founder doesn't need you to reflect back what they wrote — they need you to identify what's shaky.
+
+3. **Run the discovery conversation.** Ask **one question at a time**. Wait for the answer before asking the next one. Never dump a list of questions — it feels like a form, not a conversation. Follow threads that reveal risk. The goal is to surface the assumption most likely to kill the idea if wrong.
 
 4. **Write `hypotheses.md`.** At the end of the conversation, distil the key assumptions into a hypotheses file. Each hypothesis is something that could kill the idea if wrong. Tag each one with how to test it — a user conversation, or a software prototype. See the Hypotheses section below.
 
@@ -55,9 +65,9 @@ When call notes exist, open with a summary: "I read through your call notes. Her
 
 Highlight patterns. If three people mentioned the same pain, that's a signal. If one person contradicts the rest, surface that tension.
 
-### Granola Integration
+### Integrations
 
-If [Granola](https://granola.ai) is configured as an MCP server, you can pull meeting notes directly instead of the founder copy-pasting. Run `/onboard` to set this up automatically, or add Granola to `.claude/mcp_servers.json` manually:
+**Granola:** If configured as an MCP server, use `list_meetings` and `get_meeting_transcript` to fetch recent calls and save them to `call_notes/` with the right frontmatter. Run `/onboard` to set this up, or add it to `.claude/mcp_servers.json` manually:
 
 ```json
 {
@@ -70,7 +80,21 @@ If [Granola](https://granola.ai) is configured as an MCP server, you can pull me
 }
 ```
 
-When configured, use `list_meetings` and `get_meeting_transcript` to fetch recent calls and save them to `call_notes/` with the right frontmatter.
+**Notion:** If configured as an MCP server, read the relevant pages or databases directly to pull user research and interview notes. Save anything useful to `call_notes/` with frontmatter. Run `/onboard` to set this up, or add it manually:
+
+```json
+{
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ntn_YOUR_TOKEN\", \"Notion-Version\": \"2022-06-28\"}"
+      }
+    }
+  }
+}
+```
 
 ### No Notes? No Problem.
 
@@ -176,7 +200,7 @@ Append to `decision_log.md`. Each entry is a dated session with structured secti
 
 ### Hypotheses Tested
 - H1: [assumption] → ✅ confirmed / ❌ invalidated / ⏳ untested
-  - Evidence: [one line — what call/prototype/conversation showed]
+  - Evidence: [one line — what call/sprint/conversation showed]
 
 ### Key Decisions
 - [Decision made and why. e.g., "Scoped to CLI tool, not web app — founder wants speed over polish."]

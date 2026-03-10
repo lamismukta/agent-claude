@@ -6,18 +6,20 @@ Claude Code skills that take you from idea to working AI prototype in one conver
 
 ```
 /onboard          ← check prereqs, set up project
-/prototype        ← brainstorm → spec → working code (the main skill)
+/sprint        ← brainstorm → spec → working code (the main skill)
 /feedback         ← iterate after testing ("users said X", "change the output")
+/add-capability   ← add integrations or new skills (email, calendar, competitor research, etc.)
 ```
 
 Sub-skills for fine-grained control: `/brainstorm`, `/prd`, `/build`.
+Build custom skills: `/skill-creator`.
 
 ## How It Works
 
 ```
-/prototype → discovery conversation → hypotheses.md → product_requirements.md → working code
+/sprint → discovery conversation → hypotheses.md → product_requirements.md → working code
 /feedback  → update hypotheses → update spec → update code
-/prototype → full rethink when the direction changes
+/sprint → full rethink when the direction changes
 ```
 
 Every run produces an artifact trail: `hypotheses.md` → `decision_log.md` → `product_requirements.md` → project files. The artifacts persist across iterations — code is disposable, decisions aren't.
@@ -31,7 +33,7 @@ Every run produces an artifact trail: `hypotheses.md` → `decision_log.md` → 
 
 ## Project Structure
 
-After running `/prototype`, your project will look like:
+After running `/sprint`, your project will look like:
 
 ```
 your-project/
