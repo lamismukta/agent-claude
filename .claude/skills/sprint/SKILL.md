@@ -63,12 +63,18 @@ If new call notes were pulled, surface key insights before asking anything:
 
 ## Phase 1: Discovery
 
+### Read reference material
+
+Before your first discovery conversation, read the reference docs in `references/`:
+- `references/user-research-canon.md` — Mom Test, Eric Migicovsky's 5 Questions, Paul Graham's essays on startup ideas. Internalise the principles — don't quote them at the founder.
+- `references/mvp-canon.md` — YC MVP frameworks, scoping heuristics, "Hold tightly / Hold loosely" framework. Informs how you scope the prototype in Phase 2.
+
 ### Read everything first
 
 Before the discovery conversation, read all existing context:
 - `existing_docs/yc-application.md` — problem, user, solution, traction, team
 - `existing_docs/` — any other imported docs
-- `call_notes/` — extract pain points, workarounds, surprises, verbatim quotes
+- `call_notes/` — read all notes. Extract: **pain points** (what problems?), **workarounds** (how do they solve it today?), **requests** (what did they ask for — dig into the *why*), **surprises** (anything that contradicts assumptions?), **quotes** (verbatim quotes are gold — surface the best ones)
 - `HYPOTHESES.md` — if it exists, where do things stand?
 
 ### Open with a critique, not a question
@@ -240,6 +246,13 @@ Write `projects/<name>/PRODUCT_REQUIREMENTS.md`. Scope it to test the riskiest �
 ## Phase 3: Build
 
 **Before writing any code, invoke the `/claude-api` skill.** It provides current API patterns, correct model IDs, and schema requirements. Code written without it will have wrong patterns.
+
+### Detect language
+
+Check the project directory for existing files to match the founder's preferred language:
+- `*.py`, `requirements.txt`, `pyproject.toml` → Python
+- `*.ts`, `package.json`, `tsconfig.json` → TypeScript
+- No existing files → default to Python, mention TypeScript is also supported
 
 ### Pick the architecture
 
