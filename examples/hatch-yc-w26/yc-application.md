@@ -7,7 +7,7 @@
 
 ## Founders
 
-**Priya Anand** — sole founder
+**Lamis Mukta** — sole founder
 Previously PM at QuickBooks for 3 years (SMB accounting product). Before that, operations at a 6-person accounting firm while finishing her degree — she did the books herself. Writes Python; not a software engineer but can build.
 
 No co-founder yet. Looking for a technical co-founder who's worked in fintech or accounting software.
