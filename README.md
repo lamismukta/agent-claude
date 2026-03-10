@@ -45,7 +45,7 @@ There are core msater files which each run may update:
 | `PRODUCT_REQUIREMENTS.md` | `projects/<name>/` | Spec scoped to test the riskiest hypothesis |
 | Project files | `projects/<name>/` | `pyproject.toml`, entry point, README — runs with one command |
 
-Generated prototypes use the Claude API or Agent SDK, picking the simplest approach that fits the spec. If you have the [`/claude-api` skill](https://www.anthropic.com/engineering/claude-code-best-practices) installed, it ensures correct API patterns and model selection.
+Generated prototypes use the Claude API or Agent SDK, picking the simplest approach that fits the spec. The `/claude-api` skill (built into Claude Code) ensures correct API patterns.
 
 ## Going further
 
@@ -57,13 +57,11 @@ This framework is easy to extend — ask Claude to add:
 
 ## Model
 
-Designed for **Claude Sonnet 4.6** — the skills, prompts, and generated code are all tuned for it. Sonnet is the right default: fast enough to iterate in a conversation, capable enough to handle discovery, spec writing, and code generation in one session. Upgrade individual prototypes to Opus 4.6 if reasoning quality on a specific task isn't good enough.
-
-Web search in generated prototypes requires Sonnet 4.6 or Opus 4.6 — Haiku doesn't support it.
+Works best in **Claude Code with Sonnet 4.6**. Generated prototypes pick the right model for the task — Claude decides based on the spec.
 
 ## Resources
 
 - [Claude API docs](https://platform.claude.com/docs/en/home)
 - [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python)
 - [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code)
-- [`/claude-api` skill](https://www.anthropic.com/engineering/claude-code-best-practices) — Anthropic's official skill for correct API patterns
+- `/claude-api` skill — built into Claude Code, handles correct API patterns when generating prototypes
