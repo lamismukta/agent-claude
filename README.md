@@ -1,6 +1,6 @@
 # agent-claude
 
-Claude Code skills for going from idea to working AI prototype. Runs a discovery conversation, writes hypotheses, specs a PRD, and generates a complete runnable project. Iterates with you.
+Claude Code skills for stress testing your ideas and getting you a working AI prototype. Runs a discovery conversation, writes hypotheses, specs a PRD, and generates a complete runnable project. Iterates with you.
 
 ## Prerequisites
 
@@ -23,11 +23,11 @@ Then run `/onboard` — checks prerequisites, optionally connects [Granola](http
 
 | Skill | When to use |
 |-------|-------------|
-| `/sprint` | Any time — new idea, just tested something, talked to users, want to iterate. Reads your context and figures out the right questions. |
-| `/status` | Read-only snapshot — confirmed hypotheses, what still needs validating |
+| `/sprint` | Any time — new idea, just tested something, talked to users, want to iterate. Reads your context and figures out the right questions. Translates learnings into PRDs and builds working code. |
+| `/status` | Read-only snapshot of the latest — confirmed hypotheses, what still needs validating |
 | `/onboard` | First-time setup |
 
-That's it. `/sprint` handles first builds and iteration alike. Run it whenever you have something new to work through.
+That's it. `/sprint` handles first builds and iteration alike. Run it whenever you have something new to work through - either iterating an exiting project or starting a new test.
 
 ## How it works
 
@@ -36,7 +36,7 @@ That's it. `/sprint` handles first builds and iteration alike. Run it whenever y
 - **Empty context** → runs a discovery conversation, writes hypotheses, specs a PRD, generates code
 - **Existing project** → synthesises what's changed, asks what happened, updates hypotheses + spec + code
 
-Every run produces:
+There are core msater files which each run may update:
 
 | File | Location | What it captures |
 |------|----------|-----------------|
@@ -49,9 +49,9 @@ Generated prototypes use the Claude API or Agent SDK, picking the simplest appro
 
 ## Going further
 
-Easy to extend — ask Claude to add:
+This framework is easy to extend — ask Claude to add:
 
-**Integrations:** email, calendar, CRM, Slack
+**More integrations:** email, calendar, CRM, Slack
 
 **Skills:** research competitors and investors, automate sales outreach, draft weekly progress report
 
