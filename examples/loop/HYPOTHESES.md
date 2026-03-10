@@ -20,9 +20,9 @@
 
 ## H4: LLM can evaluate PRD-to-feedback alignment and surface gaps a PM agrees are real
 - **Risk:** If the evaluator produces false positives (gaps that aren't real) or misses obvious gaps, PMs won't trust it
-- **Test:** 🛠️ prototype — **building this first**
+- **Test:** 🛠️ prototype
 - **How:** Run the evaluator on 5 PRD+call-note pairs. Show the gap report to the PM who wrote the PRD. Measure: % of flagged gaps they agree are real, % of real gaps the evaluator caught.
-- **Status:** untested — this sprint builds the prototype
+- **Status:** ❌ invalidated as a standalone prototype — feedback alone is insufficient signal. You can't build a roadmap from what users *say* without checking what they *do*. Superseded by H6.
 
 ## H5: LLM can detect ticket-to-code drift from a PR diff
 - **Risk:** Code diffs are noisy — lots of implementation detail that's irrelevant to requirements. LLM may produce too many false positives to be useful.
@@ -30,11 +30,11 @@
 - **How:** Feed 10 real (ticket, PR diff) pairs to the evaluator. Have the engineer and PM independently judge whether the PR addressed the ticket. Measure agreement with LLM verdict.
 - **Status:** untested
 
-## H6: Multi-source synthesis (call notes + usage data + support tickets) produces better PRDs than call notes alone
-- **Risk:** Adding more data sources increases complexity significantly. May not be worth it if call notes alone are sufficient.
-- **Test:** 🛠️ prototype
-- **How:** Generate PRDs from call notes only vs. call notes + Mixpanel data + support ticket themes. Have PMs rate both blind. Measure preference and specific improvements cited.
-- **Status:** untested
+## H6: Combining usage data + qualitative feedback surfaces insights neither source provides alone
+- **Risk:** The synthesis may produce obvious findings only, or add no value over reading both sources separately.
+- **Test:** 🛠️ prototype — **building this first**
+- **How:** Run the synthesizer on 5 (events, call_notes, PRD) trios. PM reviews the signal report. Measure: did they find at least one insight they wouldn't have caught from feedback alone? Do they agree the "no signal" PRD items should be deprioritised?
+- **Status:** untested — this sprint builds the prototype (`projects/signal-synthesizer/`)
 
 ## H7: An evaluator-optimizer loop can iteratively improve PRD alignment score
 - **Risk:** The optimizer may overfit to the evaluator — improving the score without making the PRD actually better. Human validation required.
