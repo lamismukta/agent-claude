@@ -83,32 +83,34 @@ This is a critique, not a summary. The founder doesn't need you to reflect what 
 
 Ask **one question at a time**. Wait for the answer. Never dump a list. Follow threads that reveal risk. The goal: surface the assumption most likely to kill the idea if wrong.
 
-**Understand the pain (past tense beats future tense):**
-- "What's the hardest part about [the thing they're trying to do]?"
-- "Walk me through the last time that happened." — forces specifics, real events
-- "Why was that hard?" — dig into root cause, keep asking why
+The founder is the **builder**, not always the user. Ask about their users — what they've observed, what users say, what they've seen break. Don't ask the founder how they feel about the product; ask what they've seen their users do.
 
-Watch for **fluff**: generic claims ("I always..."), hypotheticals ("I might..."), future-tense promises ("I would..."). Redirect: "When did that last happen? Walk me through it."
+**Understand the user's pain (past tense beats future tense):**
+- "Walk me through a specific user. What does their day look like when this problem hits?"
+- "What do your users say is the hardest part?" — what have you actually heard, not what you assume
+- "Tell me about the last time a user got stuck or complained. What happened?" — forces real events
+
+Watch for **fluff**: generic claims ("users always..."), hypotheticals ("they might..."), future-tense promises ("they would..."). Redirect: "Tell me about a specific user. When did that last happen?"
 
 **Test if the pain is real:**
-- "What have you tried to solve this?" — if nothing, the pain may not be painful enough
-- "What don't you love about those solutions?" — reveals the gap
-- "How do they solve this today? What's broken?" — listen for manual, repetitive, error-prone steps
+- "How are your users solving this today?" — manual, spreadsheet, another tool, not at all?
+- "What's broken about that?" — listen for repetitive, error-prone, slow, or embarrassing steps
+- "Have any users asked for something like this unprompted?" — strongest signal
 
-If they're already using ChatGPT manually, that's a strong signal — they just need it automated.
+If users are already doing this manually with ChatGPT, that's a strong signal — they just need it automated properly.
 
 **Define the user and scope:**
 - "Who is the ONE person who needs this most?" — role, technical ability, context
 - "How do they trigger this?" — CLI, web form, Slack bot, API call, cron job?
 - "What does the output look like?" — text, structured data, file, action taken?
-- "What's the simplest version that would be useful? What can you cut?" — push for a scope buildable in a day
+- "What's the simplest version that would actually be useful? What can you cut?" — push for a scope buildable in a day
 
 **Architecture and success:**
 - "What should the AI actually *do*?" — list specific capabilities
 - "Does it need to make decisions, or just run a fixed pipeline?" — API call vs. workflow vs. agent
 - "How much autonomy?" — human-in-the-loop is usually right for v1
-- "How will you know this works?" — concrete success criteria
-- "What would make you stop using this after the first try?" — surfaces deal-breakers early
+- "How will you know this works?" — concrete success criteria from the user's perspective
+- "What would make a user stop using this after the first try?" — surfaces deal-breakers early
 
 ### Write HYPOTHESES.md
 
@@ -229,6 +231,22 @@ Write `projects/<name>/PRODUCT_REQUIREMENTS.md`. Scope it to test the riskiest �
 
 ## Phase 3: Build
 
+### Choose where to build
+
+**Check if branch mode was set during `/onboard`** — look for a note in `existing_docs/` or the decision log indicating the founder wants to extend an existing repo.
+
+**Branch mode (extending an existing codebase):**
+```bash
+git -C <repo_path> checkout -b experiment/<project-name>
+```
+Build the prototype directly in that repo. Follow its existing conventions — imports, file structure, naming. Create new files; don't modify existing ones unless unavoidable. When done, tell the founder:
+> "The experiment is on branch `experiment/<project-name>` in `<repo>`. Run it, test it, then: merge it if it works, delete it if it doesn't. Nothing on main was touched."
+
+**Standalone mode (default):**
+Build in `projects/<name>/` as usual.
+
+---
+
 ### Pick the architecture
 
 Start with a single API call. Only add complexity when genuinely required:
@@ -250,6 +268,21 @@ projects/<name>/
 ├── <entry_point>.py       ← named after what it does (briefing.py, categorizer.py)
 └── PRODUCT_REQUIREMENTS.md
 ```
+
+**When to add a UI:** If the prototype needs interactive input, shows output that benefits from formatting, or will be demoed to users — add a simple localhost web UI. Don't use a UI for pure pipeline tools that run once and output to terminal.
+
+```
+projects/<name>/
+├── app.py                 ← Flask or Gradio entry point
+├── templates/index.html   ← minimal HTML if using Flask
+└── ...
+```
+
+- **Flask** — for simple input forms + output display. Add `flask` to pyproject.toml. `uv run app.py` starts it on `http://localhost:5000`.
+- **Gradio** — for AI demos with file upload, sliders, side-by-side comparisons. Add `gradio`. Launches automatically on `http://localhost:7860`.
+- **Streamlit** — for data-heavy outputs, charts, tables. Add `streamlit`. `uv run streamlit run app.py`.
+
+Keep it minimal — one input, one output. No auth, no persistence, no styling beyond readable.
 
 **pyproject.toml:**
 ```toml
