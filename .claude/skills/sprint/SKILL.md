@@ -264,8 +264,9 @@ Start with a single API call. Only add complexity when genuinely required:
 
 ### Generate the project
 
-Create a complete project in `projects/<name>/`:
+Create a complete project in `projects/<name>/`.
 
+**Python (default):**
 ```
 projects/<name>/
 ├── README.md              ← see template below
@@ -275,6 +276,18 @@ projects/<name>/
 ├── <entry_point>.py       ← named after what it does (briefing.py, categorizer.py)
 └── PRODUCT_REQUIREMENTS.md
 ```
+
+**TypeScript:**
+```
+projects/<name>/
+├── README.md
+├── package.json           ← dependencies
+├── tsconfig.json
+├── .env.example           ← ANTHROPIC_API_KEY=your-key-here
+├── <entry_point>.ts       ← named after what it does
+└── PRODUCT_REQUIREMENTS.md
+```
+TypeScript README should show: `npx tsx <entry_point>.ts [args]`
 
 **README.md template:**
 ```markdown
@@ -328,7 +341,7 @@ dependencies = ["anthropic"]
 - Adaptive thinking for reasoning: `thinking={"type": "adaptive"}`
 - Stream long responses: `.stream()` with `.get_final_message()`
 
-**Tool use — Tool Runner pattern:**
+**Tool use — Tool Runner pattern (Python):**
 ```python
 from anthropic import Anthropic, beta_tool
 
@@ -343,6 +356,32 @@ response = client.beta.messages.tool_runner(
     tools=[search_web],
     messages=[{"role": "user", "content": prompt}],
 )
+```
+
+**Tool use — Tool Runner pattern (TypeScript):**
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+import { betaZodTool } from "@anthropic-ai/sdk/helpers/beta/zod";
+import { z } from "zod";
+
+const client = new Anthropic();
+
+const searchWeb = betaZodTool({
+  name: "search_web",
+  description: "Search the web for information.",
+  inputSchema: z.object({ query: z.string() }),
+  run: async ({ query }) => {
+    // implementation
+    return results;
+  },
+});
+
+const response = await client.beta.messages.toolRunner({
+  model: "claude-opus-4-6",
+  max_tokens: 4096,
+  tools: [searchWeb],
+  messages: [{ role: "user", content: prompt }],
+});
 ```
 
 **Server-side tools (free with the API):**
