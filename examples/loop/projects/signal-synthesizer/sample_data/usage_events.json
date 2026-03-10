@@ -1,0 +1,86 @@
+{
+  "product": "Fieldwork",
+  "description": "B2B field operations SaaS — route planning and job management for field service teams",
+  "period_days": 30,
+  "total_users": 142,
+  "events": [
+    {
+      "event": "onboarding_started",
+      "users": 142,
+      "pct": 100,
+      "notes": "All signups"
+    },
+    {
+      "event": "onboarding_step1_profile",
+      "users": 128,
+      "pct": 90,
+      "notes": "Company profile setup"
+    },
+    {
+      "event": "onboarding_step2_team_setup",
+      "users": 89,
+      "pct": 63,
+      "notes": "Adding team members"
+    },
+    {
+      "event": "onboarding_step3_data_import",
+      "users": 31,
+      "pct": 22,
+      "notes": "Importing existing customer/job data via CSV — large drop from step 2"
+    },
+    {
+      "event": "first_job_created",
+      "users": 28,
+      "pct": 20,
+      "notes": "Creating their first job/work order"
+    },
+    {
+      "event": "route_optimizer_used",
+      "users": 94,
+      "pct": 66,
+      "notes": "Core feature — used by majority of active users"
+    },
+    {
+      "event": "mobile_app_opened",
+      "users": 67,
+      "pct": 47,
+      "notes": "Field workers using the mobile app — substantial usage not reflected in any feedback"
+    },
+    {
+      "event": "team_invite_sent",
+      "users": 11,
+      "pct": 8,
+      "notes": "Inviting colleagues — very low despite team collaboration being a major roadmap item"
+    },
+    {
+      "event": "report_export_used",
+      "users": 9,
+      "pct": 6,
+      "notes": "Exporting reports — low usage despite being frequently requested in user calls"
+    },
+    {
+      "event": "api_integration_configured",
+      "users": 3,
+      "pct": 2,
+      "notes": "Connecting external tools via API"
+    },
+    {
+      "event": "active_7d",
+      "users": 89,
+      "pct": 63,
+      "notes": "Returned within 7 days of signup"
+    },
+    {
+      "event": "active_30d",
+      "users": 97,
+      "pct": 68,
+      "notes": "Active in current 30-day period"
+    },
+    {
+      "event": "churned_90d",
+      "users": 38,
+      "pct": 27,
+      "notes": "Churned within 90 days — high for a B2B SaaS"
+    }
+  ]
+}

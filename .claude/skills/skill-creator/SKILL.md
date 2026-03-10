@@ -60,7 +60,7 @@ If SKILL.md is getting long, move detailed content into `references/` files and 
 
 **Explain the why.** Skills work better when Claude understands the reasoning, not just the rules. Instead of "ALWAYS use this format", explain why the format matters. Today's models respond well to intent.
 
-**Prefer imperative instructions.** "Read hypotheses.md before writing the spec" is clearer than "hypotheses.md should be read".
+**Prefer imperative instructions.** "Read HYPOTHESES.md before writing the spec" is clearer than "HYPOTHESES.md should be read".
 
 **Keep it lean.** Remove anything that isn't earning its place. If a section doesn't change the output, cut it.
 

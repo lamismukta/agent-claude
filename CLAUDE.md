@@ -19,7 +19,7 @@ Claude Code skills that take you from idea to working AI prototype in one conver
          → if existing: synthesises what's changed, asks what happened, updates and rebuilds
 ```
 
-Every run produces an artifact trail: `hypotheses.md` → `decision_log.md` → `product_requirements.md` → project files. Code is disposable, decisions aren't.
+Every run produces an artifact trail: `HYPOTHESES.md` → `DECISION_LOG.md` → `PRODUCT_REQUIREMENTS.md` → project files. Code is disposable, decisions aren't.
 
 ## Prerequisites
 
@@ -34,11 +34,11 @@ Every run produces an artifact trail: `hypotheses.md` → `decision_log.md` → 
 your-project/
 ├── call_notes/              ← User interview notes (manual or via Granola)
 ├── existing_docs/           ← YC app, pitch decks, imported docs
-├── hypotheses.md            ← Assumptions to test, ordered by risk
-├── decision_log.md          ← How you got here (append-only)
+├── HYPOTHESES.md            ← Assumptions to test, ordered by risk
+├── DECISION_LOG.md          ← How you got here (append-only)
 └── projects/
     └── transaction-categorizer/
-        ├── product_requirements.md
+        ├── PRODUCT_REQUIREMENTS.md
         ├── categorizer.py
         ├── pyproject.toml
         └── README.md

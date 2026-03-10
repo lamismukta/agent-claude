@@ -14,10 +14,10 @@ The only skill you need to run. Works for first builds, iteration, and major ret
 ## Step 0: Read context first
 
 Before saying anything, read:
-- `decision_log.md` — the most important signal. Does it exist? What's the latest entry? What was being built and tested?
-- `hypotheses.md` — current status of all assumptions
+- `DECISION_LOG.md` — the most important signal. Does it exist? What's the latest entry? What was being built and tested?
+- `HYPOTHESES.md` — current status of all assumptions
 - `call_notes/` — any user interviews. Note anything new since the last decision log entry.
-- `projects/` — list any existing project folders. For each, read `product_requirements.md`.
+- `projects/` — list any existing project folders. For each, read `PRODUCT_REQUIREMENTS.md`.
 - `existing_docs/yc-application.md` — foundation context
 
 **If Granola MCP is configured:** Run `list_meetings` and check for meetings since the last saved note. Fetch and save any new ones to `call_notes/` with this frontmatter:
@@ -69,7 +69,7 @@ Before the discovery conversation, read all existing context:
 - `existing_docs/yc-application.md` — problem, user, solution, traction, team
 - `existing_docs/` — any other imported docs
 - `call_notes/` — extract pain points, workarounds, surprises, verbatim quotes
-- `hypotheses.md` — if it exists, where do things stand?
+- `HYPOTHESES.md` — if it exists, where do things stand?
 
 ### Open with a critique, not a question
 
@@ -110,9 +110,9 @@ If they're already using ChatGPT manually, that's a strong signal — they just 
 - "How will you know this works?" — concrete success criteria
 - "What would make you stop using this after the first try?" — surfaces deal-breakers early
 
-### Write hypotheses.md
+### Write HYPOTHESES.md
 
-Distil the key assumptions into `hypotheses.md`. Each hypothesis is something that could kill the idea if wrong. Order by risk.
+Distil the key assumptions into `HYPOTHESES.md`. Each hypothesis is something that could kill the idea if wrong. Order by risk.
 
 ```markdown
 # Hypotheses
@@ -134,7 +134,7 @@ Tag each hypothesis:
 
 ### Write the first decision log entry
 
-Create or append to `decision_log.md`:
+Create or append to `DECISION_LOG.md`:
 
 ```markdown
 ## Session — [date]
@@ -166,7 +166,7 @@ Create or append to `decision_log.md`:
 Suggest a project folder name:
 > "I'll put everything in `projects/transaction-categorizer/`. Good?"
 
-Keep it kebab-case, descriptive of what it does. Wait for confirmation. Then append to `decision_log.md`:
+Keep it kebab-case, descriptive of what it does. Wait for confirmation. Then append to `DECISION_LOG.md`:
 ```
 ## [date] — Started projects/[name]
 Testing [hypothesis] — [one line on what this build does and why]
@@ -174,7 +174,7 @@ Testing [hypothesis] — [one line on what this build does and why]
 
 ### Write the PRD
 
-Write `projects/<name>/product_requirements.md`. Scope it to test the riskiest 🛠️ hypothesis. One page. Buildable in a day.
+Write `projects/<name>/PRODUCT_REQUIREMENTS.md`. Scope it to test the riskiest 🛠️ hypothesis. One page. Buildable in a day.
 
 **Writing principles:**
 - Specific over vague. "Extract the 5 key findings and output a markdown list" is buildable. "Summarise the document" is not.
@@ -215,7 +215,7 @@ Write `projects/<name>/product_requirements.md`. Scope it to test the riskiest �
 - **Constraints:** [privacy, rate limits, budget, etc.]
 
 ## Hypothesis Under Test
-- **Hypothesis:** [copy from hypotheses.md]
+- **Hypothesis:** [copy from HYPOTHESES.md]
 - **Confirmed if:** [what outcome proves it]
 - **Killed if:** [what outcome disproves it]
 
@@ -248,7 +248,7 @@ projects/<name>/
 ├── requirements.txt       ← fallback for pip users
 ├── .env.example           ← ANTHROPIC_API_KEY=your-key-here
 ├── <entry_point>.py       ← named after what it does (briefing.py, categorizer.py)
-└── product_requirements.md
+└── PRODUCT_REQUIREMENTS.md
 ```
 
 **pyproject.toml:**
@@ -380,13 +380,13 @@ When the founder has tested the prototype or talked to users:
 
 2. **Update hypotheses.** Mark tested ones as `✅ confirmed` or `❌ invalidated` with one line of evidence. Add new assumptions. Re-order by risk.
 
-3. **Update spec.** Edit `projects/<name>/product_requirements.md`. Mark changed sections `[UPDATED]`. Update "Hypothesis Under Test" if the riskiest assumption shifted.
+3. **Update spec.** Edit `projects/<name>/PRODUCT_REQUIREMENTS.md`. Mark changed sections `[UPDATED]`. Update "Hypothesis Under Test" if the riskiest assumption shifted.
 
 4. **Checkpoint.** "Here's what changed: [summary]. The prototype now tests [new hypothesis]. Should I rebuild?"
 
 5. **Update code.** Modify `projects/<name>/` — only what the spec changed. Don't regenerate from scratch. Verify it still runs.
 
-6. **Append to `decision_log.md`:**
+6. **Append to `DECISION_LOG.md`:**
 ```markdown
 ## Update — [date]
 
@@ -413,9 +413,9 @@ When the founder has tested the prototype or talked to users:
 |------|----------|---------|
 | `call_notes/*.md` | root | Raw interview transcripts |
 | `existing_docs/` | root | YC app, pitch deck, imported docs |
-| `hypotheses.md` | root | Company-level assumptions + test status |
-| `decision_log.md` | root | Append-only history — all projects, all iterations |
-| `product_requirements.md` | `projects/<name>/` | Spec for this specific build |
+| `HYPOTHESES.md` | root | Company-level assumptions + test status |
+| `DECISION_LOG.md` | root | Append-only history — all projects, all iterations |
+| `PRODUCT_REQUIREMENTS.md` | `projects/<name>/` | Spec for this specific build |
 | Code + `pyproject.toml` | `projects/<name>/` | Working prototype |
 
 ---

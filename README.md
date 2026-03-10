@@ -31,7 +31,7 @@ That's it. `/sprint` handles first builds and iteration alike. Run it whenever y
 
 ## How it works
 
-`/sprint` reads your project context — `decision_log.md`, `hypotheses.md`, `call_notes/` — and routes based on where you are:
+`/sprint` reads your project context — `DECISION_LOG.md`, `HYPOTHESES.md`, `call_notes/` — and routes based on where you are:
 
 - **Empty context** → runs a discovery conversation, writes hypotheses, specs a PRD, generates code
 - **Existing project** → synthesises what's changed, asks what happened, updates hypotheses + spec + code
@@ -40,9 +40,9 @@ Every run produces:
 
 | File | Location | What it captures |
 |------|----------|-----------------|
-| `hypotheses.md` | root | Assumptions ordered by risk, tagged 🗣️ (talk to users) or 🛠️ (build to test) |
-| `decision_log.md` | root | Append-only record of what changed and why |
-| `product_requirements.md` | `projects/<name>/` | Spec scoped to test the riskiest hypothesis |
+| `HYPOTHESES.md` | root | Assumptions ordered by risk, tagged 🗣️ (talk to users) or 🛠️ (build to test) |
+| `DECISION_LOG.md` | root | Append-only record of what changed and why |
+| `PRODUCT_REQUIREMENTS.md` | `projects/<name>/` | Spec scoped to test the riskiest hypothesis |
 | Project files | `projects/<name>/` | `pyproject.toml`, entry point, README — runs with one command |
 
 Generated prototypes use the Claude API or Agent SDK, picking the simplest approach that fits the spec. If you have the [`/claude-api` skill](https://www.anthropic.com/engineering/claude-code-best-practices) installed, it ensures correct API patterns and model selection.

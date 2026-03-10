@@ -158,7 +158,7 @@ existing_docs/     ← YC app + any other docs (save the YC app here)
 
 Save the YC application to `existing_docs/yc-application.md` so it's available for future sessions.
 
-Don't create `hypotheses.md` or `product_requirements.md` — those are outputs of `/sprint`.
+Don't create `HYPOTHESES.md` or `PRODUCT_REQUIREMENTS.md` — those are outputs of `/sprint`.
 
 ---
 

@@ -1,0 +1,8 @@
+[project]
+name = "signal-synthesizer"
+version = "0.1.0"
+description = "Cross-references usage data with user feedback to evaluate PRD signal quality"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.40.0",
+]

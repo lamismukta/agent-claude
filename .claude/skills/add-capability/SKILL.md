@@ -75,13 +75,13 @@ For each new skill, use `/skill-creator` to build it properly — write a SKILL.
 
 ### Weekly Roundup
 
-**What it does:** Every week, synthesises what happened — decisions made (from `decision_log.md`), hypotheses updated (from `hypotheses.md`), sprint changes, and user calls. Produces a short markdown summary suitable for a team update or personal log.
+**What it does:** Every week, synthesises what happened — decisions made (from `DECISION_LOG.md`), hypotheses updated (from `HYPOTHESES.md`), sprint changes, and user calls. Produces a short markdown summary suitable for a team update or personal log.
 
 **Trigger:** "Write my weekly roundup", "what did we ship this week", "summarise the week"
 
 **Key outputs:** What shipped, what changed in the hypotheses, what users said, what's next.
 
-**Start with:** Run `/skill-creator` to build `weekly-roundup/SKILL.md`. The skill reads `decision_log.md`, `hypotheses.md`, and `call_notes/` for the current week, then synthesises.
+**Start with:** Run `/skill-creator` to build `weekly-roundup/SKILL.md`. The skill reads `DECISION_LOG.md`, `HYPOTHESES.md`, and `call_notes/` for the current week, then synthesises.
 
 ---
 

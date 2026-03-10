@@ -1,6 +1,6 @@
 ---
 name: status
-description: "Show where you are on the current product. Reads hypotheses.md, decision_log.md, and product_requirements.md and gives a clean summary: what's been confirmed, what's still untested, and what to validate with users next. Use when a founder says 'where are we', 'what's left to validate', 'catch me up', or 'what should I be doing'."
+description: "Show where you are on the current product. Reads HYPOTHESES.md, DECISION_LOG.md, and PRODUCT_REQUIREMENTS.md and gives a clean summary: what's been confirmed, what's still untested, and what to validate with users next. Use when a founder says 'where are we', 'what's left to validate', 'catch me up', or 'what should I be doing'."
 ---
 
 # /status — Where You Are
@@ -10,9 +10,9 @@ Give the founder a fast, honest read on where the product stands. Read the artif
 ## How It Works
 
 1. **Read everything.**
-   - `hypotheses.md` — current status of each hypothesis (root level)
-   - `decision_log.md` — what's changed and why across sessions (root level)
-   - `projects/*/product_requirements.md` — what's been specced and built, for each project
+   - `HYPOTHESES.md` — current status of each hypothesis (root level)
+   - `DECISION_LOG.md` — what's changed and why across sessions (root level)
+   - `projects/*/PRODUCT_REQUIREMENTS.md` — what's been specced and built, for each project
    - Key source files in `projects/*/` — what's actually in the codebase
 
 2. **Output a clean status summary.** Use this format:
@@ -42,7 +42,7 @@ Conversations to have before the next sprint:
 
 ---
 
-3. **If nothing has been built yet** (no hypotheses.md): tell the founder what's missing and point them at `/sprint`.
+3. **If nothing has been built yet** (no HYPOTHESES.md): tell the founder what's missing and point them at `/sprint`.
 
 ## What Not to Do
 
