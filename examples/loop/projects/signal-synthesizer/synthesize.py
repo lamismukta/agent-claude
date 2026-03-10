@@ -31,11 +31,13 @@ MODEL = "claude-sonnet-4-6"  # upgrade to claude-opus-4-6 for larger datasets
 ANALYSE_SCHEMA = {
     "name": "event_analysis",
     "type": "object",
+    "additionalProperties": False,
     "properties": {
         "patterns": {
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": False,
                 "properties": {
                     "name": {"type": "string"},
                     "description": {"type": "string"},
@@ -52,11 +54,13 @@ ANALYSE_SCHEMA = {
 FEEDBACK_SCHEMA = {
     "name": "feedback_extraction",
     "type": "object",
+    "additionalProperties": False,
     "properties": {
         "pain_points": {
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": False,
                 "properties": {
                     "id": {"type": "string"},
                     "pain": {"type": "string"},
@@ -73,12 +77,14 @@ FEEDBACK_SCHEMA = {
 SYNTHESIS_SCHEMA = {
     "name": "signal_synthesis",
     "type": "object",
+    "additionalProperties": False,
     "properties": {
         "strong_signals": {
             "type": "array",
             "description": "Where usage data AND feedback agree — these are real problems worth solving",
             "items": {
                 "type": "object",
+                "additionalProperties": False,
                 "properties": {
                     "signal": {"type": "string"},
                     "data_evidence": {"type": "string"},
@@ -93,6 +99,7 @@ SYNTHESIS_SCHEMA = {
             "description": "Patterns in usage data that nobody mentioned in calls — potential blind spots",
             "items": {
                 "type": "object",
+                "additionalProperties": False,
                 "properties": {
                     "signal": {"type": "string"},
                     "data_evidence": {"type": "string"},
@@ -107,6 +114,7 @@ SYNTHESIS_SCHEMA = {
             "description": "Things users said that aren't reflected in usage data — may be vocal minority",
             "items": {
                 "type": "object",
+                "additionalProperties": False,
                 "properties": {
                     "signal": {"type": "string"},
                     "feedback_evidence": {"type": "string"},

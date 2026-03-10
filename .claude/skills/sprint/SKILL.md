@@ -346,6 +346,7 @@ response = client.messages.create(
     max_tokens=4096,
     messages=[{"role": "user", "content": prompt}],
     output_config={"format": {"type": "json_schema", "schema": your_schema}},
+    # Schema must have "additionalProperties": False on every object type
 )
 ```
 
