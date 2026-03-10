@@ -135,7 +135,12 @@ Run silently, report results concisely:
 
 **If API key not set:**
 > "You'll need an ANTHROPIC_API_KEY to run prototypes. Get one at console.anthropic.com → API Keys. Once you have it, share it here and I'll add it to your `~/.zshrc` so it persists."
-If they share it: run `echo 'export ANTHROPIC_API_KEY=<key>' >> ~/.zshrc && source ~/.zshrc`. Confirm it's set. Don't echo the key back.
+If they share it: run both commands so the key is live immediately without needing a restart:
+```bash
+echo 'export ANTHROPIC_API_KEY=<key>' >> ~/.zshrc
+export ANTHROPIC_API_KEY=<key>
+```
+Confirm it's set. Don't echo the key back into conversation.
 
 **If uv not installed:**
 Install it directly: `curl -LsSf https://astral.sh/uv/install.sh | sh`. Tell them what you're doing. Don't ask.
@@ -178,8 +183,22 @@ Tailor based on what you learned:
 >
 > Run `/sprint` — we'll go from your YC application to working code."
 
-**If integrations were configured:** Add at the very end:
-> "One last thing: restart Claude Code to pick up the [Granola/Notion] integration. Press Ctrl+C, then run `claude` again. After that, `/sprint` will pull your call transcripts automatically."
+Always end with a skills overview so the founder knows what they're working with:
+
+> Here's what you can run:
+>
+> | Skill | What it does |
+> |-------|-------------|
+> | `/sprint` | Full loop: brainstorm → spec → working code. Start here. |
+> | `/feedback` | Iterate after testing — update spec and code from user feedback |
+> | `/brainstorm` | Discovery conversation only — produces `hypotheses.md` |
+> | `/status` | Where you are — confirmed hypotheses, what still needs validating |
+> | `/build` | Generate code from an existing `product_requirements.md` |
+> | `/prd` | Write or update the spec |
+> | `/add-capability` | Connect new tools or build custom skills |
+
+**If integrations were configured:** Add after the table:
+> One last thing: restart Claude Code to pick up the [Granola/Notion] integration. Press Ctrl+C, then run `claude` again.
 
 ---
 

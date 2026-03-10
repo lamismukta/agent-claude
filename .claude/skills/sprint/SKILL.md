@@ -47,8 +47,8 @@ Most founders should start here. The sub-skills (`/brainstorm`, `/prd`, `/build`
    - [Specific thing to check, e.g., "Are the talking points specific to the person, or generic?"]
    - [Another thing, e.g., "Does it find recent news, or hallucinate?"]
 
-   ### What to test next (your homework)
-   These hypotheses need a user conversation, not code:
+   ### Validate with users
+   These hypotheses need a conversation, not code:
    - 🗣️ H1: [assumption] — ask [who] about [what]
    - 🗣️ H3: [assumption] — show [who] the output and ask [what]
 

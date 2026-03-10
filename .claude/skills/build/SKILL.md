@@ -22,18 +22,21 @@ Read the product requirements doc and generate a complete, runnable project that
    - A `.env.example` with required environment variables (never include real keys)
    - Working code that runs end-to-end
 
-4. **Verify it works.** After generating, run the prototype yourself — don't wait to be asked. Fix any errors before presenting. Do this proactively:
+4. **Verify it works.** After generating, run the prototype yourself — don't wait to be asked. This is not optional. Do it proactively, every time.
+
+   **Create synthetic test data first.** Don't wait for the founder to provide real data. Generate realistic sample inputs yourself — a CSV, a JSON file, a sample document, whatever the prototype expects — and run against that. The goal is to verify the code works and that the AI output looks sensible, not to validate with production data.
 
    - If `uv` is available: `uv run <entry_point>.py` (uv installs deps automatically)
-   - If `uv` is not available or pip fails (e.g., "externally managed environment" error): create a venv directly:
+   - If `uv` is not available or pip fails (e.g., "externally managed environment" error): create a venv:
      ```bash
      python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
      .venv/bin/python <entry_point>.py [test args]
      ```
    - Fix any import errors, missing dependencies, or syntax issues before presenting.
-   - For commands that require an API key: check if `ANTHROPIC_API_KEY` is already in the environment. If set, run the full test. If not, run whatever you can without it (e.g., `check` and `help` commands), then report clearly what was tested and what still needs a real key to verify.
+   - Test as much as possible without an API key (CLI help, input validation, file parsing). Then test the AI calls if `ANTHROPIC_API_KEY` is in the environment.
+   - Report what you tested and what the output looked like. "I ran it against a sample CSV with 5 transactions — Claude categorized 4 correctly and flagged 1 for review" is useful. "It runs" is not.
 
-   **Never ask the founder to paste their API key into the chat.** If testing requires a live key and it's not in the environment, tell them: "Set your API key with `export ANTHROPIC_API_KEY=sk-ant-...` in your terminal, then run [command] to test the core functionality." Do not solicit the key in conversation — it ends up in chat history.
+   **Never ask the founder to paste their API key into the chat.** If a live key is needed and not in the environment, tell them: "Run `export ANTHROPIC_API_KEY=sk-ant-...` in your terminal, then run [command]." Do not solicit the key in conversation.
 
 5. **Hand off with clear instructions.** After the code is generated, present the founder with everything they need:
 
