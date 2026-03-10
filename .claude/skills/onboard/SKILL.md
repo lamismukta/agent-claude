@@ -83,13 +83,7 @@ Ask: "Do you have a codebase? Share a GitHub URL or local path."
 
 Go deeper than a surface summary. If there's a codebase, read the main entry point. Note: "You have [X] built. It looks like [Y] is the next thing to build. Does that feel right?"
 
-**Ask how they want to build:**
-> "Do you want the prototype to extend this codebase, or should it be standalone — something you'd throw away if the hypothesis doesn't pan out?"
-
-- **Extend (branch mode):** Note the repo path. When `/sprint` builds, it will create a branch in that repo (`experiment/<project-name>`), build there, and hand back a branch to review, merge, or delete. Nothing touches main.
-- **Standalone:** `/sprint` builds in `projects/<name>/` as usual — self-contained, independent of the existing codebase.
-
-Save the answer. `/sprint` uses it to decide where to build.
+Note the repo path. `/sprint` will ask whether each experiment should extend this codebase or run standalone — that decision happens per-project, not upfront.
 
 ---
 

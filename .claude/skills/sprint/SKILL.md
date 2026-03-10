@@ -163,10 +163,16 @@ Create or append to `DECISION_LOG.md`:
 
 ## Phase 2: Spec
 
-### Name the project
+### Name the project and choose where to build
 
-Suggest a project folder name:
-> "I'll put everything in `projects/transaction-categorizer/`. Good?"
+Ask:
+> "Is this a standalone experiment, or an extension of your existing product?"
+
+- **Standalone** — builds in `projects/<name>/`, self-contained, disposable.
+- **Extension** — ask for the repo path if not already known. Creates a branch (`experiment/<project-name>`) in that repo and builds there. Nothing touches main. Founder reviews the diff, then merges or deletes.
+
+Suggest a project name:
+> "I'll call this `transaction-categorizer`. Good?"
 
 Keep it kebab-case, descriptive of what it does. Wait for confirmation. Then append to `DECISION_LOG.md`:
 ```
@@ -231,22 +237,6 @@ Write `projects/<name>/PRODUCT_REQUIREMENTS.md`. Scope it to test the riskiest �
 
 ## Phase 3: Build
 
-### Choose where to build
-
-**Check if branch mode was set during `/onboard`** — look for a note in `existing_docs/` or the decision log indicating the founder wants to extend an existing repo.
-
-**Branch mode (extending an existing codebase):**
-```bash
-git -C <repo_path> checkout -b experiment/<project-name>
-```
-Build the prototype directly in that repo. Follow its existing conventions — imports, file structure, naming. Create new files; don't modify existing ones unless unavoidable. When done, tell the founder:
-> "The experiment is on branch `experiment/<project-name>` in `<repo>`. Run it, test it, then: merge it if it works, delete it if it doesn't. Nothing on main was touched."
-
-**Standalone mode (default):**
-Build in `projects/<name>/` as usual.
-
----
-
 ### Pick the architecture
 
 Start with a single API call. Only add complexity when genuinely required:
@@ -269,20 +259,6 @@ projects/<name>/
 └── PRODUCT_REQUIREMENTS.md
 ```
 
-**When to add a UI:** If the prototype needs interactive input, shows output that benefits from formatting, or will be demoed to users — add a simple localhost web UI. Don't use a UI for pure pipeline tools that run once and output to terminal.
-
-```
-projects/<name>/
-├── app.py                 ← Flask or Gradio entry point
-├── templates/index.html   ← minimal HTML if using Flask
-└── ...
-```
-
-- **Flask** — for simple input forms + output display. Add `flask` to pyproject.toml. `uv run app.py` starts it on `http://localhost:5000`.
-- **Gradio** — for AI demos with file upload, sliders, side-by-side comparisons. Add `gradio`. Launches automatically on `http://localhost:7860`.
-- **Streamlit** — for data-heavy outputs, charts, tables. Add `streamlit`. `uv run streamlit run app.py`.
-
-Keep it minimal — one input, one output. No auth, no persistence, no styling beyond readable.
 
 **pyproject.toml:**
 ```toml
