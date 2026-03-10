@@ -1,113 +1,428 @@
 ---
 name: sprint
-description: "Go from idea to working AI prototype in one conversation. This is the main skill — run this. It brainstorms the idea, writes hypotheses, specs the PRD, and generates working code on Claude's API or Agent SDK. Use when a founder says 'I want to run a sprint', 'help me build an AI app', 'let's build this', 'I have an idea', or anything that involves going from idea to code. Also handles iteration — 'users said X', 'update the sprint', 'I talked to users'. Sub-skills (/brainstorm, /prd, /build) exist for fine-grained control but most founders should just use /sprint."
+description: "The main skill. Use any time — starting a new idea, testing a prototype, talking to users, or iterating on what exists. Reads the project context (decision log, hypotheses, call notes) and figures out the right questions to ask. Use when a founder says 'I want to build something', 'I have an idea', 'let's sprint', 'I tested it', 'users said X', 'I had some calls', 'what should I do next', or anything else. Sprint handles it."
 ---
 
-# /sprint — Idea → Working Code
+# /sprint
 
-The main skill. Takes a founder from idea to working AI prototype in one conversation. Runs the full loop: discovery brainstorm → hypotheses → product spec → working code.
+The only skill you need to run. Works for first builds, iteration, and major rethinks. Reads your project context — decision log, hypotheses, call notes — and figures out where you are and what to do next.
 
-Most founders should start here. The sub-skills (`/brainstorm`, `/prd`, `/build`) exist for when you want more control over individual steps.
+**The founder drives.** Present what you've got at each checkpoint and wait for confirmation before moving on.
 
-**The founder drives.** You are the co-pilot. At every stage, present what you've got and wait for confirmation before moving on. Don't run the whole pipeline silently — the checkpoints are where the best product decisions happen.
+---
 
-## How It Works
+## Step 0: Read context first
 
-### First Run (New Idea)
+Before saying anything, read:
+- `decision_log.md` — the most important signal. Does it exist? What's the latest entry? What was being built and tested?
+- `hypotheses.md` — current status of all assumptions
+- `call_notes/` — any user interviews. Note anything new since the last decision log entry.
+- `projects/` — list any existing project folders. For each, read `product_requirements.md`.
+- `existing_docs/yc-application.md` — foundation context
 
-1. **Brainstorm.** Run the `/brainstorm` flow — have the discovery conversation, surface the problem, user, capabilities, and scope. Ask **one question at a time**. Check for any context already captured by `/onboard` (existing docs, notes, or anything the founder mentioned during setup) and build on it — don't re-ask what's already known. This produces:
-   - `hypotheses.md` — the assumptions to test, tagged as 🗣️ conversation or 🛠️ prototype
-   - First entry in `decision_log.md` — the reasoning trail
-
-   **Checkpoint:** Present the hypotheses. "Here are the 5 assumptions I think could kill this idea. The riskiest one we can test with software is [H2]. Does this feel right, or am I missing something?"
-
-2. **Spec.** Run the `/prd` flow — write the product requirements doc, scoped to test the riskiest 🛠️ hypothesis.
-
-   **Checkpoint:** Present the PRD summary before building. "Here's what I'm going to build: [one-paragraph summary]. It tests [hypothesis] by [how]. The architecture is [single call / workflow / agent] using [model]. Ready to build, or should we change anything?" Cheaper to fix the spec than rewrite code.
-
-3. **Build.** Run the `/build` flow — read the PRD, pick the right architecture, generate a complete runnable project.
-
-4. **Hand off.** Give the founder everything they need to run and test it:
-
-   ```
-   ## Your prototype is ready.
-
-   ### Run it
-   [exact command, e.g.: export ANTHROPIC_API_KEY=your-key && uv run briefing.py "Sarah Chen" "Sequoia Capital"]
-
-   No uv? [fallback command with pip]
-
-   ### What it does
-   [1-2 sentences — what input it takes, what output it produces]
-
-   ### What it tests
-   [Which hypothesis this prototype is built to confirm or kill]
-
-   ### What to look for
-   - [Specific thing to check, e.g., "Are the talking points specific to the person, or generic?"]
-   - [Another thing, e.g., "Does it find recent news, or hallucinate?"]
-
-   ### Validate with users
-   These hypotheses need a conversation, not code:
-   - 🗣️ H1: [assumption] — ask [who] about [what]
-   - 🗣️ H3: [assumption] — show [who] the output and ask [what]
-
-   ### Files generated
-   [List of files with one-line descriptions]
-   ```
-
-   This is the most important step. A prototype that the founder can't run or doesn't know how to evaluate is worthless.
-
-### Iteration (Coming Back With Feedback)
-
-When `product_requirements.md` or `hypotheses.md` already exist, you're in iteration mode. The founder has talked to users, tested the prototype, or just changed their mind.
-
-1. **Update hypotheses.** Run `/brainstorm` in iteration mode — pull new Granola call notes if configured, read existing hypotheses and PRD, mark what's confirmed or killed, surface new assumptions.
-
-2. **Update spec.** Run `/prd` to update the requirements. If a hypothesis was killed, the prototype's focus may shift entirely. Mark changes with `[UPDATED]` tags. Append to `decision_log.md`.
-
-   **Checkpoint:** "Here's what changed in the spec: [summary]. The prototype now tests [new hypothesis] instead of [old one]. Should I rebuild?"
-
-3. **Update code.** Run `/build` to modify the existing project. Only change what the spec changed — don't regenerate from scratch.
-
-4. **Hand off again.** Same format as first run — exact run command, what changed, what to test.
-
-## The Artifact Trail
-
-Each run produces or updates these files:
-
-| File | Written by | Purpose |
-|------|-----------|---------|
-| `call_notes/*.md` | Granola MCP or manual | Raw interview transcripts |
-| `hypotheses.md` | Brainstorm | Current assumptions + test status |
-| `decision_log.md` | Brainstorm + PRD + Feedback | Append-only history of iterations |
-| `product_requirements.md` | PRD | Buildable spec for the prototype |
-| Project files | Build | Working code (`pyproject.toml`, entry point, etc.) |
-
-## Quick Feedback Loop
-
-After the first build, most iteration happens through `/feedback` — not `/sprint` again:
-
-```
-/sprint  → first build (brainstorm → spec → code)
-/feedback   → quick iterations (feedback → update spec → update code)
-/sprint  → major rethink (full brainstorm again)
+**If Granola MCP is configured:** Run `list_meetings` and check for meetings since the last saved note. Fetch and save any new ones to `call_notes/` with this frontmatter:
+```markdown
+---
+who: [Name, Role at Company]
+date: [YYYY-MM-DD]
+context: [User interview / Demo / Intro call, N min]
+---
 ```
 
-Use `/feedback` when the direction is right but something needs tweaking. Use `/sprint` again when the direction itself needs rethinking.
+Then route based on what you find:
 
-## Sub-Skills (For Fine-Grained Control)
+---
 
-Most founders use `/sprint` + `/feedback`. But individual steps are available:
+### No decision log, no hypotheses, no projects
 
-- **`/brainstorm`** — Just the discovery conversation. Produces hypotheses without writing a spec or code.
-- **`/prd`** — Just the spec. Use when you already have context and want to write requirements.
-- **`/build`** — Just the code. Use when you already have a `product_requirements.md`.
-- **`/feedback`** — Quick iteration. Takes feedback, updates hypotheses + spec + code without a full brainstorm.
+This is a first sprint. Run [Phase 1: Discovery](#phase-1-discovery) from scratch.
+
+Open with:
+> "Let's build something. What are you working on?"
+
+Then run the full discovery conversation below.
+
+---
+
+### Decision log exists
+
+Read the latest entry. Understand what was last built and what hypothesis it was testing. Then open with a synthesis — not a question:
+
+> "Last time we [built X / tested H2 / talked to users about Y]. [One sentence on what the evidence showed or what changed.] What's happened since?"
+
+Listen to the answer. Route based on what they say:
+
+- **"I tested it / users said X / it didn't work"** → [Iteration: incorporate feedback](#iteration-incorporate-feedback)
+- **"I want to build something new / try a different direction"** → ask if this is a new project or a full rethink, then run [Phase 1: Discovery](#phase-1-discovery)
+- **"Nothing, just continuing"** → summarise hypothesis status and ask what they want to tackle next
+
+If new call notes were pulled, surface key insights before asking anything:
+> "I also pulled [N] new meeting notes. Here's what stood out: [2-3 key insights]. Does that change anything?"
+
+---
+
+## Phase 1: Discovery
+
+### Read everything first
+
+Before the discovery conversation, read all existing context:
+- `existing_docs/yc-application.md` — problem, user, solution, traction, team
+- `existing_docs/` — any other imported docs
+- `call_notes/` — extract pain points, workarounds, surprises, verbatim quotes
+- `hypotheses.md` — if it exists, where do things stand?
+
+### Open with a critique, not a question
+
+Synthesise what you've read, then push back on what's shaky:
+
+> "Here's what I think you're betting on: [problem + core hypothesis in 2-3 sentences]. Here's what I'd push back on: [1-2 things that seem underspecified, risky, or contradicted by call notes]. What resonates? What's wrong?"
+
+This is a critique, not a summary. The founder doesn't need you to reflect what they wrote — they need you to identify what's shaky.
+
+### Discovery conversation
+
+Ask **one question at a time**. Wait for the answer. Never dump a list. Follow threads that reveal risk. The goal: surface the assumption most likely to kill the idea if wrong.
+
+**Understand the pain (past tense beats future tense):**
+- "What's the hardest part about [the thing they're trying to do]?"
+- "Walk me through the last time that happened." — forces specifics, real events
+- "Why was that hard?" — dig into root cause, keep asking why
+
+Watch for **fluff**: generic claims ("I always..."), hypotheticals ("I might..."), future-tense promises ("I would..."). Redirect: "When did that last happen? Walk me through it."
+
+**Test if the pain is real:**
+- "What have you tried to solve this?" — if nothing, the pain may not be painful enough
+- "What don't you love about those solutions?" — reveals the gap
+- "How do they solve this today? What's broken?" — listen for manual, repetitive, error-prone steps
+
+If they're already using ChatGPT manually, that's a strong signal — they just need it automated.
+
+**Define the user and scope:**
+- "Who is the ONE person who needs this most?" — role, technical ability, context
+- "How do they trigger this?" — CLI, web form, Slack bot, API call, cron job?
+- "What does the output look like?" — text, structured data, file, action taken?
+- "What's the simplest version that would be useful? What can you cut?" — push for a scope buildable in a day
+
+**Architecture and success:**
+- "What should the AI actually *do*?" — list specific capabilities
+- "Does it need to make decisions, or just run a fixed pipeline?" — API call vs. workflow vs. agent
+- "How much autonomy?" — human-in-the-loop is usually right for v1
+- "How will you know this works?" — concrete success criteria
+- "What would make you stop using this after the first try?" — surfaces deal-breakers early
+
+### Write hypotheses.md
+
+Distil the key assumptions into `hypotheses.md`. Each hypothesis is something that could kill the idea if wrong. Order by risk.
+
+```markdown
+# Hypotheses
+
+## H1: [Assumption in plain language]
+- **Risk:** [What goes wrong if this is false]
+- **Test:** 🗣️ conversation / 🛠️ prototype
+- **How:** [Specific test — who to ask, what to build, what result confirms or kills it]
+- **Status:** untested
+
+## H2: ...
+```
+
+Tag each hypothesis:
+- **🗣️ conversation** — validated by talking to users. Good for "do people have this problem?" and "would they switch?"
+- **🛠️ prototype** — needs working software to test. Good for "can the AI do this reliably?" and "is the output good enough?"
+
+**Checkpoint:** "Here are the assumptions I think could kill this idea. The riskiest one we can test with software is [H2]. Does this feel right?"
+
+### Write the first decision log entry
+
+Create or append to `decision_log.md`:
+
+```markdown
+## Session — [date]
+
+### Context
+[What triggered this session. 1-2 sentences.]
+
+### Hypotheses Tested
+- H1: [assumption] → ⏳ untested
+
+### Key Decisions
+- [Decision and why]
+
+### What Changed
+- [What was written or decided]
+
+### Open Questions
+- [Anything unresolved]
+
+---
+```
+
+---
+
+## Phase 2: Spec
+
+### Name the project
+
+Suggest a project folder name:
+> "I'll put everything in `projects/transaction-categorizer/`. Good?"
+
+Keep it kebab-case, descriptive of what it does. Wait for confirmation. Then append to `decision_log.md`:
+```
+## [date] — Started projects/[name]
+Testing [hypothesis] — [one line on what this build does and why]
+```
+
+### Write the PRD
+
+Write `projects/<name>/product_requirements.md`. Scope it to test the riskiest 🛠️ hypothesis. One page. Buildable in a day.
+
+**Writing principles:**
+- Specific over vague. "Extract the 5 key findings and output a markdown list" is buildable. "Summarise the document" is not.
+- Name the user. Not "users" — one persona with a role, context, and trigger.
+- State what's out of scope. Prevents scope creep during build.
+
+```markdown
+# Product Requirements: [Product Name]
+
+## Problem
+[1-2 sentences. What problem, for whom. Ground in real behaviour — what do they do today and why is it broken?]
+
+## Why LLM?
+- **LLM is good at:** [e.g., "interpreting unstructured text", "making judgment calls on ambiguous input"]
+- **LLM is NOT needed for:** [e.g., "storing data", "CRUD operations"]
+- **What was impossible before:** [the capability that only exists because of LLMs]
+
+## User
+- **Who:** [specific persona — role, technical ability, context]
+- **Trigger:** [how they start — CLI, web form, API call, cron job]
+- **Output:** [what they get back — text, structured data, file, action taken]
+
+## Core Capabilities
+1. [specific enough to implement]
+2. ...
+
+## Tools Required
+- [Tool] — for [what specifically]
+
+## Architecture
+- **Type:** [Single API call / Multi-step workflow / Autonomous agent]
+- **Autonomy:** [Fully autonomous / Human-in-the-loop / Suggestions only]
+- **Model:** [e.g., "claude-sonnet-4-6 — fast and cheap. Upgrade to Opus if reasoning quality matters."]
+
+## Scope
+- **In scope:** [what the prototype will do]
+- **Out of scope:** [what it won't do]
+- **Constraints:** [privacy, rate limits, budget, etc.]
+
+## Hypothesis Under Test
+- **Hypothesis:** [copy from hypotheses.md]
+- **Confirmed if:** [what outcome proves it]
+- **Killed if:** [what outcome disproves it]
+
+## Success Criteria
+- [concrete, testable]
+```
+
+**Checkpoint:** "Here's what I'm going to build: [one-paragraph summary]. It tests [hypothesis] by [how]. Architecture is [single call / workflow / agent] using [model]. Ready, or should we change anything?"
+
+---
+
+## Phase 3: Build
+
+### Pick the architecture
+
+Start with a single API call. Only add complexity when genuinely required:
+- **Single API call** — one prompt in, one response out. Solves more than expected.
+- **Tool use / multi-step** — when the model needs to take actions (web search, file reads)
+- **Agentic loop** — when it needs decisions across multiple steps
+- **Agent SDK** — only when it needs file, web, or terminal access as a full agent
+
+### Generate the project
+
+Create a complete project in `projects/<name>/`:
+
+```
+projects/<name>/
+├── README.md              ← "uv run <entry_point>.py" is the first line
+├── pyproject.toml         ← dependencies (uv installs automatically)
+├── requirements.txt       ← fallback for pip users
+├── .env.example           ← ANTHROPIC_API_KEY=your-key-here
+├── <entry_point>.py       ← named after what it does (briefing.py, categorizer.py)
+└── product_requirements.md
+```
+
+**pyproject.toml:**
+```toml
+[project]
+name = "project-name"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["anthropic"]
+```
+
+### Code guidelines
+
+**Defaults:**
+- Model: `claude-sonnet-4-6`. Note in a comment where to upgrade to `claude-opus-4-6`.
+- Adaptive thinking for reasoning: `thinking={"type": "adaptive"}`
+- Stream long responses: `.stream()` with `.get_final_message()`
+
+**Tool use — Tool Runner pattern:**
+```python
+from anthropic import Anthropic, beta_tool
+
+@beta_tool
+def search_web(query: str) -> str:
+    """Search the web for information."""
+    return results
+
+response = client.beta.messages.tool_runner(
+    model="claude-sonnet-4-6",
+    max_tokens=4096,
+    tools=[search_web],
+    messages=[{"role": "user", "content": prompt}],
+)
+```
+
+**Server-side tools (free with the API):**
+```python
+tools = [
+    {"type": "web_search_20260209", "name": "web_search"},
+    {"type": "code_execution_20260120", "name": "code_execution"},
+]
+```
+Note: web search requires Sonnet 4.6 or Opus 4.6 — Haiku doesn't support it.
+
+**Structured output:**
+```python
+response = client.messages.create(
+    model="claude-sonnet-4-6",
+    max_tokens=4096,
+    messages=[{"role": "user", "content": prompt}],
+    output_config={"format": {"type": "json_schema", "json_schema": your_schema}},
+)
+```
+
+**Agent SDK:**
+```python
+from claude_agent_sdk import query, ClaudeAgentOptions, ResultMessage
+
+async for message in query(
+    prompt="Your task here",
+    options=ClaudeAgentOptions(
+        allowed_tools=["Read", "Glob", "Grep", "WebSearch", "Bash"],
+        permission_mode="acceptEdits",
+    )
+):
+    if isinstance(message, ResultMessage):
+        print(message.result)
+```
+
+**Pitfalls to avoid:**
+- Don't use `budget_tokens` on Opus/Sonnet 4.6 — use adaptive thinking
+- Don't use `output_format` — deprecated, use `output_config: {format: {...}}`
+- Don't build a manual tool-use loop — Tool Runner exists
+- Never hardcode API keys. Never ask the founder to paste a key into chat — say: "Run `export ANTHROPIC_API_KEY=sk-ant-...` in your terminal."
+
+### Self-test before handing off
+
+Run the prototype after generating. This is not optional.
+
+Create synthetic test data first — don't wait for the founder. Generate realistic sample inputs and run against those.
+
+```bash
+uv run <entry_point>.py [test args]
+# or if uv unavailable:
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+.venv/bin/python <entry_point>.py [test args]
+```
+
+Fix errors before presenting. Report what the output looked like — "I ran it against 5 sample transactions, categorized 4 correctly, flagged 1 for review" is useful. "It runs" is not.
+
+---
+
+## Phase 4: Hand Off
+
+```
+## Your prototype is ready.
+
+### Run it
+export ANTHROPIC_API_KEY=your-key
+uv run <entry_point>.py [args]
+
+No uv? pip install -r requirements.txt && python <entry_point>.py [args]
+
+### What it does
+[1-2 sentences — input, output, what happens in between]
+
+### What it tests
+[Which hypothesis this confirms or kills]
+
+### What to look for
+- [Specific thing to evaluate]
+- [Another thing]
+
+### Validate with users
+These hypotheses need a conversation, not code:
+- 🗣️ H1: [assumption] — ask [who] about [what]
+
+### Files generated
+[List every file with a one-line description]
+```
+
+---
+
+## Iteration: Incorporate Feedback
+
+When the founder has tested the prototype or talked to users:
+
+1. **Surface the evidence.** If new call notes exist, open with what stood out. "From your recent calls: [2-3 insights]. This seems to [confirm / challenge] H2."
+
+2. **Update hypotheses.** Mark tested ones as `✅ confirmed` or `❌ invalidated` with one line of evidence. Add new assumptions. Re-order by risk.
+
+3. **Update spec.** Edit `projects/<name>/product_requirements.md`. Mark changed sections `[UPDATED]`. Update "Hypothesis Under Test" if the riskiest assumption shifted.
+
+4. **Checkpoint.** "Here's what changed: [summary]. The prototype now tests [new hypothesis]. Should I rebuild?"
+
+5. **Update code.** Modify `projects/<name>/` — only what the spec changed. Don't regenerate from scratch. Verify it still runs.
+
+6. **Append to `decision_log.md`:**
+```markdown
+## Update — [date]
+
+### What was tested
+[What the founder tested and how]
+
+### Results
+[What they learned]
+
+### Hypothesis Updates
+- H2: ❌ invalidated — [one line of evidence]
+
+### Changes Made
+[What was updated in hypotheses / spec / code]
+```
+
+7. **Hand off again** — same format, with what changed and what to test next.
+
+---
+
+## Artifact Trail
+
+| File | Location | Purpose |
+|------|----------|---------|
+| `call_notes/*.md` | root | Raw interview transcripts |
+| `existing_docs/` | root | YC app, pitch deck, imported docs |
+| `hypotheses.md` | root | Company-level assumptions + test status |
+| `decision_log.md` | root | Append-only history — all projects, all iterations |
+| `product_requirements.md` | `projects/<name>/` | Spec for this specific build |
+| Code + `pyproject.toml` | `projects/<name>/` | Working prototype |
+
+---
 
 ## Tips
 
-- **Impatient founder?** If they say "just build me a chatbot", skip the brainstorm — run `/prd` with a minimal spec from what you know, note the gaps, then `/build`. They can iterate.
-- **Clear spec already?** Skip straight to `/prd` or `/build`.
-- **Code is disposable, decisions aren't.** The hypotheses and PRD capture product decisions that survive across iterations. Code can always be regenerated.
-- **The 🗣️ hypotheses are homework.** After building, remind the founder which assumptions need a user conversation to test — the prototype can't validate everything.
+- **Impatient founder?** If they say "just build something", skip discovery — write a minimal PRD from what you know, note the gaps, build. Iterate from there.
+- **Code is disposable, decisions aren't.** Hypotheses and the PRD survive across iterations. Code can always be regenerated.
+- **Don't clone ChatGPT.** Push for what's literally impossible without AI.
+- **The 🗣️ hypotheses are homework.** After building, remind the founder which assumptions need a user conversation — the prototype can't validate everything.

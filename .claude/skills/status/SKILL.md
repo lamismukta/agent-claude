@@ -10,10 +10,10 @@ Give the founder a fast, honest read on where the product stands. Read the artif
 ## How It Works
 
 1. **Read everything.**
-   - `hypotheses.md` — current status of each hypothesis
-   - `decision_log.md` — what's changed and why across sessions
-   - `product_requirements.md` — what's been specced and built
-   - Any source files — what's actually in the codebase
+   - `hypotheses.md` — current status of each hypothesis (root level)
+   - `decision_log.md` — what's changed and why across sessions (root level)
+   - `projects/*/product_requirements.md` — what's been specced and built, for each project
+   - Key source files in `projects/*/` — what's actually in the codebase
 
 2. **Output a clean status summary.** Use this format:
 
@@ -42,9 +42,7 @@ Conversations to have before the next sprint:
 
 ---
 
-3. **Write it to `status.md`** in the working directory so it's easy to reference later. Tell the founder: "I've written this to `status.md`."
-
-4. **If nothing has been built yet** (no hypotheses.md): tell the founder what's missing and point them at `/sprint`.
+3. **If nothing has been built yet** (no hypotheses.md): tell the founder what's missing and point them at `/sprint`.
 
 ## What Not to Do
 

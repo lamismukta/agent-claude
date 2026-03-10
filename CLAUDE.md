@@ -5,54 +5,48 @@ Claude Code skills that take you from idea to working AI prototype in one conver
 ## Quick Start
 
 ```
-/onboard          ← check prereqs, set up project
-/sprint        ← brainstorm → spec → working code (the main skill)
-/feedback         ← iterate after testing ("users said X", "change the output")
-/add-capability   ← add integrations or new skills (email, calendar, competitor research, etc.)
+/onboard   ← first time setup
+/sprint    ← everything else
 ```
 
-Sub-skills for fine-grained control: `/brainstorm`, `/prd`, `/build`.
-Build custom skills: `/skill-creator`.
+`/sprint` reads your project context and figures out where you are. Run it when you have a new idea, want to build something, have talked to users, tested a prototype, or just want to know what to do next. It handles first builds and iteration alike.
 
 ## How It Works
 
 ```
-/sprint → discovery conversation → hypotheses.md → product_requirements.md → working code
-/feedback  → update hypotheses → update spec → update code
-/sprint → full rethink when the direction changes
+/sprint  → reads decision_log, hypotheses, call notes
+         → if empty: runs discovery conversation
+         → if existing: synthesises what's changed, asks what happened, updates and rebuilds
 ```
 
-Every run produces an artifact trail: `hypotheses.md` → `decision_log.md` → `product_requirements.md` → project files. The artifacts persist across iterations — code is disposable, decisions aren't.
+Every run produces an artifact trail: `hypotheses.md` → `decision_log.md` → `product_requirements.md` → project files. Code is disposable, decisions aren't.
 
 ## Prerequisites
 
 - Claude Code (`npm install -g @anthropic-ai/claude-code`)
 - `ANTHROPIC_API_KEY` set in your environment
 - Python 3.11+ (prototypes default to Python)
-- `uv` recommended (`pip install uv`) — makes running prototypes one command
+- `uv` recommended (`curl -LsSf https://astral.sh/uv/install.sh | sh`) — makes running prototypes one command
 
 ## Project Structure
-
-After running `/sprint`, your project will look like:
 
 ```
 your-project/
 ├── call_notes/              ← User interview notes (manual or via Granola)
-├── existing_docs/           ← Imported product docs, pitch decks (if any)
+├── existing_docs/           ← YC app, pitch decks, imported docs
 ├── hypotheses.md            ← Assumptions to test, ordered by risk
 ├── decision_log.md          ← How you got here (append-only)
-├── product_requirements.md  ← Buildable spec for the prototype
-├── <entry_point>.py         ← Named after what it does (e.g., briefing.py)
-├── pyproject.toml           ← Dependencies (uv run <entry_point>.py just works)
-├── requirements.txt         ← Fallback for pip users
-├── .env.example             ← Required environment variables
-└── README.md                ← One-liner to run
+└── projects/
+    └── transaction-categorizer/
+        ├── product_requirements.md
+        ├── categorizer.py
+        ├── pyproject.toml
+        └── README.md
 ```
 
 ## What This Builds On
 
 - **Claude API** — Messages API, server-side web search, code execution, structured outputs
 - **Claude Agent SDK** — for prototypes that need file/web/terminal access
-- **`/claude-api` skill** — Anthropic's official skill for correct API patterns. Recommend installing alongside.
 
-See `examples/meeting-prep/` for a complete walkthrough.
+See `examples/` for complete walkthroughs.

@@ -189,13 +189,8 @@ Always end with a skills overview so the founder knows what they're working with
 >
 > | Skill | What it does |
 > |-------|-------------|
-> | `/sprint` | Full loop: brainstorm → spec → working code. Start here. |
-> | `/feedback` | Iterate after testing — update spec and code from user feedback |
-> | `/brainstorm` | Discovery conversation only — produces `hypotheses.md` |
+> | `/sprint` | Run this any time — first build, feedback, iteration, rethink. Reads your context and figures out the right questions. |
 > | `/status` | Where you are — confirmed hypotheses, what still needs validating |
-> | `/build` | Generate code from an existing `product_requirements.md` |
-> | `/prd` | Write or update the spec |
-> | `/add-capability` | Connect new tools or build custom skills |
 
 **If integrations were configured:** Add after the table:
 > One last thing: restart Claude Code to pick up the [Granola/Notion] integration. Press Ctrl+C, then run `claude` again.
