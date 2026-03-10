@@ -239,6 +239,8 @@ Write `projects/<name>/PRODUCT_REQUIREMENTS.md`. Scope it to test the riskiest ð
 
 ## Phase 3: Build
 
+**Before writing any code, invoke the `/claude-api` skill.** It provides current API patterns, correct model IDs, and schema requirements. Code written without it will have wrong patterns.
+
 ### Pick the architecture
 
 Start with a single API call. Only add complexity when genuinely required:
