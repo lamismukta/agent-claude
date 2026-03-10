@@ -345,7 +345,7 @@ response = client.messages.create(
     model="claude-sonnet-4-6",
     max_tokens=4096,
     messages=[{"role": "user", "content": prompt}],
-    output_config={"format": {"type": "json_schema", "json_schema": your_schema}},
+    output_config={"format": {"type": "json_schema", "schema": your_schema}},
 )
 ```
 

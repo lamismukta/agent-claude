@@ -185,7 +185,7 @@ def analyse_events(events: str) -> list[dict]:
         model=MODEL,
         max_tokens=2048,
         messages=[{"role": "user", "content": ANALYSE_PROMPT.format(events=events)}],
-        output_config={"format": {"type": "json_schema", "json_schema": ANALYSE_SCHEMA}},
+        output_config={"format": {"type": "json_schema", "schema": ANALYSE_SCHEMA}},
     )
     return json.loads(response.content[0].text)["patterns"]
 
@@ -195,7 +195,7 @@ def extract_feedback(call_notes: str) -> list[dict]:
         model=MODEL,
         max_tokens=2048,
         messages=[{"role": "user", "content": FEEDBACK_PROMPT.format(call_notes=call_notes)}],
-        output_config={"format": {"type": "json_schema", "json_schema": FEEDBACK_SCHEMA}},
+        output_config={"format": {"type": "json_schema", "schema": FEEDBACK_SCHEMA}},
     )
     return json.loads(response.content[0].text)["pain_points"]
 
@@ -215,7 +215,7 @@ def synthesize(patterns: list[dict], pain_points: list[dict], prd: str) -> dict:
                 ),
             }
         ],
-        output_config={"format": {"type": "json_schema", "json_schema": SYNTHESIS_SCHEMA}},
+        output_config={"format": {"type": "json_schema", "schema": SYNTHESIS_SCHEMA}},
     )
     for block in reversed(response.content):
         if block.type == "text":
