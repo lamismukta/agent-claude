@@ -2,12 +2,6 @@
 
 Claude Code skills for going from idea to working AI prototype. Runs a discovery conversation, writes hypotheses, specs a PRD, and generates a complete runnable project. Iterates with you.
 
-## Model
-
-Designed for **Claude Sonnet 4.6** — the skills, prompts, and generated code are all tuned for it. Sonnet is the right default: fast enough to iterate in a conversation, capable enough to handle discovery, spec writing, and code generation in one session. Upgrade individual prototypes to Opus 4.6 if reasoning quality on a specific task isn't good enough.
-
-Web search in generated prototypes requires Sonnet 4.6 or Opus 4.6 — Haiku doesn't support it.
-
 ## Prerequisites
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed (`npm install -g @anthropic-ai/claude-code`)
@@ -53,11 +47,11 @@ Every run produces:
 
 Generated prototypes use the Claude API or Agent SDK, picking the simplest approach that fits the spec. If you have the [`/claude-api` skill](https://www.anthropic.com/engineering/claude-code-best-practices) installed, it ensures correct API patterns and model selection.
 
-## Going further
+## Model
 
-Two optional skills for extending what Claude can do for you:
-- `/add-capability` — connect new tools or build new skills (email, calendar, competitor research, weekly roundups)
-- `/skill-creator` — build any custom skill from scratch
+Designed for **Claude Sonnet 4.6** — the skills, prompts, and generated code are all tuned for it. Sonnet is the right default: fast enough to iterate in a conversation, capable enough to handle discovery, spec writing, and code generation in one session. Upgrade individual prototypes to Opus 4.6 if reasoning quality on a specific task isn't good enough.
+
+Web search in generated prototypes requires Sonnet 4.6 or Opus 4.6 — Haiku doesn't support it.
 
 ## Resources
 
