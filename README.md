@@ -53,9 +53,11 @@ Every run produces:
 
 Generated prototypes use the Claude API or Agent SDK, picking the simplest approach that fits the spec. If you have the [`/claude-api` skill](https://www.anthropic.com/engineering/claude-code-best-practices) installed, it ensures correct API patterns and model selection.
 
-## Extending this
+## Going further
 
-Use `/add-capability` to connect new tools or build custom skills — email, calendar, competitor research, weekly roundups. Or use `/skill-creator` to build anything from scratch.
+Two optional skills for extending what Claude can do for you:
+- `/add-capability` — connect new tools or build new skills (email, calendar, competitor research, weekly roundups)
+- `/skill-creator` — build any custom skill from scratch
 
 ## Resources
 

@@ -176,7 +176,7 @@ Tailor based on what you learned:
 **If they have a codebase but unclear direction:**
 > "You're set up. You have [X] built.
 >
-> Run `/brainstorm` first — let's figure out what to build next before touching the code."
+> Run `/sprint` — it'll read what you have and help you figure out what to build next."
 
 **If no codebase:**
 > "You're set up. No code yet — that's fine.
