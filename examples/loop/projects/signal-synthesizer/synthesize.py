@@ -29,7 +29,6 @@ MODEL = "claude-sonnet-4-6"  # upgrade to claude-opus-4-6 for larger datasets
 # --- Schemas ---
 
 ANALYSE_SCHEMA = {
-    "name": "event_analysis",
     "type": "object",
     "additionalProperties": False,
     "properties": {
@@ -52,7 +51,6 @@ ANALYSE_SCHEMA = {
 }
 
 FEEDBACK_SCHEMA = {
-    "name": "feedback_extraction",
     "type": "object",
     "additionalProperties": False,
     "properties": {
@@ -75,7 +73,6 @@ FEEDBACK_SCHEMA = {
 }
 
 SYNTHESIS_SCHEMA = {
-    "name": "signal_synthesis",
     "type": "object",
     "additionalProperties": False,
     "properties": {
