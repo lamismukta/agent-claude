@@ -206,7 +206,7 @@ def extract_feedback(call_notes: str) -> list[dict]:
 def synthesize(patterns: list[dict], pain_points: list[dict], prd: str) -> dict:
     response = client.messages.create(
         model=MODEL,
-        max_tokens=4000,
+        max_tokens=16000,
         thinking={"type": "adaptive"},  # cross-source reasoning benefits from extended thinking
         messages=[
             {
