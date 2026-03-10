@@ -217,7 +217,7 @@ Write `projects/<name>/PRODUCT_REQUIREMENTS.md`. Scope it to test the riskiest �
 ## Architecture
 - **Type:** [Single API call / Multi-step workflow / Autonomous agent]
 - **Autonomy:** [Fully autonomous / Human-in-the-loop / Suggestions only]
-- **Model:** [e.g., "claude-sonnet-4-6 — fast and cheap. Upgrade to Opus if reasoning quality matters."]
+- **Model:** [e.g., "claude-opus-4-6 — default. Downgrade to Sonnet if speed or cost becomes a constraint."]
 
 ## Scope
 - **In scope:** [what the prototype will do]
@@ -309,7 +309,7 @@ dependencies = ["anthropic"]
 ### Code guidelines
 
 **Defaults:**
-- Model: `claude-sonnet-4-6`. Note in a comment where to upgrade to `claude-opus-4-6`.
+- Model: `claude-opus-4-6`. Downgrade to `claude-sonnet-4-6` only if the founder explicitly asks for speed or lower cost.
 - Adaptive thinking for reasoning: `thinking={"type": "adaptive"}`
 - Stream long responses: `.stream()` with `.get_final_message()`
 
@@ -323,7 +323,7 @@ def search_web(query: str) -> str:
     return results
 
 response = client.beta.messages.tool_runner(
-    model="claude-sonnet-4-6",
+    model="claude-opus-4-6",
     max_tokens=4096,
     tools=[search_web],
     messages=[{"role": "user", "content": prompt}],
@@ -342,7 +342,7 @@ Note: web search requires Sonnet 4.6 or Opus 4.6 — Haiku doesn't support it.
 **Structured output:**
 ```python
 response = client.messages.create(
-    model="claude-sonnet-4-6",
+    model="claude-opus-4-6",
     max_tokens=4096,
     messages=[{"role": "user", "content": prompt}],
     output_config={"format": {"type": "json_schema", "schema": your_schema}},
@@ -373,7 +373,7 @@ async for message in query(
 
 ### Self-test before handing off
 
-Run the prototype after generating. This is not optional.
+Run the prototype after generating. This is not optional. Never hand off code you haven't run.
 
 Create synthetic test data first — don't wait for the founder. Generate realistic sample inputs and run against those.
 
@@ -384,7 +384,13 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python <entry_point>.py [test args]
 ```
 
-Fix errors before presenting. Report what the output looked like — "I ran it against 5 sample transactions, categorized 4 correctly, flagged 1 for review" is useful. "It runs" is not.
+**Common failures to catch before handing off:**
+- `400 invalid_request_error` — schema issue. Check: `additionalProperties: false` on every object, no `minimum`/`maximum` on integers, no `name` field on the schema root, `schema` not `json_schema` as the key.
+- `401` — API key not set. Remind the founder: `export ANTHROPIC_API_KEY=your-key`.
+- `ImportError` — missing dependency. Add to `pyproject.toml` and re-run.
+- Output looks wrong or empty — the model ran but produced bad output. Adjust the prompt, not the schema.
+
+Fix every error before presenting. Report what the output looked like — "I ran it against the sample data, the signal report correctly flagged team collaboration as unsupported" is useful. "It runs" is not.
 
 ---
 

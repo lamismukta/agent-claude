@@ -23,7 +23,7 @@ from pathlib import Path
 import anthropic
 
 client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"  # upgrade to claude-opus-4-6 for larger datasets
+MODEL = "claude-opus-4-6"
 
 
 # --- Schemas ---
@@ -220,10 +220,11 @@ def synthesize(patterns: list[dict], pain_points: list[dict], prd: str) -> dict:
         ],
         output_config={"format": {"type": "json_schema", "schema": SYNTHESIS_SCHEMA}},
     )
-    for block in reversed(response.content):
+    for block in response.content:
         if block.type == "text":
             return json.loads(block.text)
-    raise ValueError("No text block in response")
+    # Debug: show what came back
+    raise ValueError(f"No text block in response. Blocks received: {[b.type for b in response.content]}")
 
 
 # --- Formatting ---
