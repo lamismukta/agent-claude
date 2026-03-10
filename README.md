@@ -47,6 +47,14 @@ Every run produces:
 
 Generated prototypes use the Claude API or Agent SDK, picking the simplest approach that fits the spec. If you have the [`/claude-api` skill](https://www.anthropic.com/engineering/claude-code-best-practices) installed, it ensures correct API patterns and model selection.
 
+## Going further
+
+Easy to extend — ask Claude to add:
+
+**Integrations:** email, calendar, CRM, Slack
+
+**Skills:** research competitors and investors, automate sales outreach, draft weekly progress report
+
 ## Model
 
 Designed for **Claude Sonnet 4.6** — the skills, prompts, and generated code are all tuned for it. Sonnet is the right default: fast enough to iterate in a conversation, capable enough to handle discovery, spec writing, and code generation in one session. Upgrade individual prototypes to Opus 4.6 if reasoning quality on a specific task isn't good enough.
