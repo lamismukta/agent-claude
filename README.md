@@ -17,39 +17,68 @@ cd agent-claude
 claude
 ```
 
-Then run `/onboard` — checks prerequisites, optionally connects [Granola](https://granola.ai) or [Notion](https://notion.so) for call notes, and imports any existing docs or code.
+Then run `/onboard`.
 
 ## Skills
 
-| Skill | When to use |
-|-------|-------------|
-| `/sprint` | Any time — new idea, just tested something, talked to users, want to iterate. Reads your context and figures out the right questions. Translates learnings into PRDs and builds working code. |
-| `/status` | Read-only snapshot of the latest — confirmed hypotheses, what still needs validating |
-| `/onboard` | First-time setup |
+### `/onboard` — get set up
 
-That's it. `/sprint` handles first builds and iteration alike. Run it whenever you have something new to work through - either iterating an exiting project or starting a new test.
+Run once when you start. Gets Claude up to speed on your company and sets up the tools it needs.
 
-## How it works
+- **Reads your YC application** — understands your problem, solution, traction, and open questions without you having to explain from scratch
+- **Asks what's changed** — three targeted questions to capture what's happened since you wrote the app: what you've shipped, what surprised you, what you're most worried about
+- **Reads your codebase** — give it a GitHub URL or local path; it summarises what's built, what's missing, and what to work from
+- **Sets up integrations** — connects [Granola](https://granola.ai) for call recordings and [Notion](https://notion.so) for research notes via MCP; easy to extend with other tools
+- **Checks prerequisites** — API key, Python, uv; installs what's missing
 
-`/sprint` reads your project context — `DECISION_LOG.md`, `HYPOTHESES.md`, `call_notes/` — and routes based on where you are:
+---
 
-- **Empty context** → runs a discovery conversation, writes hypotheses, specs a PRD, generates code
-- **Existing project** → synthesises what's changed, asks what happened, updates hypotheses + spec + code
+### `/sprint` — build and iterate
 
-There are core msater files which each run may update:
+The main skill. Run it any time — new idea, just talked to users, just tested something, want to rethink direction. It reads your context and figures out the right questions.
 
-| File | Location | What it captures |
-|------|----------|-----------------|
-| `HYPOTHESES.md` | root | Assumptions ordered by risk, tagged 🗣️ (talk to users) or 🛠️ (build to test) |
-| `DECISION_LOG.md` | root | Append-only record of what changed and why |
-| `PRODUCT_REQUIREMENTS.md` | `projects/<name>/` | Spec scoped to test the riskiest hypothesis |
-| Project files | `projects/<name>/` | `pyproject.toml`, entry point, README — runs with one command |
+**First run (no existing project):**
+- Interviews you using YC-style questions to surface your riskiest assumptions
+- Analyses any call notes or user data you have — finds patterns, surfaces what users are actually saying
+- Writes `HYPOTHESES.md` — a prioritised list of your assumptions, each tagged with how to test it: 🗣️ talk to users, or 🛠️ build to test
+- Scopes the riskiest hypothesis into a buildable experiment in `projects/<name>/`
+- Generates a complete runnable prototype — Python, one command to run
+- Logs everything in `DECISION_LOG.md` — what you decided and why
 
-Generated prototypes use the Claude API or Agent SDK, picking the simplest approach that fits the spec. The `/claude-api` skill (built into Claude Code) ensures correct API patterns.
+**Subsequent runs (existing project):**
+- Asks what happened since last time — feedback, surprises, what broke
+- Updates hypotheses (confirmed ✅, invalidated ❌, or refined)
+- Scopes the next experiment based on what's still untested
+- Appends to the decision log — never overwrites, always accumulates
+
+---
+
+### `/status` — where you are
+
+Read-only snapshot. Useful before a call or when you've been heads-down and want to resurface.
+
+- Which hypotheses are confirmed, which are still untested, which were invalidated
+- What to validate with users before the next sprint
+- What to build next
+
+---
+
+## Artifact trail
+
+Every sprint produces or updates:
+
+| File | What it is |
+|------|-----------|
+| `HYPOTHESES.md` | Your assumptions, ordered by risk. Each one is tagged 🗣️ (validate in conversation) or 🛠️ (build an experiment). Updated every sprint. |
+| `DECISION_LOG.md` | Append-only record of what changed and why. Captures pivots, invalidated bets, and what you learned. Never overwritten. |
+| `projects/<name>/PRODUCT_REQUIREMENTS.md` | Spec for one experiment — scoped to test a single hypothesis. |
+| `projects/<name>/` | Runnable code: entry point, `pyproject.toml`, README. `uv run <entrypoint>.py` and it works. |
+
+Code is disposable. The artifact trail isn't — it's your decision history.
 
 ## Going further
 
-This framework is easy to extend — ask Claude to add:
+Easy to extend — ask Claude to add:
 
 **More integrations:** email, calendar, CRM, Slack
 
@@ -64,4 +93,3 @@ Works best in **Claude Code with Sonnet 4.6**. Generated prototypes pick the rig
 - [Claude API docs](https://platform.claude.com/docs/en/home)
 - [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python)
 - [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code)
-- `/claude-api` skill — built into Claude Code, handles correct API patterns when generating prototypes
