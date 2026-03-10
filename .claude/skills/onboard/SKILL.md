@@ -26,7 +26,7 @@ Greet the founder and tell them what's about to happen:
 Don't ask any other questions yet. Wait for the YC application.
 
 If they don't have it handy, or want to try with a sample, point them to:
-> "No worries — there's a sample in `examples/yc-application.md` you can use to try the flow."
+> "No worries — there's a sample in `examples/loop/existing_docs/yc-application.md` you can use to try the flow."
 
 ---
 

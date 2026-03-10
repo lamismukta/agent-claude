@@ -52,7 +52,7 @@ Read the latest entry. Understand what was last built and what hypothesis it was
 
 Listen to the answer. Route based on what they say:
 
-- **"I tested it / users said X / it didn't work"** → [Iteration: incorporate feedback](#iteration-incorporate-feedback)
+- **"I tested it / users said X / it didn't work"** → ask "What mattered most — what worked, what didn't?" then → [Iteration: incorporate feedback](#iteration-incorporate-feedback)
 - **"I want to build something new / try a different direction"** → ask if this is a new project or a full rethink, then run [Phase 1: Discovery](#phase-1-discovery)
 - **"Nothing, just continuing"** → summarise hypothesis status and ask what they want to tackle next
 
