@@ -253,13 +253,48 @@ Create a complete project in `projects/<name>/`:
 
 ```
 projects/<name>/
-├── README.md              ← "uv run <entry_point>.py" is the first line
+├── README.md              ← see template below
 ├── pyproject.toml         ← dependencies (uv installs automatically)
 ├── requirements.txt       ← fallback for pip users
 ├── .env.example           ← ANTHROPIC_API_KEY=your-key-here
 ├── <entry_point>.py       ← named after what it does (briefing.py, categorizer.py)
 └── PRODUCT_REQUIREMENTS.md
 ```
+
+**README.md template:**
+```markdown
+# <Project Name>
+
+<One sentence: what it does and what it tests.>
+
+**Type:** Standalone experiment / Extension of <repo> ([branch](link))
+**Hypothesis:** H<N> — <assumption in plain language>
+**Confirmed if:** <what outcome proves it>
+
+## Quick Start
+
+​```bash
+export ANTHROPIC_API_KEY=your-key
+uv run <entry_point>.py
+​```
+
+No `uv`? `pip install -r requirements.txt && python <entry_point>.py`
+
+## What It Does
+
+<2-3 sentences on input → process → output.>
+
+## What to Look For
+
+- <Specific thing to evaluate when testing>
+- <Another signal to watch>
+
+## How It Works
+
+<Brief explanation of architecture — single call / pipeline / agent.>
+```
+
+For branch mode, the branch link should point to the actual branch in the founder's repo. For standalone, omit the link.
 
 
 **pyproject.toml:**
