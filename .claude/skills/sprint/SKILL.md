@@ -169,7 +169,9 @@ Ask:
 > "Is this a standalone experiment, or an extension of your existing product?"
 
 - **Standalone** — builds in `projects/<name>/`, self-contained, disposable.
-- **Extension** — ask for the repo path if not already known. Creates a branch (`experiment/<project-name>`) in that repo and builds there. Nothing touches main. Founder reviews the diff, then merges or deletes.
+- **Extension** — ask for the repo path if not already known. Creates a branch (`experiment/<project-name>`) in that repo and builds there.
+
+**Important:** For extension mode, never write a single line of code in the founder's repo until the PRD is approved. Present the spec, wait for explicit sign-off, then create the branch and build. Nothing touches main at any point — the founder reviews the diff and decides whether to merge or delete.
 
 Suggest a project name:
 > "I'll call this `transaction-categorizer`. Good?"

@@ -45,6 +45,10 @@ The main skill. Run it any time — new idea, just talked to users, just tested 
 - Generates a complete runnable prototype — Python, one command to run
 - Logs everything in `DECISION_LOG.md` — what you decided and why
 
+Each experiment runs in one of two modes, chosen per sprint:
+- **Standalone** — self-contained project in `projects/<name>/`, independent of any existing codebase. Build it, test it, throw it away if it doesn't work.
+- **Branch** — creates an `experiment/<name>` branch in your existing repo and builds there. Nothing touches main. No code is written until the PRD is approved. You review the diff, then merge or delete.
+
 **Subsequent runs (existing project):**
 - Asks what happened since last time — feedback, surprises, what broke
 - Updates hypotheses (confirmed ✅, invalidated ❌, or refined)
