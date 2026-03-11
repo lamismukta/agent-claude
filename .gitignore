@@ -24,3 +24,5 @@ dist/
 .vscode/
 .idea/
 examples/hatch/
+examples/bridge/
+.mcp.json

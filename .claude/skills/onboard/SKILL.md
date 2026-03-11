@@ -118,7 +118,7 @@ Note the repo path. `/sprint` will ask whether each experiment should extend thi
 Ask: "Do you use Granola to record user calls? Skip if not."
 
 **If yes:**
-Write `.claude/mcp_servers.json`:
+Write `.mcp.json` in the project root (this is gitignored — each user creates their own):
 ```json
 {
   "mcpServers": {
@@ -130,7 +130,7 @@ Write `.claude/mcp_servers.json`:
 }
 ```
 
-If `.claude/mcp_servers.json` already exists, read it and add to the existing `mcpServers` object — don't overwrite.
+If `.mcp.json` already exists, read it and add to the existing `mcpServers` object — don't overwrite.
 
 **Then pull existing notes.** After configuring Granola, immediately pull recent meeting notes into `call_notes/`. Run `list_meetings` and fetch any that look like user interviews, demos, or relevant calls. Save each as `call_notes/YYYY-MM-DD-<short-description>.md` with frontmatter:
 ```markdown
@@ -151,20 +151,23 @@ If they also use Notion for user research, ask:
 > "Do you also use Notion for user research? I can connect that too — skip if not."
 
 If yes, they'll need an internal integration token:
-> "Go to https://www.notion.so/profile/integrations/internal — create an internal integration, copy the token, and share it here."
+> "Go to https://www.notion.so/my-integrations — create an internal integration, copy the token, and share it here."
 
-Then add to `.claude/mcp_servers.json`:
+Then add to `.mcp.json` (merge with existing `mcpServers` if the file already exists):
 ```json
 {
   "notion": {
     "command": "npx",
     "args": ["-y", "@notionhq/notion-mcp-server"],
     "env": {
-      "NOTION_TOKEN": "ntn_THEIR_TOKEN"
+      "OPENAPI_MCP_HEADERS": "{\"Authorization\":\"Bearer ntn_THEIR_TOKEN\",\"Notion-Version\":\"2022-06-28\"}"
     }
   }
 }
 ```
+
+After configuring, remind them:
+> "One more thing — in Notion, go to each page you want me to access → **...** → **Connections** → add your integration. I can only see pages that are explicitly shared with the integration."
 
 **If no Granola / skip:**
 > "No problem. If you have any user interview notes, drop them in `call_notes/` — txt, md, or paste them in. `/sprint` will pick them up."
