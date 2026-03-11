@@ -12,8 +12,8 @@ Claude Code skills for stress testing your ideas and getting you a working AI pr
 ## Setup
 
 ```bash
-git clone https://github.com/lamismukta/agent-claude.git
-cd agent-claude
+git clone https://github.com/lamismukta/yclaude.git
+cd yclaude
 claude
 ```
 
