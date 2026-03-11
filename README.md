@@ -42,7 +42,7 @@ The main skill. Run it any time — new idea, just talked to users, just tested 
 - Analyses any call notes or user data you have — finds patterns, surfaces what users are actually saying
 - Writes `HYPOTHESES.md` — a prioritised list of your assumptions, each tagged with how to test it: 🗣️ talk to users, or 🛠️ build to test
 - Scopes the riskiest hypothesis into a buildable experiment in `projects/<name>/`
-- Generates a complete runnable prototype — Python, one command to run
+- Generates a complete runnable prototype using current Claude API best practices (via `/claude-api`) — Python, one command to run
 - Logs everything in `DECISION_LOG.md` — what you decided and why
 
 Each experiment runs in one of two modes, chosen per sprint:
