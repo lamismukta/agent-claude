@@ -37,23 +37,22 @@ Run once when you start. Gets Claude up to speed on your company and sets up the
 
 The main skill. Run it any time — new idea, just talked to users, just tested something, want to rethink direction. It reads your context and figures out the right questions.
 
-**First run (no existing project):**
+🧠 **Brainstorming**
 - Interviews you using YC-style questions to surface your riskiest assumptions
 - Analyses any call notes or user data you have — finds patterns, surfaces what users are actually saying
 - Writes `HYPOTHESES.md` — a prioritised list of your assumptions, each tagged with how to test it: 🗣️ talk to users, or 🛠️ build to test
+
+🔨 **Building**
 - Scopes the riskiest hypothesis into a buildable experiment in `projects/<name>/`
+- Picks the right architecture — single API call, tool use workflow, or full agent — based on what you actually need
 - Generates a complete runnable prototype using current Claude API best practices (via `/claude-api`) — Python, one command to run
-- Logs everything in `DECISION_LOG.md` — what you decided and why
+- Builds standalone or on a branch in your existing repo — nothing touches main
 
-Each experiment runs in one of two modes, chosen per sprint:
-- **Standalone** — self-contained project in `projects/<name>/`, independent of any existing codebase. Build it, test it, throw it away if it doesn't work.
-- **Branch** — creates an `experiment/<name>` branch in your existing repo and builds there. Nothing touches main. No code is written until the PRD is approved. You review the diff, then merge or delete.
-
-**Subsequent runs (existing project):**
+🔁 **Iterating**
 - Asks what happened since last time — feedback, surprises, what broke
 - Updates hypotheses (confirmed ✅, invalidated ❌, or refined)
 - Scopes the next experiment based on what's still untested
-- Appends to the decision log — never overwrites, always accumulates
+- Logs everything in `DECISION_LOG.md` — what you decided and why, never overwritten
 
 ---
 
