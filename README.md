@@ -67,7 +67,7 @@ Read-only snapshot. Useful before a call or when you've been heads-down and want
 
 ---
 
-## Artifact trail
+## Artifacts
 
 Every sprint produces or updates:
 
@@ -77,8 +77,6 @@ Every sprint produces or updates:
 | `DECISION_LOG.md` | Append-only record of what changed and why. Captures pivots, invalidated bets, and what you learned. Never overwritten. |
 | `projects/<name>/PRODUCT_REQUIREMENTS.md` | Spec for one experiment — scoped to test a single hypothesis. |
 | `projects/<name>/` | Runnable code: entry point, `pyproject.toml`, README. `uv run <entrypoint>.py` and it works. |
-
-Code is disposable. The artifact trail isn't — it's your decision history.
 
 ## Example
 
