@@ -16,7 +16,7 @@ The only skill you need to run. Works for first builds, iteration, and major ret
 Before saying anything, read:
 - `DECISION_LOG.md` — the most important signal. Does it exist? What's the latest entry? What was being built and tested?
 - `HYPOTHESES.md` — current status of all assumptions
-- `call_notes/` — any user interviews. Note anything new since the last decision log entry.
+- `call_notes/` — any user interviews. Read frontmatter first (who, date, context) to prioritise — focus on the most recent and most relevant. Note anything new since the last decision log entry.
 - `projects/` — list any existing project folders. For each, read `PRODUCT_REQUIREMENTS.md`.
 - `existing_docs/yc-application.md` — foundation context
 
@@ -26,6 +26,7 @@ Before saying anything, read:
 who: [Name, Role at Company]
 date: [YYYY-MM-DD]
 context: [User interview / Demo / Intro call, N min]
+source: granola
 ---
 ```
 
@@ -240,6 +241,8 @@ Write `projects/<name>/PRODUCT_REQUIREMENTS.md`. Scope it to test the riskiest �
 ```
 
 **Checkpoint:** "Here's what I'm going to build: [one-paragraph summary]. It tests [hypothesis] by [how]. Architecture is [single call / workflow / agent] using [model]. Ready, or should we change anything?"
+
+If they say no: ask what they'd like to change, or whether they want to test something else entirely. Adjust the PRD and re-confirm. Don't build until they're happy with the scope.
 
 ---
 
