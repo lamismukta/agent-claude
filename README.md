@@ -90,7 +90,7 @@ Easy to extend — ask Claude to add:
 
 ## Model
 
-Works best in **Claude Code with Sonnet 4.6**. Generated prototypes pick the right model for the task — Claude decides based on the spec.
+Works best in **Claude Code with Opus 4.6**. Generated prototypes pick the right model for the task — Claude decides based on the spec.
 
 ## Resources
 
