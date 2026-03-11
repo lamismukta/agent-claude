@@ -57,7 +57,7 @@ Each experiment runs in one of two modes, chosen per sprint:
 
 ---
 
-### `/status` — where you are
+### `/latest` — where you are
 
 Read-only snapshot. Useful before a call or when you've been heads-down and want to resurface.
 

@@ -254,7 +254,7 @@ Always end with a skills overview:
 > | Skill | What it does |
 > |-------|-------------|
 > | `/sprint` | Run this any time — first build, feedback, iteration, rethink. Reads your context and figures out the right questions. |
-> | `/status` | Where you are — confirmed hypotheses, what still needs validating |
+> | `/latest` | Where you are — confirmed hypotheses, what still needs validating |
 
 **If integrations were configured:**
 > One last thing: restart Claude Code to pick up the [Granola/Notion] integration. Press Ctrl+C, then run `claude` again.

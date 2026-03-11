@@ -1,9 +1,9 @@
 ---
-name: status
-description: "Show where you are on the current product. Reads HYPOTHESES.md, DECISION_LOG.md, and PRODUCT_REQUIREMENTS.md and gives a clean summary: what's been confirmed, what's still untested, and what to validate with users next. Use when a founder says 'where are we', 'what's left to validate', 'catch me up', or 'what should I be doing'."
+name: latest
+description: "Show where you are on the current product. Reads HYPOTHESES.md, DECISION_LOG.md, and PRODUCT_REQUIREMENTS.md and gives a clean summary: what's been confirmed, what's still untested, and what to validate with users next. Use when a founder says 'where are we', 'what's left to validate', 'catch me up', 'what should I be doing', or 'what's the latest'."
 ---
 
-# /status — Where You Are
+# /latest — Where You Are
 
 Give the founder a fast, honest read on where the product stands. Read the artifacts, synthesise the state, surface what matters next. No fluff.
 
