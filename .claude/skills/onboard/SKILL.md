@@ -54,6 +54,8 @@ Then synthesise and ask one question:
 
 This is the only discovery question. Wait for the answer — it tells you where they are and what to focus on.
 
+Also ask: **"Do you have any user data — analytics, usage logs, CSV exports — that we could look at?"** Even rough data (Mixpanel exports, database queries, spreadsheets) can inform what to build. Note what they have for later.
+
 ---
 
 ### 3. Codebase
@@ -196,7 +198,37 @@ Install it directly: `curl -LsSf https://astral.sh/uv/install.sh | sh`. Tell the
 
 ---
 
-### 6. Ready — point to `/sprint`
+### 6. Save what you learned
+
+Create `DECISION_LOG.md` with the first entry — this is how `/sprint` picks up where onboard left off:
+
+```markdown
+## Onboard — [date]
+
+### Context
+[One line: who they are, what they're building]
+
+### Where they are now
+[What the founder said in response to the one question — traction, product status, concerns. Use their words.]
+
+### Codebase
+[Repo path/URL and one-line summary, or "No codebase yet"]
+
+### User data available
+[What data they mentioned — analytics, usage logs, exports — or "None yet"]
+
+### Integrations
+[What was configured — Granola, Notion — or "None"]
+
+### What to focus on
+[Your read on the most important thing to build or test, based on everything above]
+```
+
+This is the bridge between onboard and sprint. Without it, `/sprint` re-asks questions the founder already answered.
+
+---
+
+### 7. Ready — point to `/sprint`
 
 Tailor based on what you learned:
 

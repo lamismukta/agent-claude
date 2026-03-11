@@ -406,7 +406,7 @@ tools = [
     {"type": "code_execution_20260120", "name": "code_execution"},
 ]
 ```
-Note: web search requires Sonnet 4.6 or Opus 4.6 — Haiku doesn't support it.
+Note: web search requires Sonnet 4.6 or Opus 4.6 — Haiku doesn't support it. Structured output (`output_config`) works alongside web search — the schema constraint applies to the final response after all search rounds complete.
 
 **Structured output:**
 ```python
@@ -444,10 +444,13 @@ async for message in query(
 
 This is not optional. Never hand off code you haven't run. The founder should see results, not instructions.
 
-**Ask for real data first:**
-> "Before I run this — do you have any real data we can test against? Even a small sample: a few call notes, a CSV export, a real document. If not, I'll generate realistic synthetic data."
+**Get the best test data you can.** What to use depends on what the prototype does:
 
-If they share real data, use it. If not, generate realistic synthetic data that mirrors the expected structure — not placeholder lorem ipsum.
+- **Prototype processes input** (categoriser, analyser, summariser) — ask for real data: "Do you have any real data we can test against? Even a small sample: a few call notes, a CSV export, a real document." Real data catches problems synthetic data won't, and gives the founder a result they can actually evaluate.
+- **Prototype generates output** (suggestion engine, content generator, research tool) — generate realistic synthetic input that mirrors what real users would provide. Still ask: "I'll test with sample data — do you have anything real I should use instead?"
+- **Check the decision log for user data.** If onboard noted analytics, usage logs, or exports, use those — they're the best signal available.
+
+If no real data is available, generate realistic synthetic data that mirrors the expected structure — not placeholder lorem ipsum.
 
 **Run it:**
 ```bash
@@ -496,9 +499,10 @@ uv run <entry_point>.py [args]
 ​```
 No `uv`? `pip install -r requirements.txt && python <entry_point>.py [args]`
 
-### What to validate with users
-These hypotheses need a conversation, not code:
-- 🗣️ H1: [assumption] — ask [who] about [what]
+### Next steps to test
+- [ ] **Try it on real data** — [specific suggestion: "run it on your actual user's captured topics" / "feed in a real call transcript" / etc.]
+- [ ] **Show it to a user** — [who specifically, and what to watch for]
+- 🗣️ [Hypothesis that needs a conversation, not code] — ask [who] about [what]
 
 ### Files
 | File | What it does |
