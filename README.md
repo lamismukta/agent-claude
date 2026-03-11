@@ -1,4 +1,4 @@
-# agent-claude
+# agent YClaude
 
 Claude Code skills for stress testing your ideas and getting you a working AI prototype. Runs a discovery conversation, writes hypotheses, specs a PRD, and generates a complete runnable project. Iterates with you.
 
