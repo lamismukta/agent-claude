@@ -63,7 +63,7 @@ Read-only snapshot. Useful before a call or when you've been heads-down and want
 
 - Which hypotheses are confirmed, which are still untested, which were invalidated
 - What to validate with users before the next sprint
-- What to build next
+- Ideas on where to go next
 
 ---
 
