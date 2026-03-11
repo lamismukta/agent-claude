@@ -19,33 +19,28 @@ Give the founder a fast, honest read on where the product stands. Read the artif
 
 ---
 
-## Status — [product name] — [date]
+## [product name] — [date]
 
-**What you're building**
-[One sentence — the core bet, in plain language.]
+**Where you are**
+[2-3 sentences. The core bet, what exists, what the evidence says so far. Write like you're catching up a friend — honest, not formal.]
 
-**What's been confirmed**
-- ✅ H2: [assumption] — [one line of evidence]
-- ✅ H4: [assumption] — [one line of evidence]
+**What you know**
+- ✅ [assumption] — [one line of evidence]
 
-**What's still untested**
-- ⏳ H1: [assumption] — [why it matters if wrong]
-- ⏳ H3: [assumption] — [why it matters if wrong]
+**What you don't know yet**
+- ⏳ [assumption] — [why this matters]
 
-**What to validate with users**
-Conversations to have before the next sprint:
-- Ask [who]: [specific question] — tests H1
-- Show [who] the output and ask: [specific question] — tests H3
-
-**What to build next**
-[One sentence — the most valuable next prototype or feature, based on what's untested.]
+**Ideas for next**
+[Suggestions, not assignments. "You could...", "It might be worth...", "The quickest way to find out would be...". Frame as options, not tasks. If there's an obvious highest-value move, say so — but the founder decides.]
 
 ---
 
 3. **If nothing has been built yet** (no HYPOTHESES.md): tell the founder what's missing and point them at `/sprint`.
 
-## What Not to Do
+## Tone
 
-- Don't re-run the brainstorm. Just read and report.
-- Don't pad the output. If two hypotheses are confirmed and three are untested, say that clearly.
-- Don't hedge. "It's hard to say" is not useful. Read the artifacts and make a call.
+- Catch them up like a sharp friend, not a project manager.
+- Suggest, don't assign. "You could try X" not "Do X next."
+- Be honest about uncertainty. "The prototype looked good on synthetic data, but that's not the same as real users" is more useful than "H1: untested."
+- Keep it short. If two things are confirmed and three aren't, say that — don't pad it.
+- Don't hedge. "It's hard to say" is not useful. Read the artifacts and make a call — just frame it as your read, not an order.
