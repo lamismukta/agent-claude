@@ -38,7 +38,7 @@ source: granola
 
 ### No context at all (no decision log, no hypotheses, no projects)
 
-> "Let's build something. What are you working on?"
+> "Let's build something. **What are you working on?**"
 
 Then run [Phase 1: Discovery](#phase-1-discovery).
 
@@ -48,9 +48,9 @@ Then run [Phase 1: Discovery](#phase-1-discovery).
 
 Summarise what you know in a few sentences — not a critique, just a read:
 
-> "Here's where I think we're at: [what the company does, the core bet, what evidence exists so far — YC app, call notes, codebase]. Does that sound right?
+> "Here's where I think we're at: [what the company does, the core bet, what evidence exists so far — YC app, call notes, codebase]. **Does that sound right?**
 >
-> What do you want to sprint on? If you have something in mind we can go straight to scoping it. Otherwise I can dig into what I've read and help figure out where to start."
+> **What do you want to sprint on?** If you have something in mind we can go straight to scoping it. Otherwise I can dig into what I've read and help figure out where to start."
 
 - **They have something in mind** → confirm scope, then go to [Phase 2: Spec](#phase-2-spec)
 - **They want help deciding** → go to [Phase 1: Discovery](#phase-1-discovery) — now you can go deeper, push back on what's shaky, surface the riskiest assumption
@@ -63,7 +63,7 @@ Summarise where things left off, then ask:
 
 > "Here's where we are: [what was last built, what hypothesis it tested, what the evidence showed]. [If new call notes were pulled: 'I also pulled [N] new meeting notes — here's what stood out: [2-3 key insights].']
 >
-> Want to pick up from here, or do you have something else in mind?"
+> **Want to pick up from here, or do you have something else in mind?**"
 
 Route based on what they say:
 
@@ -93,11 +93,11 @@ Before the discovery conversation, read all existing context:
 
 Start with your read on what they're betting on — not as a challenge, as a check:
 
-> "Here's what I think you're betting on: [problem + core hypothesis in 2-3 sentences]. Does that sound right?"
+> "Here's what I think you're betting on: [problem + core hypothesis in 2-3 sentences]. **Does that sound right?**"
 
 Once they confirm (or correct you), then push on what's shaky:
 
-> "OK — here's what I'd dig into: [1-2 things that seem underspecified, risky, or contradicted by call notes]. What resonates? What's wrong?"
+> "OK — here's what I'd dig into: [1-2 things that seem underspecified, risky, or contradicted by call notes]. **What resonates? What's wrong?**"
 
 Confirm first, critique second. The founder needs to know you understand them before they'll trust your pushback.
 
@@ -154,7 +154,7 @@ Tag each hypothesis:
 - **🗣️ conversation** — validated by talking to users. Good for "do people have this problem?" and "would they switch?"
 - **🛠️ prototype** — needs working software to test. Good for "can the AI do this reliably?" and "is the output good enough?"
 
-**Checkpoint:** "Here are the assumptions I think could kill this idea. The riskiest one we can test with software is [H2]. Does this feel right?"
+**Checkpoint:** "Here are the assumptions I think could kill this idea. The riskiest one we can test with software is [H2]. **Does this feel right?**"
 
 ### Write the first decision log entry
 
@@ -255,7 +255,7 @@ Write `projects/<name>/PRODUCT_REQUIREMENTS.md`. Scope it to test the riskiest �
 - [concrete, testable]
 ```
 
-**Checkpoint:** "Here's what I'm going to build: [one-paragraph summary]. It tests [hypothesis] by [how]. Architecture is [single call / workflow / agent] using [model]. Ready, or should we change anything?"
+**Checkpoint:** "Here's what I'm going to build: [one-paragraph summary]. It tests [hypothesis] by [how]. Architecture is [single call / workflow / agent] using [model]. **Ready, or should we change anything?**"
 
 If they say no: ask what they'd like to change, or whether they want to test something else entirely. Adjust the PRD and re-confirm. Don't build until they're happy with the scope.
 
@@ -567,7 +567,7 @@ When the founder has tested the prototype or talked to users:
 
 3. **Update spec.** Edit `projects/<name>/PRODUCT_REQUIREMENTS.md`. Mark changed sections `[UPDATED]`. Update "Hypothesis Under Test" if the riskiest assumption shifted.
 
-4. **Checkpoint.** "Here's what changed: [summary]. The prototype now tests [new hypothesis]. Should I rebuild?"
+4. **Checkpoint.** "Here's what changed: [summary]. The prototype now tests [new hypothesis]. **Should I rebuild?**"
 
 5. **Update code.** Modify `projects/<name>/` — only what the spec changed. Don't regenerate from scratch. Verify it still runs.
 
