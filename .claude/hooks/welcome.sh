@@ -6,7 +6,7 @@ echo ""
 echo "Commands:"
 echo "  /onboard  — first time? start here"
 echo "  /sprint   — brainstorm, spec, and build (the main skill)"
-echo "  /status   — where you are, what's left to validate"
+echo "  /latest   — where you are, what's left to validate"
 echo ""
 
 # Show context if it exists

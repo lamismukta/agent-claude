@@ -49,7 +49,7 @@ Gmail and Google Calendar connect through Claude.ai's Google Workspace integrati
 
 ### Notion
 
-See the Notion setup in `/onboard` — same config. If it's already in `.claude/mcp_servers.json`, say so.
+See the Notion setup in `/onboard` — same config. If it's already in `.mcp.json`, say so.
 
 ### Granola
 
@@ -93,7 +93,7 @@ For each new skill, use `/skill-creator` to build it properly — write a SKILL.
 
 **Key outputs:** Background, investment thesis, recent deals, public takes, 3 tailored talking points.
 
-**Start with:** This is similar to the `examples/meeting-prep/` example. Run `/skill-creator` to build `investor-research/SKILL.md`, or adapt the meeting-prep example directly.
+**Start with:** Run `/skill-creator` to build `investor-research/SKILL.md`. The skill should use Claude's web search tool.
 
 ---
 
