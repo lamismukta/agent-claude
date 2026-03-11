@@ -30,8 +30,8 @@ Give the founder a fast, honest read on where the product stands. Read the artif
 **What you don't know yet**
 - ⏳ [assumption] — [why this matters]
 
-**Ideas for next**
-[Suggestions, not assignments. "You could...", "It might be worth...", "The quickest way to find out would be...". Frame as options, not tasks. If there's an obvious highest-value move, say so — but the founder decides.]
+**Further things to test**
+[What's still open and how you might close it. "You could...", "It might be worth...", "The quickest way to find out would be...". Frame as options, not tasks. If there's an obvious highest-value move, say so — but the founder decides.]
 
 ---
 
