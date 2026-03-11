@@ -30,35 +30,46 @@ source: granola
 ---
 ```
 
-Then route based on what you find:
+## Step 1: Check in
+
+**Always open with a check-in.** Summarise where things stand (soft, not a critique), then ask what the founder wants to do. Never jump straight into pushing back — earn that by confirming you're on the same page first.
 
 ---
 
-### No decision log, no hypotheses, no projects
+### No context at all (no decision log, no hypotheses, no projects)
 
-This is a first sprint. Run [Phase 1: Discovery](#phase-1-discovery) from scratch.
-
-Open with:
 > "Let's build something. What are you working on?"
 
-Then run the full discovery conversation below.
+Then run [Phase 1: Discovery](#phase-1-discovery).
 
 ---
 
-### Decision log exists
+### Context exists but no sprints yet (just finished onboard)
 
-Read the latest entry. Understand what was last built and what hypothesis it was testing. Then open with a synthesis — not a question:
+Summarise what you know in a few sentences — not a critique, just a read:
 
-> "Last time we [built X / tested H2 / talked to users about Y]. [One sentence on what the evidence showed or what changed.] What's happened since?"
+> "Here's where I think we're at: [what the company does, the core bet, what evidence exists so far — YC app, call notes, codebase]. Does that sound right?
+>
+> What do you want to sprint on? If you have something in mind we can go straight to scoping it. Otherwise I can dig into what I've read and help figure out where to start."
 
-Listen to the answer. Route based on what they say:
+- **They have something in mind** → confirm scope, then go to [Phase 2: Spec](#phase-2-spec)
+- **They want help deciding** → go to [Phase 1: Discovery](#phase-1-discovery) — now you can go deeper, push back on what's shaky, surface the riskiest assumption
 
-- **"I tested it / users said X / it didn't work"** → ask "What mattered most — what worked, what didn't?" then → [Iteration: incorporate feedback](#iteration-incorporate-feedback)
-- **"I want to build something new / try a different direction"** → ask if this is a new project or a full rethink, then run [Phase 1: Discovery](#phase-1-discovery)
-- **"Nothing, just continuing"** → summarise hypothesis status and ask what they want to tackle next
+---
 
-If new call notes were pulled, surface key insights before asking anything:
-> "I also pulled [N] new meeting notes. Here's what stood out: [2-3 key insights]. Does that change anything?"
+### Has sprint history (decision log with sprint entries)
+
+Summarise where things left off, then ask:
+
+> "Here's where we are: [what was last built, what hypothesis it tested, what the evidence showed]. [If new call notes were pulled: 'I also pulled [N] new meeting notes — here's what stood out: [2-3 key insights].']
+>
+> Want to pick up from here, or do you have something else in mind?"
+
+Route based on what they say:
+
+- **"I tested it / users said X / it didn't work"** → "What mattered most — what worked, what didn't?" then → [Iteration: incorporate feedback](#iteration-incorporate-feedback)
+- **"I want to build something new / different direction"** → is this a new project or a full rethink? Then [Phase 1: Discovery](#phase-1-discovery)
+- **"Pick up where we left off"** → summarise hypothesis status and ask what to tackle next
 
 ---
 
@@ -78,13 +89,17 @@ Before the discovery conversation, read all existing context:
 - `call_notes/` — read all notes. Extract: **pain points** (what problems?), **workarounds** (how do they solve it today?), **requests** (what did they ask for — dig into the *why*), **surprises** (anything that contradicts assumptions?), **quotes** (verbatim quotes are gold — surface the best ones)
 - `HYPOTHESES.md` — if it exists, where do things stand?
 
-### Open with a critique, not a question
+### Open by confirming your understanding, then go deeper
 
-Synthesise what you've read, then push back on what's shaky:
+Start with your read on what they're betting on — not as a challenge, as a check:
 
-> "Here's what I think you're betting on: [problem + core hypothesis in 2-3 sentences]. Here's what I'd push back on: [1-2 things that seem underspecified, risky, or contradicted by call notes]. What resonates? What's wrong?"
+> "Here's what I think you're betting on: [problem + core hypothesis in 2-3 sentences]. Does that sound right?"
 
-This is a critique, not a summary. The founder doesn't need you to reflect what they wrote — they need you to identify what's shaky.
+Once they confirm (or correct you), then push on what's shaky:
+
+> "OK — here's what I'd dig into: [1-2 things that seem underspecified, risky, or contradicted by call notes]. What resonates? What's wrong?"
+
+Confirm first, critique second. The founder needs to know you understand them before they'll trust your pushback.
 
 ### Discovery conversation
 
