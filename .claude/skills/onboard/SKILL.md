@@ -13,13 +13,13 @@ This is not a cold-start flow. Every YC founder has a YC application — that do
 
 ## How It Works
 
-Ask questions **one at a time**. Wait for each answer before moving on.
+Ask questions **one at a time**. Wait for each answer before moving on. The goal: get to `/sprint` as fast as possible.
 
-### 1. Warm welcome
+**While the founder is answering questions, run prerequisites silently in the background** (Step 5). Don't wait for the end — check API key, Python, and uv as soon as the conversation starts.
 
-Greet the founder and tell them what's about to happen:
+### 1. Welcome + YC application
 
-> "Welcome — I'm going to help you move faster with AI. Let's get set up.
+> "Welcome — I'm going to help you build and test your ideas. Let's get set up.
 >
 > First thing I need: your YC application. It has the context I need to understand what you're building. Paste it here or drop the file path."
 
@@ -28,11 +28,17 @@ Don't ask any other questions yet. Wait for the YC application.
 If they don't have it handy, or want to try with a sample, point them to:
 > "No worries — there's a sample in `examples/loop/existing_docs/yc-application.md` you can use to try the flow."
 
+**While reading their application**, silently create the project structure and save the YC app:
+- `mkdir -p call_notes existing_docs existing_code`
+- Save to `existing_docs/yc-application.md`
+
+Don't create `HYPOTHESES.md` or `PRODUCT_REQUIREMENTS.md` — those are outputs of `/sprint`.
+
 ---
 
-### 2. Read the YC application
+### 2. Synthesise and ask what's changed
 
-Read it carefully. Extract:
+Read the application carefully. Extract:
 - **Problem** — what pain are they solving, for whom
 - **Solution** — what they've built or are building
 - **Traction** — what they've validated, who's using it, revenue
@@ -40,56 +46,74 @@ Read it carefully. Extract:
 - **What they've already built** — working code, prototype, manual process
 - **Open bets** — what assumptions they haven't validated yet
 
-Then synthesise back in 3–4 sentences:
-> "Here's what I'm taking from your application: [problem in one line]. You're building [solution] for [user]. You've got [traction/what exists]. The big open question seems to be [what they haven't figured out yet]. Does that capture it?"
+Then synthesise and ask one question:
 
-Wait for confirmation or correction before moving on.
+> "Here's what I'm taking from your application: [problem in one line]. You're building [solution] for [user]. You've got [traction/what exists]. The big open question seems to be [what they haven't figured out yet].
+>
+> **What's changed since then? What's your traction, where is your product, and what are your biggest risks?**"
 
----
-
-### 3. Three questions (one at a time)
-
-These questions update the YC app context with what's happened since it was written.
-
-**Q1:** "Where are you now — what have you shipped and who's using it?"
-
-Wait for answer. Probe if vague: "Walk me through what exists today."
-
-**Q2:** "What's changed since you wrote the application? Any pivots, surprises, things you thought were true that turned out not to be?"
-
-Wait for answer.
-
-**Q3:** "What's your biggest concern right now — the thing you most need to figure out?"
-
-Wait for answer. This is the most important question. The answer usually points directly at what to build or validate next.
+This is the only discovery question. Wait for the answer — it tells you where they are and what to focus on.
 
 ---
 
-### 4. Existing codebase
+### 3. Codebase
 
-Ask: "Do you have a codebase? Share a GitHub URL or local path."
+Ask: "Do you have a codebase? Share a GitHub URL or local path — or skip if you're starting fresh."
+
+**If they skip:** Note it. `/sprint` will build from scratch. Move on.
 
 **If GitHub URL:**
 - Try to clone it: `gh repo clone <url>` (if `gh` CLI is available)
 - Or read the key files via WebFetch on the raw GitHub URLs: README, main entry point, package.json/pyproject.toml
-- Summarise: what's built, what architecture, what's missing or incomplete
 
 **If local path:**
-- Read the directory structure, entry point, dependencies
-- Summarise: what it does, what's working, what's rough
+- **Try hard to find it.** If the path doesn't exist exactly as given, try variations: expand `~`, check common locations (`~/Projects/`, `~/Code/`, `~/repos/`, `~/Documents/`), try with and without trailing slashes, check case sensitivity. Use `ls` on parent directories to find close matches. Don't give up after one failed path — the founder knows their repo exists, so find it.
+- Once found, do a thorough read. Don't skim — actually explore:
+  - `ls` the root directory
+  - Read README, main entry point, config files (package.json, pyproject.toml, Cargo.toml, etc.)
+  - `ls` key subdirectories (src/, lib/, app/, components/, etc.)
+  - Read 2-3 core files beyond the entry point
 
-**If no codebase yet:**
-- Note it. `/sprint` will build from scratch.
+**Create `existing_code/codebase-notes.md`** with a structured summary:
 
-Go deeper than a surface summary. If there's a codebase, read the main entry point. Note: "You have [X] built. It looks like [Y] is the next thing to build. Does that feel right?"
+```markdown
+# Codebase Notes — [repo name]
+
+**Repo:** [path or URL]
+**Language:** [Python/TypeScript/etc.]
+**Framework:** [if applicable]
+
+## Structure
+[Key directories and what they contain]
+
+## What's Built
+[What functionality exists and works]
+
+## Architecture
+[How it's structured — monolith, microservices, CLI, web app, etc.]
+
+## Entry Points
+[Main files, how to run it]
+
+## Dependencies
+[Key packages/libraries]
+
+## What's Missing or Incomplete
+[Gaps, TODOs, rough edges]
+
+## Notes for /sprint
+[Anything relevant for building on top of this — conventions to follow, patterns in use, where new code should go]
+```
+
+This persists across sessions so `/sprint` doesn't have to re-read the whole codebase every time.
 
 Note the repo path. `/sprint` will ask whether each experiment should extend this codebase or run standalone — that decision happens per-project, not upfront.
 
 ---
 
-### 5. Integrations (optional)
+### 4. Integrations
 
-Ask: "Do you use Granola to record user calls?"
+Ask: "Do you use Granola to record user calls? Skip if not."
 
 **If yes:**
 Write `.claude/mcp_servers.json`:
@@ -103,41 +127,62 @@ Write `.claude/mcp_servers.json`:
   }
 }
 ```
-Confirm it's written. Do NOT tell them to restart yet — defer to the end.
 
-If they also use Notion for user research, add:
+If `.claude/mcp_servers.json` already exists, read it and add to the existing `mcpServers` object — don't overwrite.
+
+**Then pull existing notes.** After configuring Granola, immediately pull recent meeting notes into `call_notes/`. Run `list_meetings` and fetch any that look like user interviews, demos, or relevant calls. Save each as `call_notes/YYYY-MM-DD-<short-description>.md` with frontmatter:
+```markdown
+---
+who: [Name, Role at Company]
+date: [YYYY-MM-DD]
+context: [User interview / Demo / Intro call, N min]
+source: granola
+---
+```
+
+Tell the founder what you pulled:
+> "I pulled [N] meeting notes from Granola — [brief list]. They're in `call_notes/` and `/sprint` will use them."
+
+Do NOT tell them to restart yet — defer to the end.
+
+If they also use Notion for user research, ask:
+> "Do you also use Notion for user research? I can connect that too — skip if not."
+
+If yes, they'll need an internal integration token:
+> "Go to https://www.notion.so/profile/integrations/internal — create an internal integration, copy the token, and share it here."
+
+Then add to `.claude/mcp_servers.json`:
 ```json
 {
-  "mcpServers": {
-    "granola": { "command": "npx", "args": ["-y", "granola-mcp"] },
-    "notion": {
-      "command": "npx",
-      "args": ["-y", "@notionhq/notion-mcp-server"],
-      "env": {
-        "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ntn_YOUR_TOKEN\", \"Notion-Version\": \"2022-06-28\"}"
-      }
+  "notion": {
+    "command": "npx",
+    "args": ["-y", "@notionhq/notion-mcp-server"],
+    "env": {
+      "NOTION_TOKEN": "ntn_THEIR_TOKEN"
     }
   }
 }
 ```
 
-If `.claude/mcp_servers.json` already exists, read it and add to the existing `mcpServers` object — don't overwrite.
+**If no Granola / skip:**
+> "No problem. If you have any user interview notes, drop them in `call_notes/` — txt, md, or paste them in. `/sprint` will pick them up."
 
-**If no:** Skip. Move on.
+Move on.
 
 ---
 
-### 6. Prerequisites (silent check)
+### 5. Prerequisites (silent — run in background)
 
-Run silently, report results concisely:
+**Start these checks as soon as the conversation begins.** Don't wait for a dedicated step — run them in the background while asking questions. Only surface issues when they're relevant or at the end.
 
-- `echo ${ANTHROPIC_API_KEY:+set}` — check if API key is set
-- `python3 --version` — check Python
-- `uv --version` — check uv
+Check silently:
+- `echo ${ANTHROPIC_API_KEY:+set}` — API key set?
+- `python3 --version` — Python available?
+- `uv --version` — uv available?
 
 **If API key not set:**
 > "You'll need an ANTHROPIC_API_KEY to run prototypes. Get one at console.anthropic.com → API Keys. Once you have it, share it here and I'll add it to your `~/.zshrc` so it persists."
-If they share it: run both commands so the key is live immediately without needing a restart:
+If they share it: run both commands so the key is live immediately:
 ```bash
 echo 'export ANTHROPIC_API_KEY=<key>' >> ~/.zshrc
 export ANTHROPIC_API_KEY=<key>
@@ -151,20 +196,7 @@ Install it directly: `curl -LsSf https://astral.sh/uv/install.sh | sh`. Tell the
 
 ---
 
-### 7. Create project structure
-
-```
-call_notes/        ← User interview notes
-existing_docs/     ← YC app + any other docs (save the YC app here)
-```
-
-Save the YC application to `existing_docs/yc-application.md` so it's available for future sessions.
-
-Don't create `HYPOTHESES.md` or `PRODUCT_REQUIREMENTS.md` — those are outputs of `/sprint`.
-
----
-
-### 8. Point to the next step
+### 6. Ready — point to `/sprint`
 
 Tailor based on what you learned:
 
@@ -185,17 +217,17 @@ Tailor based on what you learned:
 >
 > Run `/sprint` — we'll go from your YC application to working code."
 
-Always end with a skills overview so the founder knows what they're working with:
+Always end with a skills overview:
 
-> Here's what you can run:
->
 > | Skill | What it does |
 > |-------|-------------|
 > | `/sprint` | Run this any time — first build, feedback, iteration, rethink. Reads your context and figures out the right questions. |
 > | `/status` | Where you are — confirmed hypotheses, what still needs validating |
 
-**If integrations were configured:** Add after the table:
+**If integrations were configured:**
 > One last thing: restart Claude Code to pick up the [Granola/Notion] integration. Press Ctrl+C, then run `claude` again.
+
+**If prereqs had issues**, report them here concisely — don't make the founder solve problems before they know what they're building.
 
 ---
 

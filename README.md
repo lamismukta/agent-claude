@@ -80,6 +80,19 @@ Every sprint produces or updates:
 
 Code is disposable. The artifact trail isn't — it's your decision history.
 
+## Example
+
+`examples/loop/` is a complete worked example — a fictional YC company called Loop that builds meeting productivity tools. It shows the full artifact trail after running `/sprint`:
+
+- `existing_docs/yc-application.md` — the YC application that starts the conversation
+- `HYPOTHESES.md` — 5 assumptions, ordered by risk
+- `DECISION_LOG.md` — what was decided and why
+- `projects/signal-synthesizer/` — a runnable prototype that cross-references usage data with user interview notes to score a PRD against real evidence
+
+Run it yourself: `cd examples/loop/projects/signal-synthesizer && uv run synthesize.py`
+
+---
+
 ## Going further
 
 Easy to extend — ask Claude to add:

@@ -34,6 +34,7 @@ Every run produces an artifact trail: `HYPOTHESES.md` → `DECISION_LOG.md` → 
 your-project/
 ├── call_notes/              ← User interview notes (manual or via Granola)
 ├── existing_docs/           ← YC app, pitch decks, imported docs
+├── existing_code/           ← Notes on the founder's codebase (from /onboard)
 ├── HYPOTHESES.md            ← Assumptions to test, ordered by risk
 ├── DECISION_LOG.md          ← How you got here (append-only)
 └── projects/

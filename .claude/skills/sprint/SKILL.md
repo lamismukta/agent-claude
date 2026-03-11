@@ -247,57 +247,79 @@ Write `projects/<name>/PRODUCT_REQUIREMENTS.md`. Scope it to test the riskiest �
 
 **Before writing any code, invoke the `/claude-api` skill.** It provides current API patterns, correct model IDs, and schema requirements. Code written without it will have wrong patterns.
 
-### Detect language
+### Step 1: Read the existing codebase (if one exists)
 
-Check the project directory for existing files to match the founder's preferred language:
+If the founder gave a repo path or the PRD says "extension mode", read their code before writing anything. This is not optional — you cannot integrate with code you haven't read.
+
+**What to read:**
+- Entry points — `main.py`, `app.py`, `index.ts`, whatever starts the app
+- Package config — `pyproject.toml`, `package.json` — dependencies already available, project structure conventions
+- Patterns — how they structure imports, handle errors, name things, configure the app
+- Adjacent code — the module or area you're extending. Read the actual files, not just the directory listing.
+- Tests — do they exist? What framework? What patterns?
+
+**What to extract:**
+- Language and framework (FastAPI? Express? Plain script?)
+- How config/env vars are handled (dotenv? pydantic-settings? raw os.environ?)
+- Import style (relative? absolute? barrel files?)
+- Naming conventions (snake_case functions? camelCase? Classes for everything or plain functions?)
+- Where new code should live — which directory, which module
+
+**Then confirm:**
+> "I've read through your codebase. You're using [framework] with [pattern]. I'll add [what] in [where], matching your existing style. Sound right?"
+
+If it's a **standalone experiment** with no existing codebase, skip this step entirely — go straight to Step 2.
+
+### Step 2: Detect language and pick architecture
+
+**Language:**
+- If there's an existing codebase → match it
 - `*.py`, `requirements.txt`, `pyproject.toml` → Python
 - `*.ts`, `package.json`, `tsconfig.json` → TypeScript
 - No existing files → default to Python, mention TypeScript is also supported
 
-### Pick the architecture
-
-Start with a single API call. Only add complexity when genuinely required:
+**Architecture — start simple, only add complexity when genuinely required:**
 - **Single API call** — one prompt in, one response out. Solves more than expected.
 - **Tool use / multi-step** — when the model needs to take actions (web search, file reads)
 - **Agentic loop** — when it needs decisions across multiple steps
 - **Agent SDK** — only when it needs file, web, or terminal access as a full agent
 
-### Generate the project
+### Step 3: Write the code
 
-Create a complete project in `projects/<name>/`.
+**Standalone mode** — create a complete project in `projects/<name>/`:
 
-**Python (default):**
 ```
 projects/<name>/
 ├── README.md              ← see template below
 ├── pyproject.toml         ← dependencies (uv installs automatically)
-├── requirements.txt       ← fallback for pip users
 ├── .env.example           ← ANTHROPIC_API_KEY=your-key-here
 ├── <entry_point>.py       ← named after what it does (briefing.py, categorizer.py)
 └── PRODUCT_REQUIREMENTS.md
 ```
 
-**TypeScript:**
-```
-projects/<name>/
-├── README.md
-├── package.json           ← dependencies
-├── tsconfig.json
-├── .env.example           ← ANTHROPIC_API_KEY=your-key-here
-├── <entry_point>.ts       ← named after what it does
-└── PRODUCT_REQUIREMENTS.md
-```
-TypeScript README should show: `npx tsx <entry_point>.ts [args]`
+For TypeScript: `package.json` + `tsconfig.json` instead. README shows: `npx tsx <entry_point>.ts [args]`
 
-**README.md template:**
+**Extension mode** — build into their codebase:
+1. Create a branch: `experiment/<project-name>`
+2. Add files where they belong in the existing structure — not in a `projects/` folder
+3. Match their patterns: same import style, same naming, same error handling
+4. Add dependencies to their existing `pyproject.toml` / `package.json` — don't create a separate one
+5. If they have tests, write tests in their test framework
+
+**pyproject.toml (standalone only):**
+```toml
+[project]
+name = "project-name"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["anthropic"]
+```
+
+**README.md template (standalone):**
 ```markdown
 # <Project Name>
 
 <One sentence: what it does and what it tests.>
-
-**Type:** Standalone experiment / Extension of <repo> ([branch](link))
-**Hypothesis:** H<N> — <assumption in plain language>
-**Confirmed if:** <what outcome proves it>
 
 ## Quick Start
 
@@ -317,21 +339,14 @@ No `uv`? `pip install -r requirements.txt && python <entry_point>.py`
 - <Specific thing to evaluate when testing>
 - <Another signal to watch>
 
-## How It Works
+## Test Results
 
-<Brief explanation of architecture — single call / pipeline / agent.>
-```
+_Updated after build run._
 
-For branch mode, the branch link should point to the actual branch in the founder's repo. For standalone, omit the link.
-
-
-**pyproject.toml:**
-```toml
-[project]
-name = "project-name"
-version = "0.1.0"
-requires-python = ">=3.11"
-dependencies = ["anthropic"]
+- **Data used:** [real data from founder / synthetic — describe what]
+- **Output:** [quote or summarise what the AI actually produced]
+- **Quality:** [honest assessment — what looked right, what was off]
+- **Issues fixed during build:** [any errors hit and resolved, or "none"]
 ```
 
 ### Code guidelines
@@ -425,16 +440,16 @@ async for message in query(
 - Don't build a manual tool-use loop — Tool Runner exists
 - Never hardcode API keys. Never ask the founder to paste a key into chat — say: "Run `export ANTHROPIC_API_KEY=sk-ant-...` in your terminal."
 
-### Self-test before handing off
+### Step 4: Run it and show the output
 
-Run the prototype after generating. This is not optional. Never hand off code you haven't run.
+This is not optional. Never hand off code you haven't run. The founder should see results, not instructions.
 
-**Ask for real data before running.** Real data catches problems synthetic data won't, and gives the founder a result they can actually evaluate.
+**Ask for real data first:**
+> "Before I run this — do you have any real data we can test against? Even a small sample: a few call notes, a CSV export, a real document. If not, I'll generate realistic synthetic data."
 
-> "Before I run this — do you have any real data we can test against? Even a small sample: a few call notes, a CSV export, a real PRD. If not, I'll generate synthetic data and you can swap in real data after."
+If they share real data, use it. If not, generate realistic synthetic data that mirrors the expected structure — not placeholder lorem ipsum.
 
-If they share real data, use it. If not, generate realistic synthetic data that mirrors the structure the prototype expects — don't use placeholder lorem ipsum.
-
+**Run it:**
 ```bash
 uv run <entry_point>.py [test args]
 # or if uv unavailable:
@@ -442,44 +457,81 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python <entry_point>.py [test args]
 ```
 
-**Common failures to catch before handing off:**
-- `400 invalid_request_error` — schema issue. Check: `additionalProperties: false` on every object, no `minimum`/`maximum` on integers, no `name` field on the schema root, `schema` not `json_schema` as the key.
+**Fix every error before moving on.** Common failures:
+- `400 invalid_request_error` — schema issue. Check: `additionalProperties: false` on every object, no `minimum`/`maximum` on integers.
 - `401` — API key not set. Remind the founder: `export ANTHROPIC_API_KEY=your-key`.
 - `ImportError` — missing dependency. Add to `pyproject.toml` and re-run.
-- Output looks wrong or empty — the model ran but produced bad output. Adjust the prompt, not the schema.
+- Output looks wrong — adjust the prompt, not the schema.
 
-Fix every error before presenting. Report what the output looked like — "I ran it against the sample data, the signal report correctly flagged team collaboration as unsupported" is useful. "It runs" is not.
+**Once it runs successfully, show the actual output.** Quote it or paste it. The founder needs to see what the AI produced, not hear "it works."
 
 ---
 
-## Phase 4: Hand Off
+## Phase 4: Hand Off — THIS IS WHAT I BUILT
+
+Present the handoff in exactly this format. This is the most important output of the entire sprint — make it unmissable.
 
 ```
-## Your prototype is ready.
+---
 
-### Run it
+## ✅ Prototype complete.
+
+### What I built
+[2-3 sentences. What it does, what input it takes, what output it produces.]
+
+### What I tested
+- Ran against: [real data they gave you / synthetic data you generated]
+- Result: [what the output actually looked like — quote or summarise the key parts]
+- Issues found and fixed: [any errors you hit and resolved, or "none"]
+
+### What you should check
+- [ ] [Does the output quality match what you'd expect?]
+- [ ] [Does it handle edge case X correctly?]
+- [ ] [Is the tone/format of the output right for your users?]
+
+### How to run it yourself
+​```bash
 export ANTHROPIC_API_KEY=your-key
 uv run <entry_point>.py [args]
+​```
+No `uv`? `pip install -r requirements.txt && python <entry_point>.py [args]`
 
-No uv? pip install -r requirements.txt && python <entry_point>.py [args]
-
-### What it does
-[1-2 sentences — input, output, what happens in between]
-
-### What it tests
-[Which hypothesis this confirms or kills]
-
-### What to look for
-- [Specific thing to evaluate]
-- [Another thing]
-
-### Validate with users
+### What to validate with users
 These hypotheses need a conversation, not code:
 - 🗣️ H1: [assumption] — ask [who] about [what]
 
-### Files generated
-[List every file with a one-line description]
+### Files
+| File | What it does |
+|------|-------------|
+| `<entry_point>.py` | [one line] |
+| `pyproject.toml` | Dependencies |
+| ... | ... |
+
+---
 ```
+
+For **extension mode**, replace "Files" with a diff summary:
+```
+### Changes to your repo
+Branch: `experiment/<name>`
+
+| File | Change |
+|------|--------|
+| `src/analyzers/categorizer.py` | New — transaction categorization module |
+| `src/config.py` | Modified — added ANTHROPIC_API_KEY |
+| `pyproject.toml` | Modified — added `anthropic` dependency |
+| `tests/test_categorizer.py` | New — 3 tests covering core categorization |
+
+To review: `git diff main...experiment/<name>`
+To merge: `git merge experiment/<name>` (or raise a PR)
+To discard: `git branch -D experiment/<name>`
+```
+
+### Log the build
+
+After presenting the handoff, update the project's `README.md` with the "Test Results" section — what data you used, what the output looked like, quality assessment, and any issues fixed. This is scoped to the project and gives the founder context when they go to run or evaluate it.
+
+Don't write findings to `DECISION_LOG.md` unilaterally — that's a shared record. The decision log gets updated in the iteration phase, after the founder has tested it and you both agree on what happened.
 
 ---
 
