@@ -89,6 +89,10 @@ Every sprint produces or updates:
 
 Run it yourself: `cd examples/loop/projects/signal-synthesizer && uv run synthesize.py`
 
+## Model
+
+Works best in **Claude Code with Opus 4.6**. Generated prototypes pick the right model for the task — Claude decides based on the spec.
+
 ---
 
 ## Going further
@@ -98,10 +102,6 @@ Easy to extend — ask Claude to add:
 **More integrations:** email, calendar, CRM, Slack
 
 **Skills:** research competitors and investors, automate sales outreach, draft weekly progress report
-
-## Model
-
-Works best in **Claude Code with Opus 4.6**. Generated prototypes pick the right model for the task — Claude decides based on the spec.
 
 ## Resources
 
