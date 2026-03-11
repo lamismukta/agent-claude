@@ -29,7 +29,7 @@ If they don't have it handy, or want to try with a sample, point them to:
 > "No worries — there's a sample in `examples/loop/existing_docs/yc-application.md` you can use to try the flow."
 
 **While reading their application**, silently create the project structure and save the YC app:
-- `mkdir -p call_notes existing_docs existing_code`
+- `call_notes/`, `existing_docs/`, and `existing_code/` already exist in the repo (via `.gitkeep`)
 - Save to `existing_docs/yc-application.md`
 
 Don't create `HYPOTHESES.md` or `PRODUCT_REQUIREMENTS.md` — those are outputs of `/sprint`.
